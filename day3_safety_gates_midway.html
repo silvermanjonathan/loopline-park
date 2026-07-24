@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 3 — Safety Gates &amp; the Midway</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);--shadow:0 4px 0 rgba(27,41,81,.12);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--navy);color:var(--cream);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--yellow)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.gate{width:200px;height:110px;margin:18px auto 0;position:relative}
+.post{position:absolute;bottom:0;left:14px;width:10px;height:92px;background:var(--yellow);border-radius:4px}
+.mark{position:absolute;left:0;width:38px;border-top:2px dashed var(--red);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);top:34px;padding-top:1px}
+.arm{position:absolute;bottom:78px;left:22px;width:150px;height:9px;background:var(--red);border-radius:5px;transform-origin:4px 50%;animation:lift 5s ease-in-out infinite}
+@keyframes lift{0%,35%{transform:rotate(0deg)}50%,80%{transform:rotate(-58deg)}95%,100%{transform:rotate(0deg)}}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--navy-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--red)}
+pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--red)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--navy-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--navy-line)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+@media (prefers-reduced-motion: reduce){.arm{animation:none;transform:rotate(-58deg)}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 3</div>
+  <h1>Safety Gates &amp; the Midway</h1>
+  <p class="hook">The Comet needs a height gate that decides for itself — and the midway needs a game and a ride roster that remembers everything.</p>
+  <div class="gate" aria-hidden="true"><div class="post"></div><div class="mark">48 in</div><div class="arm"></div></div>
+  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day3.py &middot; your True/False scenario cards</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can write a program that makes a decision.</strong> <span class="chip">E5-ALG-PS-01</span></p>
+  <p><strong>I can keep a list of rides and pick one out by its number.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="chunk progress">
+    <span class="tlabel">Chunks explored</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span>
+  </div>
+</section>
+
+<!-- CHUNK 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Questions with two answers</span></div>
+  <h2>True or False — nothing in between</h2>
+  <p>A comparison is a question the computer answers with exactly <code>True</code> or <code>False</code>. Read <code>&gt;</code> aloud as a question: "is height <em>more than</em> 48?"</p>
+  <pre>height = 52
+print(height &gt; 48)
+print(height &gt; 60)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    What two words print? (Not numbers — words.)
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>True</code>, then <code>False</code>. 52 is more than 48, and not more than 60. These two values are called <strong>booleans</strong>, and they're the fuel every decision runs on.</div>
+  <div class="see"><span class="tag">You should see</span><pre>True
+False</pre></div>
+</section>
+
+<!-- CHUNK 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The safety gate</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>if / else — the gate decides</h2>
+  <p>The Comet requires 48 inches. The gate checks and picks <strong>one</strong> path:</p>
+  <pre>height = int(input("Your height in inches? "))
+
+if height &gt;= 48:
+    print("Gate open — enjoy The Comet!")
+else:
+    print("Not this ride today — Splash Canyon awaits!")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    A guest types <code>45</code>. Both messages are right there in the code — do both print, or one? Which?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Only <strong>one</strong>: <code>Not this ride today — Splash Canyon awaits!</code> The condition <code>height &gt;= 48</code> is <code>False</code> for 45, so Python skips the <code>if</code> block and runs the <code>else</code> block. Code being <em>visible</em> doesn't make it <em>run</em> — the condition is the switch. (<code>&gt;=</code> means "48 or more," so a guest who is exactly 48 gets in.)</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Your height in inches? 45
+Not this ride today — Splash Canyon awaits!</pre>
+    Run it three times: once under 48, once over, once exactly 48.
+  </div>
+</section>
+
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Three-way fork</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>elif — kiddie, family, or thrill</h2>
+  <p>The park has three ride bands. <code>elif</code> ("else if") adds a middle path. Python checks top to bottom and takes the <strong>first</strong> true path — then skips the rest.</p>
+  <pre>height = int(input("Your height in inches? "))
+
+if height &lt; 36:
+    print("Kiddie rides — the Tea Cups are calling!")
+elif height &lt; 48:
+    print("Family rides — all aboard Splash Canyon!")
+else:
+    print("Thrill rides — The Comet and Sky Drop!")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    A guest types <code>40</code>. Walk the fork: is <code>40 &lt; 36</code>? Is <code>40 &lt; 48</code>? Which single message prints?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>Family rides — all aboard Splash Canyon!</code> First check: <code>40 &lt; 36</code> is False, move on. Second check: <code>40 &lt; 48</code> is True — take this path and <strong>skip everything after it</strong>. An <code>elif</code> chain is a fork in the queue: one guest, one path, every time.</div>
+  <div class="see"><span class="tag">You should see</span> Exactly one band message per run. Test all three bands: try 30, 40, and 55.</div>
+</section>
+
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The lookalike bug</span></div>
+  <h2>= assigns. == asks.</h2>
+  <p>Two symbols, nearly identical, totally different jobs. One <code>=</code> puts a value in a box ("gets"). Double <code>==</code> asks a question ("is it the same?"). Watch what happens when they're swapped:</p>
+  <pre>secret_code = 7
+
+if secret_code = 7:
+    print("Staff door open")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Line 3 uses a single <code>=</code> inside the <code>if</code>. Will this run and print, run and stay silent, or refuse to run at all?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">It <strong>refuses to run</strong> — a <code>SyntaxError</code> before anything happens. Python won't let you put an assignment where a question belongs. The fix is <code>if secret_code == 7:</code>. Say every condition aloud as a question — "is secret_code <em>the same as</em> 7?" — and your hands will type the right symbol.</div>
+</section>
+
+<!-- CHUNK 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; Loop + decision</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The midway guessing game</h2>
+  <p>Yesterday's loop meets today's decision. The booth picks a secret number; the guest gets 3 guesses with hot/cold hints. The decision lives <strong>inside</strong> the loop, so it runs fresh on every guess.</p>
+  <pre>secret = 7
+print("Guess my number, 1 to 10. Three tries!")
+
+for attempt in range(3):
+    guess = int(input("Your guess? "))
+    if guess == secret:
+        print("DING DING DING! You win a plush comet!")
+    elif guess &lt; secret:
+        print("Higher...")
+    else:
+        print("Lower...")</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    The guest guesses <code>4</code>, then <code>9</code>, then <code>7</code>. What three hint lines print, in order?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>Higher...</code> then <code>Lower...</code> then <code>DING DING DING! You win a plush comet!</code> — one decision per pass through the loop, three passes total. (This booth always allows exactly 3 guesses, even after a win — a fixed <code>range(3)</code> loop doesn't stop early. That's a real design limit of today's tools, and it's fine for the midway.)</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>Guess my number, 1 to 10. Three tries!
+Your guess? 4
+Higher...
+Your guess? 9
+Lower...
+Your guess? 7
+DING DING DING! You win a plush comet!</pre>
+  </div>
+</section>
+
+<!-- CHUNK 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Chunk 6 &middot; Lists</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The ride roster — one shelf, many rides</h2>
+  <p>One variable can hold a whole <strong>list</strong>. Each item has a numbered spot called its <strong>index</strong> — and the first spot is <strong>0</strong>, not 1. (Yes, really. Let the discomfort sit for a second.)</p>
+  <pre>rides = ["The Comet", "Splash Canyon", "Tea Cups", "Sky Drop"]
+
+print(rides[0])
+print(rides[2])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which two ride names print? Careful — count spots starting from 0.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>The Comet</code> (index 0 — the first spot) and <code>Tea Cups</code> (index 2 — the <em>third</em> spot). The list is the shelf; the index picks the ride. And what's at index 4? Nothing — asking for <code>rides[4]</code> crashes with an <code>IndexError</code>, because the four spots are numbered 0, 1, 2, 3.</div>
+  <div class="see"><span class="tag">You should see</span><pre>The Comet
+Tea Cups</pre></div>
+</section>
+
+<!-- CHUNK 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; Loop the shelf</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Print the park map</h2>
+  <p>A <code>for</code> loop can visit every item on the shelf, in order, without you naming any index. <code>len()</code> tells you how many items the shelf holds.</p>
+  <pre>rides = ["The Comet", "Splash Canyon", "Tea Cups", "Sky Drop"]
+
+print("LOOPLINE PARK — TODAY'S RIDES")
+for ride in rides:
+    print("- " + ride)
+
+print(len(rides))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    How many ride lines print? What number does <code>len(rides)</code> give — and is that the same as the last index?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Four ride lines, and <code>len(rides)</code> is <code>4</code> — but the last index is <strong>3</strong>. Count of items and last spot number are always one apart, because counting starts at 0. That gap is where almost every list bug in the world lives: <em>last index = len() minus one</em>.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>LOOPLINE PARK — TODAY'S RIDES
+- The Comet
+- Splash Canyon
+- Tea Cups
+- Sky Drop
+4</pre>
+  </div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The roster check</h2>
+  <p>A roster holds 4 rides. What is the index of the <em>last</em> ride? And write the condition for "height is over 48."</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>3</strong> — spots are numbered 0, 1, 2, 3. And the condition is <code>height &gt; 48</code> — double-check you didn't write <code>=</code> where a question belongs. If either answer surprised you, revisit Chunks 4 and 6 before the build.</div>
+</section>
+
+<!-- BUILD BRIEF -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Build brief &middot; The Park Map &amp; Gate</span></div>
+  <h2>Roster + map + one working gate</h2>
+  <p>Build a program that:</p>
+  <p>1. Stores at least 4 rides you invent in a list.<br>
+     2. Prints the park map by looping over the roster.<br>
+     3. Asks the guest's height and runs a three-band gate (<code>if</code> / <code>elif</code> / <code>else</code>) recommending a ride <em>from your roster</em>.</p>
+  <p><strong>Useful pieces:</strong> <code>[ ]</code> lists &middot; <code>for ... in ...</code> &middot; <code>len()</code> &middot; <code>int(input())</code> &middot; <code>if / elif / else</code> &middot; <code>&lt;</code> and <code>&gt;=</code>.</p>
+  <p><strong>Suggested start:</strong> get the map printing first. The gate is yesterday's Chunk 3 with your own ride names dropped in.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
+  <div class="answer">
+<pre>rides = ["The Comet", "Splash Canyon", "Tea Cups", "Sky Drop"]
+
+print("LOOPLINE PARK — TODAY'S RIDES")
+for ride in rides:
+    print("- " + ride)
+
+height = int(input("Your height in inches? "))
+if height &lt; 36:
+    print("We recommend: " + rides[2])
+elif height &lt; 48:
+    print("We recommend: " + rides[1])
+else:
+    print("We recommend: " + rides[0])</pre>
+  Notice the gate picks rides <em>by index</em> — the decision and the shelf working together.
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your two-way safety gate runs (<code>if</code>/<code>else</code>), and you can say why only one message prints.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your park map prints from a list you built, your three-band gate recommends rides by index, and you can name the last index of your roster without counting on your fingers.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Upgrade the midway game: after the loop ends, print how many guesses the guest used — or make the gate <em>loop over the roster</em> and print a yes/no for every single ride.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards &amp; evidence — teacher panel</summary>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>2, 3, 5</td><td>Addressed (partial — selection now joins sequence and iteration; the visual-representation half is Friday's blueprint)</td><td>Scenario-card sort; working gate + midway game; Maintenance Log condition for "height is over 48."</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>6, 7; gated by the hinge</td><td>Addressed</td><td>Index hunt on the ride roster; last-index Maintenance Log answer.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>5, build brief</td><td>Addressed</td><td>Midway game built by combining Day-2's loop with today's conditional; classmates play and give feedback during Test Ride.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> a game that stops when you win — that needs <code>while</code> or <code>break</code>, both excluded from the camp by design; the fixed 3-guess loop is the honest version of this game at grade 5. <code>random.choice()</code> for picking from the roster arrives on Day 4.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

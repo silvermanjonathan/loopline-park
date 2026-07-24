@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coaster Lab — Loopline Park</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);--shadow:0 4px 0 rgba(27,41,81,.12);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--navy);color:var(--cream);padding:46px 24px 40px;text-align:center;border-bottom:3px dashed var(--yellow)}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:580px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.herosvg{display:block;max-width:640px;width:100%;height:auto;margin:20px auto 2px}
+.herodash{font-family:'JetBrains Mono',monospace;font-weight:700;letter-spacing:.16em;font-size:14px;color:var(--yellow);margin-top:6px}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--navy-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--red)}
+.secmark{display:flex;align-items:center;gap:14px;margin:46px 0 0}
+.secnum{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;background:var(--yellow);color:var(--navy);padding:3px 10px;border-radius:6px;letter-spacing:.1em}
+.sectitle{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:27px;margin:0}
+.secblurb{font-style:italic;opacity:.78;border-left:3px solid var(--red);padding:5px 0 5px 14px;margin:10px 0 0;font-size:15.5px}
+pre{position:relative;background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+pre::before{content:'VS CODE';position:absolute;top:0;right:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--cream);opacity:.45;background:#12203f;padding:3px 8px;border-radius:0 0 6px 6px}
+pre.out::before,.see pre::before{display:none}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em;background:var(--navy-soft);border-radius:4px;padding:1px 5px}
+pre code{background:none;padding:0}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px;margin-right:8px}
+button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+button.reveal.gone{display:none}
+.answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--red)}
+.opts{display:grid;gap:10px;margin:14px 0 0}
+button.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--cream);border:1.5px solid var(--navy-line);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--navy);cursor:pointer;transition:border-color .15s}
+button.opt:hover:enabled{border-color:var(--navy)}
+button.opt .letter{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);min-width:18px}
+button.opt.correct{border-color:var(--green);background:rgba(16,185,129,.10)}
+button.opt.wrong{border-color:var(--red);background:rgba(220,38,38,.08)}
+button.opt:disabled{cursor:default}
+button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.hingefb{display:none;margin-top:14px;padding:14px 16px;border-radius:0 10px 10px 0;font-size:15.5px}
+.hingefb.shown{display:block}
+.hingefb.right{border-left:4px solid var(--green);background:rgba(16,185,129,.08)}
+.hingefb.wrongfb{border-left:4px solid var(--red);background:rgba(220,38,38,.06)}
+.broken{border-left:4px solid var(--red)}
+.design{border-left:4px solid var(--yellow)}
+.cardsec{margin:14px 0 0}
+.cardseclabel{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.cmdlist{list-style:none;margin:4px 0 0;padding:0}
+.cmdlist li{font-family:'JetBrains Mono',monospace;font-size:13px;padding:3px 0;line-height:1.5}
+.cmdlist li::before{content:'\2192  ';opacity:.5}
+.cmdlist li i{font-family:'DM Sans',sans-serif;font-style:normal;opacity:.7;font-size:13.5px}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.checkgroup{margin:0 0 16px}
+.checkgroup strong{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:16.5px;display:block;margin-bottom:4px}
+.check{display:flex;gap:10px;padding:4px 0;font-size:15px;cursor:pointer;user-select:none;align-items:flex-start}
+.check input{margin-top:4px;accent-color:var(--red);width:16px;height:16px;cursor:pointer;flex:none}
+.check input:checked + span{text-decoration:line-through;opacity:.55}
+.teacher{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;color:var(--navy);font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--navy-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--navy-line);background:transparent}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.note{font-style:italic;opacity:.85;border-top:1px dashed var(--navy-line);border-bottom:1px dashed var(--navy-line);padding:12px 4px;margin:30px 0;font-size:15.5px}
+#ridelog .head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;border-bottom:3px dashed var(--yellow);padding-bottom:12px;flex-wrap:wrap}
+#ridelog .logeyebrow{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+#ridelog .logtitle{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;margin:0}
+#ridelog .namelines{font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right;line-height:2.1;white-space:nowrap}
+#ridelog .namelines span{border-bottom:1px solid var(--navy-line);display:inline-block;width:150px;margin-left:6px}
+#ridelog .logtag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:700;display:block;margin-top:20px}
+#ridelog h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;margin:4px 0 6px}
+#ridelog .howbox{background:var(--navy-soft);border-radius:10px;padding:12px 16px;margin:12px 0 0;font-size:13.5px}
+#ridelog .howbox ol{margin:6px 0 0;padding-left:20px}
+#ridelog .howbox li{margin-bottom:3px}
+#ridelog table{border-collapse:collapse;width:100%;margin:10px 0 0;font-size:13px}
+#ridelog th,#ridelog td{border:1px solid var(--navy-line);padding:6px 8px;text-align:left;vertical-align:middle}
+#ridelog th{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.09em;text-transform:uppercase;background:var(--navy-soft);font-weight:700}
+#ridelog td.ln{font-family:'JetBrains Mono',monospace;text-align:center;width:64px;color:var(--red);font-weight:700}
+#ridelog .blank td{height:32px}
+#ridelog th.var{background:rgba(252,211,77,.3)}
+#ridelog th.var i{font-style:normal;font-family:'DM Sans',sans-serif;font-size:9.5px;text-transform:none;letter-spacing:0;opacity:.6;display:block;font-weight:400}
+#ridelog .seenote{border-left:4px solid var(--green);background:rgba(16,185,129,.10);padding:9px 13px;border-radius:0 8px 8px 0;margin:12px 0 0;font-size:13px}
+#ridelog .logfoot{border-top:1px solid var(--navy-line);margin-top:22px;padding-top:9px;font-size:10.5px;opacity:.72;line-height:1.5}
+#ridelog table,#ridelog .howbox,#ridelog .seenote{page-break-inside:avoid;break-inside:avoid}
+@media print{
+  .hero{display:none !important}
+  .wrap > *:not(#ridelog){display:none !important}
+  .noprint{display:none !important}
+  body{background:#fff;font-size:11.5pt}
+  .wrap{max-width:none;padding:0}
+  #ridelog{border:none;box-shadow:none;padding:0;margin:0;border-radius:0}
+  #ridelog th{background:#eceef3 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #ridelog th.var{background:#f6ecc9 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #ridelog .howbox{background:#f4f5f8 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  @page{margin:14mm}
+}
+@media (max-width:600px){
+  body{font-size:15.5px}
+  pre{font-size:12.5px;padding:14px}
+  .sectitle{font-size:23px}
+}
+@media (prefers-reduced-motion: reduce){
+  button.opt{transition:none}
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Coaster Lab</div>
+  <h1>Coaster Lab</h1>
+  <p class="hook">One list of numbers. Four lines of physics. A train that speeds up because it must &mdash; not because anyone told it to.</p>
+  <svg class="herosvg" viewBox="0 0 900 240" aria-hidden="true">
+    <line x1="24" y1="228" x2="876" y2="228" stroke="#10B981" stroke-width="3"/>
+    <g id="towers"></g>
+    <polyline points="30,30 82.5,37.8 135,61.2 187.5,96.3 240,139.2 292.5,182.1 345,217.2 397.5,225 450,193.8 502.5,154.8 555,123.6 607.5,108 660,123.6 712.5,154.8 765,189.9 817.5,213.3 870,225" fill="none" stroke="#FCD34D" stroke-width="4" stroke-linejoin="round"/>
+    <g id="trainG" transform="translate(30,30)"><rect x="-15" y="-16" width="30" height="13" rx="4" fill="#DC2626"/></g>
+  </svg>
+  <div class="herodash" id="hdash">SPEED&nbsp;&nbsp;&nbsp;4 MPH</div>
+  <p class="need">YOU'LL NEED: VS Code &middot; a new file saved as coaster.py &middot; pygame installed (or the turtle edition below) &middot; the Ride Log, printed from this page</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can trace how one list of hill heights becomes the height, speed, and time on a live dashboard.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can redesign the track list to build a new ride, and explain out loud what each physics line does.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-RD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="chunk progress">
+    <span class="tlabel">Chunks explored</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+  </div>
+</section>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Before you build &middot; Two ways to run this lab</span></div>
+  <h2>pygame if you can. turtle if you can't.</h2>
+  <p>The main build uses <strong>pygame</strong>, which draws smooth motion at 60 frames a second. Like Monday's <code>rich</code>, pygame is a real package you install once: type <code>pip install pygame</code> in the VS Code terminal. Unlike <code>rich</code>, it's a big compiled package &mdash; on a managed school machine that install can need an IT ticket, so put the request in <em>before</em> lab day and test it, the same way <code>rich</code> was tested before Monday.</p>
+  <p><strong>pygame is not required for this lab.</strong> If the install isn't happening, use the turtle edition below. Turtle has been running on every machine since Tuesday and installs nothing.</p>
+  <p>What the turtle edition trades away: the train <em>steps</em> from tower to tower instead of gliding &mdash; motion is discrete, not continuous &mdash; there's no ride clock, and a stalled train freezes at the last safe tower instead of partway up the slope. The four physics lines are identical. The speeds, the heights, the stall: identical. Smoothness is the only casualty.</p>
+  <button class="reveal" onclick="reveal(this)">Reveal coaster_turtle.py &mdash; the no-install edition</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (turtle edition)
+#  Same track, same physics, nothing to install. The train
+#  steps from tower to tower instead of gliding.
+# ==========================================================
+
+import turtle
+import math
+import time
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+
+# --- SETUP ------------------------------------------------
+screen = turtle.Screen()
+screen.setup(900, 600)
+screen.bgcolor("#1B2951")
+screen.title("Loopline Park - Coaster Simulator (turtle)")
+
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / max(track)
+
+pen = turtle.Turtle()
+pen.hideturtle()
+pen.speed(0)
+pen.pensize(4)
+pen.color("#FCD34D")
+pen.penup()
+pen.goto(-400, track[0] * scale_y - 250)
+pen.pendown()
+for i in range(len(track)):
+    pen.goto(-400 + i * step_x, track[i] * scale_y - 250)
+
+train = turtle.Turtle()
+train.shape("square")
+train.color("#DC2626")
+train.penup()
+train.goto(-400, track[0] * scale_y - 240)
+
+dash = turtle.Turtle()
+dash.hideturtle()
+dash.penup()
+dash.color("#F8FAFC")
+dash.goto(-390, 240)
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+speed = 2.0
+stalled = 0
+
+for i in range(len(track)):
+    height = track[i]            # at a tower, the height IS the list number
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2            # the chain lift lets go at 2 m/s
+
+    if stalled == 1:
+        dash.clear()
+        dash.write("STALLED - hill taller than the lift!", font=("Courier", 18, "bold"))
+        break                    # engine word: ends the loop early
+
+    train.goto(-400 + i * step_x, track[i] * scale_y - 240)
+    dash.clear()
+    dash.write(f"SPEED {speed * 2.24:.0f} mph    HEIGHT {height:.0f} m", font=("Courier", 16, "bold"))
+    time.sleep(SEG_LEN / speed / 4)
+
+turtle.done()</pre>
+    <div class="see"><span class="tag">You should see</span>
+    Yellow rails on navy. A red square that hops tower to tower &mdash; a long pause at the crest while the chain lets go, then quicker and quicker hops toward the bottom. The whole ride takes about six seconds of watching, with the dashboard updating at every tower.</div>
+  </div>
+</section>
+
+<div class="secmark"><span class="secnum">01</span><h2 class="sectitle">The ride with no engine</h2></div>
+<p class="secblurb">Before any code: what is a roller coaster, mechanically? Answer this one right and the whole simulator makes sense.</p>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Unplugged &middot; Count the engines</span></div>
+  <h2>Clack, clack, clack&hellip; and then what?</h2>
+  <p>The Comet's chain drags the train up the lift hill &mdash; that's the <em>clack clack clack</em> you hear &mdash; and at the crest, the chain lets go. The train still has the entire ride ahead of it: drops, climbs, curves, the run into the station.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    From the moment the chain lets go to the moment the ride ends: how many motors push the train? Zero &mdash; one at the bottom of each drop &mdash; or one big one under the station? Say your answer out loud before you tap.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Zero.</strong> A gravity coaster is a savings account. The chain makes exactly one deposit &mdash; the height of the lift hill &mdash; and the entire ride is spending it. Rolling down converts height into speed. Climbing back up converts speed back into height. That trade, in both directions, is the whole machine, and today you'll write it in one line of Python. Say the sentence of the day out loud, because you'll use it all afternoon: <strong>height you have lost becomes speed you have gained.</strong></div>
+</section>
+
+
+<div class="secmark"><span class="secnum">02</span><h2 class="sectitle">Building the simulator</h2></div>
+<p class="secblurb">Eight chunks. Chunks 01, 03, 04, and 07 are small experiments &mdash; type them in a scratch file and run them. Chunks 02, 05, 06, and 08 read the real engine, block by block, and the complete file is handed to you at the end of Chunk 08. Answer every question before you tap. Skipping the question makes the next chunk harder.</p>
+
+<!-- CHUNK 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Chunk 01 &mdash; The track is a list</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Seventeen numbers, one roller coaster</h2>
+  <p>Here is the entire track of today's ride. Every number is the height of one support tower, in meters, left to right. Type this into a scratch file and run it.</p>
+  <pre>track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20   # each hill tower sits 20 meters from the next
+
+print(len(track))
+print(track[0])
+print(track[7])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Three numbers print. Which three? One is a count of towers, two are heights in meters &mdash; and Wednesday's rule about spot numbers is lurking in here. Commit before you run.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>17</code>, then <code>50</code>, then <code>0</code>. The list is the shelf; the index picks the ride &mdash; Wednesday's roster, wearing meters. <code>track[0]</code> is the <em>first</em> spot: the lift hill, 50 m tall. <code>track[7]</code> is the <em>eighth</em> tower: 0 m, ground level, the bottom of the big drop. And since <code>len(track)</code> counts 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot are one apart, exactly the gap from Wednesday. Nothing new to learn here; the shelf just got taller.</div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre class="out">17
+50
+0</pre>
+  </div>
+</section>
+
+<!-- CHUNK 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Chunk 02 &mdash; Drawing the park from the shelf</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The block you will read but never edit</h2>
+  <p>The engine turns each tower into a spot on screen. You'll recognize the shape of the loop from Wednesday; the rest is new machinery. Read it &mdash; don't memorize it.</p>
+  <pre>tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    You change the <code>33</code> in your track list to <code>45</code> and rerun. What changes in the drawing on screen &mdash; and how many lines of <em>this drawing block</em> did you have to edit to make that happen?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><p>The fourth hill gets taller. And you edited <strong>zero</strong> drawing lines &mdash; the block reads your shelf fresh on every run, <code>track[i]</code> by <code>track[i]</code>, and draws whatever it finds there.</p>
+  <p>That is the biggest engineering idea on this page: <strong>the track is data, not code.</strong> Changing the data changes the ride. Nobody touches the drawing code &mdash; not today, not Friday, not ever.</p>
+  <p>A few engine words live in this block that are not in your toolbox &mdash; <code>max()</code> finds the tallest tower, <code>.append()</code> adds a spot to the rail list, and the pygame calls further down do the painting. They're the park's machinery: you read them, you never write them this week. Your parts are the list and the four physics lines.</p></div>
+</section>
+
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 03 &mdash; Where is the train?</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Between two towers</h2>
+  <p>The train's <code>position</code> is measured in meters along the track &mdash; not in tower numbers. The engine has to work out which two towers the train is between, and how high the rail is right there. Type this experiment and run it (keep your Chunk-01 <code>track</code> and <code>SEG_LEN</code> lines above it):</p>
+  <pre>position = 70.0
+
+seg = int(position / SEG_LEN)
+frac = (position - seg * SEG_LEN) / SEG_LEN
+height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+print(seg)
+print(frac)
+print(height)</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    70 &divide; 20 is 3.5. So does <code>seg</code> print <code>3.5</code>, <code>3</code>, or <code>4</code>? And once you've committed to <code>seg</code>, what is <code>frac</code>? Say both before you run.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><p><code>seg</code> is <strong>3</strong> &mdash; <code>int()</code> chops the decimals off, always downward, never rounding up. New job for an old friend: on Monday <code>int()</code> converted a guest's typed text at the door; here it chops 3.5 down to 3. So the train is between tower 3 and tower 4, and <code>frac</code> is <strong>0.5</strong> &mdash; exactly halfway across that gap. <code>frac</code> is always between 0 and 1: 0 means &ldquo;at the left tower,&rdquo; 1 means &ldquo;at the right tower.&rdquo;</p>
+  <p>Then the height line blends the two towers: tower 3 is 33 m, tower 4 is 22 m, so crossing that gap the rail falls 11 m. Halfway across, you've fallen half of it: 33 + (22 &minus; 33) &times; 0.5 = <strong>27.5</strong>. Read the line as: <em>start at the left tower's height, add frac's share of the difference.</em> This is the first of the four physics lines, and it answers one question: how high is the rail exactly where the train is?</p></div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre class="out">3
+0.5
+27.5</pre>
+  </div>
+</section>
+
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 04 &mdash; Height lost becomes speed gained</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The one-line trade</h2>
+  <p>Here it is: the sentence of the day, written in Python. <code>drop</code> is how far below the lift hill's top the train has come &mdash; the height it has spent so far. Type this experiment and run it three times.</p>
+  <pre>import math
+
+GRAVITY = 9.8
+
+drop = 20
+speed = math.sqrt(2 * GRAVITY * drop)
+print(f"{speed * 2.24:.0f} mph")</pre>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; this one surprises almost everyone</span>
+    With <code>drop = 20</code> this prints <code>44 mph</code>. Now change it to <code>40</code> &mdash; exactly double the drop. Commit before you run: does the speed double to 88? Then try <code>80</code>.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><p><strong>63, not 88.</strong> And 80 m of drop gives 89, not 176. Climb the ladder: 20 &rarr; 44 mph, 40 &rarr; 63 mph, 80 &rarr; 89 mph. Every doubling of the drop multiplies the speed by about 1.4 &mdash; that's what a square root does to a doubling. To truly double a coaster's speed, you need <em>four times</em> the drop. Now you know why nobody builds them that way.</p>
+  <p>You don't need to know where 2 &times; gravity &times; drop comes from &mdash; that proof lives in high school. What you need is the feel of it, and you just got that in three runs. (The <code>2.24</code> converts meters-per-second into miles-per-hour, because dashboards speak mph.)</p>
+  <p>In the real engine, nobody types <code>drop</code> in &mdash; it's measured from your track, every frame:</p>
+  <pre>top = track[0]
+drop = top - height</pre>
+  <p style="margin-bottom:0">The lift hill is the savings account. <code>drop</code> is how much has been withdrawn so far.</p></div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre class="out">44 mph</pre>
+    &hellip;then <code>63 mph</code>, then <code>89 mph</code>, across your three runs.
+  </div>
+</section>
+
+<!-- FURY REALITY CHECK -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel" style="color:#b45309">Reality check &middot; Fury 325, Carowinds</span></div>
+  <h2>Test your formula against a real ride</h2>
+  <p>Fury 325 is a real coaster at Carowinds, on the border of the Carolinas. Its lift hill is <strong>99 meters</strong> tall &mdash; the tallest traditional chain-lift coaster in the world. Feed 99 into your Chunk-04 experiment: <code>drop = 99</code>.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Your one line of Python will print <code>99 mph</code>. The real Fury 325 tops out at <strong>95 mph</strong>. Your formula is only 4 mph off a thirty-million-dollar machine &mdash; but it <em>is</em> off, and always in the same direction: too fast. Where do the missing 4 mph go on the real ride?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Friction in the wheels. Air pushing back on the train. The rattle, the roar, the wind in your ears &mdash; every bit of noise a coaster makes is energy that used to be speed. Your simulator ignores all of it (see <em>What this simulator ignores</em>, near the end), which is why its prediction runs hot. A real prediction, checked against a real ride, with the error explained &mdash; that is what engineers do all day. The stretch exit gate lets you teach your simulator about friction and close the gap yourself.</div>
+</section>
+
+<!-- CHUNK 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Chunk 05 &mdash; Move by however fast you are going</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The line that makes it a simulation</h2>
+  <p>Now the engine, for real. The ride runs inside one counted loop &mdash; 60 frames a second, up to 3000 frames, which is a 50-second limit: the park closes whether your train is done or not. (A finished ride leaves early &mdash; Chunk 08.) Inside the loop, after the height and speed are found, one line moves the train:</p>
+  <pre>FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # ... Chunk 03 finds height ... Chunk 04 finds speed ...
+
+    position = position + speed * DT</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Read the last line out loud the Monday way: &ldquo;position <em>gets</em>&hellip;&rdquo; Then: at 4 mph (2 m/s), how many meters is one frame's step? At 70 mph (31 m/s)? Last &mdash; find the line in this program that says &ldquo;speed up at the bottom of the hill.&rdquo;
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><p>&ldquo;Position gets its old value, plus one frame's step: speed times DT.&rdquo; At 2 m/s that step is 2 &times; 1&frasl;60 &asymp; 0.03 m &mdash; a fingernail. At 31 m/s it's about half a meter &mdash; every sixtieth of a second.</p>
+  <p>And you can stop looking: <strong>there is no line that says speed up.</strong> Nothing in this program schedules the rush at the bottom. Chunk 04's line hands this line a bigger speed, so this line takes a bigger step, and the rushing <em>emerges</em>. That is the entire difference between an animation &mdash; a script that says where to be &mdash; and a simulation: a rule that decides what happens next. The whole loop is one sentence, sixty times a second: <em>move forward by however fast you are going.</em></p></div>
+</section>
+
+<!-- CHUNK 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Chunk 06 &mdash; The push at the top</span></div>
+  <h2>Why the engine has a speed floor</h2>
+  <p>Two small lines sit right under the speed line. They look like decoration. They are not.</p>
+  <pre>speed = math.sqrt(2 * GRAVITY * drop)
+if speed &lt; 2:
+    speed = 2                # the chain lift lets go at 2 m/s</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    At the very top of the lift hill, <code>height</code> equals <code>top</code>, so <code>drop</code> is 0. What is <code>math.sqrt(0)</code>? And if <code>speed</code> were allowed to keep that value, what would Chunk 05's position line do &mdash; frame after frame, forever?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>math.sqrt(0)</code> is <strong>0</strong>. A speed of 0 means a step of 0, which means a train parked at the crest of its own ride &mdash; no error, no traceback, just a red rectangle sitting at the top for the full 50 seconds. Silence is not the same as &ldquo;no bug&rdquo;; Thursday's uncalled stamp taught you that. These two lines are the chain lift's final shove: the train is never allowed below 2 m/s &mdash; about 4 mph, the exact creeping crawl you feel at the top of a real lift hill, right before everything happens.</div>
+</section>
+
+<!-- CHUNK 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Chunk 07 &mdash; The inspector's lines</span></div>
+  <h2>The one thing square roots refuse to do</h2>
+  <p>First, a dare. In your scratch file, run this single line:</p>
+  <pre>print(math.sqrt(-1))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Does Python answer with a number, or refuse? Commit, then run it.
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre class="out">Traceback (most recent call last):
+  File "scratch.py", line 3, in &lt;module&gt;
+    print(math.sqrt(-1))
+ValueError: math domain error</pre>
+  </div>
+  <p>It refuses &mdash; and now look at how the engine wraps its own square root. Read this slowly:</p>
+  <pre>drop = top - height
+if drop &lt; 0:
+    stalled = 1
+else:
+    speed = math.sqrt(2 * GRAVITY * drop)
+    if speed &lt; 2:
+        speed = 2
+
+# ... and further down, the only gate that lets the train move:
+
+if stalled == 0:
+    position = position + speed * DT</pre>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal what these lines are guarding against</button>
+  <div class="answer"><p>Read the traceback last line first, Monday's rule: <code>ValueError: math domain error</code>. &ldquo;Domain&rdquo; is math-speak for &ldquo;that number is not allowed in here.&rdquo; Square roots do not do negatives &mdash; ever.</p>
+  <p>So the engine posts an inspector at the door. <code>if drop &lt; 0</code>: don't touch the math at all &mdash; set <code>stalled</code> to 1 instead. (<code>stalled</code> is the engine's light switch: 0 means running, 1 means frozen.) Only <em>one</em> of the two branches runs, Wednesday's fork. And at the bottom, <code>if stalled == 0</code> &mdash; that's <code>==</code> asking, not <code>=</code> assigning &mdash; is the single gate that lets the train move. Once <code>stalled</code> becomes 1, nothing moves again, and a red STALLED banner comes up for the rest of the run.</p>
+  <p>On the track you've been given, <code>drop</code> never goes below zero. So here is the question this chunk refuses to answer: <strong>when would it?</strong> What would the train have to be doing? Hold that exact question in your hands &mdash; Section 04 makes you commit to an answer.</p></div>
+</section>
+
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 08 &mdash; The dashboard, and the whole machine</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Three variables, sixty times a second</h2>
+  <p>Every frame, the engine paints three readouts in the corner of the window:</p>
+  <pre>screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Strip away the engine words &mdash; <code>screen.blit</code>, <code>big.render</code> &mdash; and a Day-1 tool is hiding inside all three lines. Which one? And <code>:.0f</code> versus <code>:.1f</code> &mdash; what difference will that make on screen?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>f-strings</strong> &mdash; the ticket-booth receipt in a hard hat. <code>blit</code> and <code>render</code> are engine paint (&ldquo;put this text at that spot&rdquo;); the part you already own is <code>f"SPEED {speed * 2.24:.0f} mph"</code>. The bit after the colon is a rounding dial: <code>:.0f</code> shows whole numbers (<code>SPEED 63</code>), <code>:.1f</code> keeps one decimal (<code>TIME 12.5</code>). And here is the thing to say out loud: this dashboard is your Day-1 trace table with the parking brake off &mdash; three variables, re-printed sixty times a second, live. Watching them change over time <em>is</em> the tracing.</div>
+
+  <h2 style="margin-top:26px">The whole machine, assembled</h2>
+  <p>Every piece you've met, in running order. Before reading past the code: point at all four physics lines &mdash; the height blend, the drop line, the square root, the position step. Under ten seconds means you own this machine.</p>
+  <pre>top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+stalled = 0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2
+
+    if stalled == 0:
+        position = position + speed * DT
+
+    # ... the drawing and the dashboard paint here (engine) ...
+
+    if position &gt;= track_length:
+        break</pre>
+  <p>Two engine details worth naming, then never worrying about again. The <code>if seg &gt; len(track) - 2</code> guard keeps <code>seg</code> pointing at a gap that actually exists: 17 towers means the last tower is spot <code>len(track) - 1</code> &mdash; Wednesday's gap &mdash; so the last <em>gap between towers</em> starts one spot earlier still. And <code>break</code> is the train pulling into the station: it ends the <code>for</code> loop early, the moment the ride is complete. <code>break</code> is engine vocabulary &mdash; read it here; don't reach for it in your own builds this week.</p>
+  <button class="reveal" onclick="reveal(this)">Reveal the complete file &mdash; copy it into coaster.py</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (pygame edition)
+#  Design a track. Watch the physics run it. 60 frames a second.
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+stalled = 0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # WHERE ARE WE? -- find the two towers we are between
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+    # move forward by however fast we are going
+    if stalled == 0:
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    # the train
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    A navy window: yellow rails across 17 towers, a red train that leaves the lift hill at a crawl and pulls into the station <strong>19.0 seconds</strong> later. Check your dashboard against this table as the ride runs:
+    <pre class="out">TIME  0.0 s   HEIGHT 50 m   SPEED  4 mph
+TIME  5.0 s   HEIGHT 48 m   SPEED 13 mph
+TIME  7.5 s   HEIGHT 42 m   SPEED 28 mph
+TIME 10.0 s   HEIGHT 19 m   SPEED 55 mph
+TIME 12.5 s   HEIGHT  7 m   SPEED 65 mph
+TIME 15.0 s   HEIGHT 30 m   SPEED 45 mph
+TIME 17.5 s   HEIGHT 11 m   SPEED 62 mph
+TIME 19.0 s   HEIGHT  0 m   SPEED 70 mph   &larr; pulls in; window holds 3 s</pre>
+    And the proof that the train is truly accelerating, not just sliding along a script: in the <em>first</em> 2.5 seconds it covers about <strong>6 meters</strong>. In the 2.5 seconds after the 10-second mark, it covers about <strong>73</strong>. Same clock, twelve times the ground &mdash; and nobody told it to. One more count worth saying out loud: the four physics lines are written once and ran <strong>1,141 times</strong> to make this ride. Written once &ne; runs once &mdash; Tuesday's rule, at 60 frames a second.
+  </div>
+</section>
+
+
+<div class="secmark"><span class="secnum">03</span><h2 class="sectitle">Trace and predict</h2></div>
+<p class="secblurb">Two rounds. Write your prediction on paper before you tap &mdash; commitment is the whole point. Without it, the answer slides off.</p>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Round 01 &mdash; Two lift hills, one valley</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>What do ten extra meters buy?</h2>
+  <p>Two rides, same shape, different lift hills. Both trains reach a valley floor at 0 m.</p>
+  <pre>track_a = [40, 30, 20, 10, 0, 10, 0]
+track_b = [50, 40, 30, 15, 0, 10, 0]</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    At the bottom of the drop, Train A's dashboard reads <code>SPEED 63 mph</code>. Train B banked ten more meters of lift hill. Write down B's bottom speed before you tap: closer to 65, 70, or 79?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">
+<pre class="out">TRAIN A  bottom of the drop:  SPEED 63 mph
+TRAIN B  bottom of the drop:  SPEED 70 mph</pre>
+    Ten extra meters bought <strong>seven</strong> miles per hour. Train B holds 25% more height in the bank but arrives only about 11% faster &mdash; the square root flattens everything it touches. It's the Chunk-04 ladder again: 20 m &rarr; 44, 40 m &rarr; 63, 80 m &rarr; 89. If an engineer wants to double a coaster's speed, the hill doesn't go twice as tall &mdash; it goes <em>four times</em> as tall. Which is why nobody doubles a coaster's speed.
+  </div>
+</section>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Round 02 &mdash; The 18-meter twins</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Same height, two moments</h2>
+  <p>Back to the stock ride. Two towers on this track are exactly the same height:</p>
+  <pre>track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+#                                          &uarr; tower 9              &uarr; tower 13
+#                                          18 m, climbing          18 m, dropping</pre>
+  <p>The train climbs through tower 9 about 13 seconds into the ride, and drops through tower 13 about 17 seconds in &mdash; near the very end.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Is the late crossing <em>slower</em> (the ride is running out of steam), <em>faster</em> (it's heading downhill), or <em>exactly the same speed</em>? Commit &mdash; and write one sentence saying why.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">
+<pre class="out">TOWER  9  (climbing, t &asymp; 13.3 s):  SPEED 56 mph
+TOWER 13  (dropping, t &asymp; 16.9 s):  SPEED 56 mph</pre>
+    Identical. The speed line asks the track exactly one question &mdash; <em>how far below the lift hill am I?</em> &mdash; and 50 &minus; 18 = 32 both times. It never asks which direction you're moving, which tower you're at, or how long you've been riding. Same height, same speed, anywhere on the ride. (Your gut says the late crossing should be slower &mdash; and on a <em>real</em> coaster your gut is right, because friction taxes every meter travelled. This simulator doesn't charge that tax yet. The stretch exit gate hands you the tax collector's badge.)
+  </div>
+</section>
+
+<div class="secmark"><span class="secnum">04</span><h2 class="sectitle">Quick check</h2></div>
+<p class="secblurb">One question &mdash; the one Chunk 07 made you hold. Pick the answer you actually believe, not the one that looks safe. Everything in Section 06 depends on this.</p>
+
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The 55-meter hill</h2>
+  <p>You redesign your ride. The lift hill stays at 50 m &mdash; but partway along, you build a second hill that's <strong>55 m</strong> tall:</p>
+  <pre>track = [50, 35, 15, 0, 25, 55, 25, 0]</pre>
+  <p>You run it. What happens?</p>
+  <div class="opts">
+    <button class="opt" onclick="hinge(this,'A')"><span class="letter">A</span><span>The train slows to a crawl, creeps over the 55&nbsp;m hill, and finishes the ride a little late.</span></button>
+    <button class="opt" id="optB" onclick="hinge(this,'B')"><span class="letter">B</span><span>The train climbs to 50&nbsp;m &mdash; as high as it started &mdash; then freezes on the slope with the STALLED banner up.</span></button>
+    <button class="opt" onclick="hinge(this,'C')"><span class="letter">C</span><span>Python crashes with <code>ValueError: math domain error</code>, because square roots can't take negatives.</span></button>
+    <button class="opt" onclick="hinge(this,'D')"><span class="letter">D</span><span>The train speeds up &mdash; a taller hill means a faster ride.</span></button>
+  </div>
+  <div class="hingefb" id="hingefb"></div>
+</section>
+
+<div class="secmark"><span class="secnum">05</span><h2 class="sectitle">Five broken coasters</h2></div>
+<p class="secblurb">Five simulators, exactly one bug each. With your partner, 90 seconds apiece: find it, name it, fix it. The symptom is your first clue &mdash; read it like an inspector.</p>
+
+<section class="card broken">
+  <div class="chunkhead"><span class="chunklabel">Broken Coaster 01</span></div>
+  <h2>The ride that froze at 153 meters</h2>
+  <p><strong>Symptom:</strong> the train runs beautifully, starts climbing the big late hill, then freezes partway up the slope with the STALLED banner. Nothing below the track line was touched.</p>
+  <pre>track = [50, 48, 40, 25, 10, 0, 20, 40, 55, 40, 20, 0]</pre>
+  <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
+  <div class="answer"><p><strong>Bug:</strong> the <code>55</code> &mdash; a hill taller than the 50&nbsp;m lift hill.</p>
+  <p><strong>Why it happens:</strong> by 50&nbsp;m up that hill, the train has traded back every meter of height it started with. The savings account reads zero with 5&nbsp;m of hill still to climb; on the very next frame <code>drop</code> goes negative, the inspector fires, and <code>stalled</code> gets 1 &mdash; your Section-04 answer, live, at position 153&nbsp;m.</p>
+  <p><strong>Fix:</strong> any value under 50. Change the <code>55</code> to <code>45</code> and the same layout completes in about 17 seconds.</p></div>
+</section>
+
+<section class="card broken">
+  <div class="chunkhead"><span class="chunklabel">Broken Coaster 02</span></div>
+  <h2>The train that never left the gate</h2>
+  <p><strong>Symptom:</strong> the window opens, the park looks perfect, the dashboard reads <code>SPEED 4 mph</code>&hellip; and the train sits at the start line for the full 50 seconds. No error, no banner.</p>
+  <pre>    if stalled == 0:
+        position = speed * DT</pre>
+  <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
+  <div class="answer"><p><strong>Bug:</strong> the position line lost its <code>position +</code>. It now reads &ldquo;position <em>gets</em> just this frame's step.&rdquo;</p>
+  <p><strong>Why it happens:</strong> Monday's rule, with teeth: <code>=</code> <em>replaces</em> what's in the box &mdash; it never adds to it. Every frame, all the meters the train had covered get crossed out and replaced with one fresh 3-centimeter step from the start line. The train is placed at the gate, sixty times a second, forever.</p>
+  <p><strong>Fix:</strong> carry the old value along &mdash; <code>position = position + speed * DT</code>. &ldquo;Position gets its old self, plus a step.&rdquo;</p></div>
+</section>
+
+<section class="card broken">
+  <div class="chunkhead"><span class="chunklabel">Broken Coaster 03</span></div>
+  <h2>Parked at the summit</h2>
+  <p><strong>Symptom:</strong> the train sits at the very top of the lift hill, dashboard reading <code>SPEED 0 mph</code>, for 50 silent seconds. No error anywhere.</p>
+  <pre>    drop = top - height
+    speed = math.sqrt(2 * GRAVITY * drop)
+
+    if stalled == 0:
+        position = position + speed * DT</pre>
+  <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
+  <div class="answer"><p><strong>Bug:</strong> the speed floor is gone &mdash; the two <code>if speed &lt; 2</code> lines were deleted.</p>
+  <p><strong>Why it happens:</strong> at the crest, <code>drop</code> is 0, so <code>math.sqrt(0)</code> is 0, so the step is 0 meters &mdash; and a train that never moves never gets a drop to spend. It looked like those two lines were decoration; they're the chain's last shove over the top. Silence, not a traceback &mdash; the same trap as Thursday's uncalled stamp.</p>
+  <p><strong>Fix:</strong> restore the floor under the sqrt line: <code>if speed &lt; 2:</code> then <code>speed = 2</code>.</p></div>
+</section>
+
+<section class="card broken">
+  <div class="chunkhead"><span class="chunklabel">Broken Coaster 04</span></div>
+  <h2>The crash before the ride</h2>
+  <p><strong>Symptom:</strong> no ride at all &mdash; the program dies instantly. The engineer says: &ldquo;I added one so the loop wouldn't miss the last tower.&rdquo;</p>
+  <pre>rail_points = []
+for i in range(len(track) + 1):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))</pre>
+  <pre class="out">Traceback (most recent call last):
+  File "coaster.py", line 44, in &lt;module&gt;
+    y = 550 - track[i] * scale_y
+IndexError: list index out of range</pre>
+  <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
+  <div class="answer"><p><strong>Bug:</strong> <code>range(len(track) + 1)</code> counts 0 through 17 &mdash; and spot 17 is off the shelf.</p>
+  <p><strong>Why it happens:</strong> there are 17 towers, so it <em>feels</em> like the last one should be number 17. But Wednesday's gap says otherwise: the last spot is <code>len(track) - 1</code>, which is 16. <code>range(len(track))</code> already visits every tower, first to last &mdash; adding one asks for a tower that was never built.</p>
+  <p><strong>Fix:</strong> <code>for i in range(len(track)):</code></p></div>
+</section>
+
+<section class="card broken">
+  <div class="chunkhead"><span class="chunklabel">Broken Coaster 05</span></div>
+  <h2>The one-word crash</h2>
+  <p><strong>Symptom:</strong> instant traceback on the first frame &mdash; and yes, <code>import math</code> is right there at the top of the file.</p>
+  <pre>import math
+
+# ...
+
+        speed = sqrt(2 * GRAVITY * drop)</pre>
+  <pre class="out">Traceback (most recent call last):
+  File "coaster.py", line 71, in &lt;module&gt;
+    speed = sqrt(2 * GRAVITY * drop)
+NameError: name 'sqrt' is not defined</pre>
+  <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
+  <div class="answer"><p><strong>Bug:</strong> <code>sqrt</code>'s full name is <code>math.sqrt</code> &mdash; this line tore the address off.</p>
+  <p><strong>Why it happens:</strong> <code>import math</code> carries the toolbox into the room; you still have to say which drawer. On its own, <code>sqrt</code> names nothing, and the computer does not guess &mdash; the oldest rule in camp. Read the traceback last line first: <code>NameError</code>, the same species as Monday's <code>pint</code>.</p>
+  <p><strong>Fix:</strong> <code>speed = math.sqrt(2 * GRAVITY * drop)</code> &mdash; the physics line, with its address restored.</p></div>
+</section>
+
+
+<div class="secmark"><span class="secnum">06</span><h2 class="sectitle">Design your own ride</h2></div>
+<p class="secblurb">The moment the whole page has been building toward: the engine is yours, and the track is data. Change the data.</p>
+
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Build brief &middot; Two versions, one story</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>Your coaster, in production</h2>
+  <p>1. Design a track list with <strong>at least 10 towers</strong>. Your first tower is the lift hill; your last tower is <code>0</code>, so the train pulls into the station at ground level.<br>
+     2. It <strong>completes</strong> &mdash; no STALLED banner. (Stalling one on purpose to show a partner is engineer's privilege. Your submitted ride finishes.)<br>
+     3. Run it. Then change <strong>at least three numbers with a goal</strong> &mdash; faster? gentler? longer? scarier? &mdash; and run again. Keep both: <strong>Version 1 and Version 2</strong>, as comments in your file.<br>
+     4. On your Ride Log, write the one-sentence note: <em>what you changed, and why</em>.<br>
+     5. <strong>Test Ride your Version 2</strong> &mdash; run it for someone (a partner at camp, a grown-up at home) and <strong>narrate the three physics lines out loud</strong>: where-am-I (the height line), height-into-speed (the sqrt line), move-by-my-speed (the position line). If you can say those three sentences, you can say the whole machine.</p>
+  <p>And carry the rule you earned at the Quick Check: <strong>no later hill out-talls the lift hill.</strong> The chain deposits once.</p>
+</section>
+
+<section class="card design">
+  <div class="chunkhead"><span class="chunklabel">Track Design Card</span></div>
+  <h2>The dials you're allowed to turn</h2>
+  <div class="cardsec"><span class="cardseclabel">Your dials &mdash; edit freely</span>
+    <ul class="cmdlist">
+      <li>the numbers in track  <i>&mdash; add towers, remove towers, change heights</i></li>
+      <li>SEG_LEN  <i>&mdash; push the towers apart; 20 &rarr; 30 stretches the whole park</i></li>
+      <li>the color tuples (NAVY, RED, ...)  <i>&mdash; repaint the park; cosmetic, safe</i></li>
+      <li>the caption string  <i>&mdash; name your ride</i></li>
+    </ul>
+  </div>
+  <p style="margin:8px 0 0">Everything else is engine. The four physics lines don't get edited &mdash; they get obeyed. (The stretch exit gate holds the one licensed exception.)</p>
+  <div class="cardsec"><span class="cardseclabel">Suggested shapes &mdash; all tested, all complete</span>
+    <ul class="cmdlist">
+      <li>The Out-and-Back &mdash; [50, 40, 28, 14, 0, 12, 26, 38, 26, 12, 0, 14, 28, 14, 0]  <i>&mdash; 70 mph, done in 13.6 s: sprint out, turnaround hill, sprint home</i></li>
+      <li>The Double Dip &mdash; [50, 44, 26, 6, 20, 4, 18, 2, 12, 0]  <i>&mdash; 70 mph, 9.7 s: four fast valleys back to back</i></li>
+      <li>The Family Cruiser &mdash; [50, 47, 44, 41, 38, 36, 34, 33, 34, 36, 38, 36, 34, 33, 32]  <i>&mdash; tops out at 42 mph over 21.4 s; never dips below 32 m. Proof that gentle is a design choice you make with numbers</i></li>
+      <li>The Cliffhanger &mdash; [50, 49, 48, 4, 0, 3, 6, 3, 0]  <i>&mdash; three towers of suspense, one giant drop, 70 mph</i></li>
+    </ul>
+  </div>
+  <div class="cardsec"><span class="cardseclabel">Style ideas</span>
+    <ul class="cmdlist">
+      <li>rename the caption  <i>&mdash; "THE PYTHON PLUNGE", "MISS FRIZZLE'S REVENGE", your call</i></li>
+      <li>repaint  <i>&mdash; swap the color tuples for a night-mode park or a candy park</i></li>
+      <li>a station plateau  <i>&mdash; end with two or three equal low towers for a long brake run</i></li>
+    </ul>
+  </div>
+  <button class="reveal" onclick="revealT(this,'ans-starter')">Reveal the starter file &mdash; engine complete, track waiting</button>
+  <button class="reveal" onclick="revealT(this,'ans-key')">Reveal the answer key &mdash; the finished stock ride</button>
+  <div class="answer" id="ans-starter">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER STARTER
+#  The engine below is complete and tested. Do not edit it.
+#  The track is the part that is waiting for you.
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+#
+# TODO 1: design your track. This placeholder is boring on purpose.
+#         At least 10 towers - first one is your lift hill - end at 0.
+
+track = [50, 40, 20, 0, 15, 0]
+
+# TODO 2 (after your first good run): copy your Version 1 list into
+#         the comment below, then change at least three numbers with
+#         a goal in mind, and rerun. Keep both versions.
+# V1:
+# What changed and why:
+#
+# TODO 3 (stretch, from the exit gates): teach the engine friction.
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+stalled = 0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # WHERE ARE WE? -- find the two towers we are between
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+    # move forward by however fast we are going
+    if stalled == 0:
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    # the train
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+  <div class="answer" id="ans-key">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (pygame edition)
+#  Design a track. Watch the physics run it. 60 frames a second.
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+stalled = 0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # WHERE ARE WE? -- find the two towers we are between
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+    # move forward by however fast we are going
+    if stalled == 0:
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    # the train
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+</section>
+
+<!-- RIDE LOG -->
+<section class="card" id="ridelog">
+  <div class="head">
+    <div>
+      <div class="logeyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Coaster Lab</div>
+      <h2 class="logtitle">The Ride Log</h2>
+    </div>
+    <div class="namelines">
+      ENGINEER<span></span><br>
+      DATE<span></span>
+    </div>
+  </div>
+  <div class="noprint" style="margin-top:12px"><button class="reveal" onclick="window.print()">Print the Ride Log</button></div>
+  <div class="howbox">
+    <strong>What the Ride Log does:</strong> it is Monday's trace table with the parking brake off &mdash; the dashboard is three variables changing sixty times a second, and you are the engineer checking the machine against the pencil.
+    <ol>
+      <li><strong>Before you run:</strong> fill the Height column straight from your track list. That column is your prediction.</li>
+      <li>Run the ride. As the train crosses each marked tower, read TIME and SPEED off the dashboard and jot them. One tower per run is plenty &mdash; reruns are free.</li>
+      <li>Close counts: within about a second and a couple of mph is a match.</li>
+      <li>Turtle edition: there's no clock, so leave TIME blank &mdash; your HEIGHT and SPEED should match exactly.</li>
+    </ol>
+  </div>
+
+  <span class="logtag">Worked example &middot; done for you</span>
+  <h3>Tower 7 on the stock ride</h3>
+  <table>
+    <tr><th>Tower #</th><th class="var">Height &mdash; from the list (m)<i>fill this in BEFORE running</i></th><th>TIME on the dashboard (s)</th><th>SPEED on the dashboard (mph)</th><th>Match?</th></tr>
+    <tr><td class="ln">7</td><td>0</td><td>11.9</td><td>70</td><td>&#10003; list says 0, dashboard says 0</td></tr>
+  </table>
+
+  <span class="logtag">Grid A &middot; the stock ride</span>
+  <h3>Five towers to catch</h3>
+  <table>
+    <tr><th>Tower #</th><th class="var">Height &mdash; from the list (m)<i>fill this in BEFORE running</i></th><th>TIME on the dashboard (s)</th><th>SPEED on the dashboard (mph)</th><th>Match?</th></tr>
+    <tr class="blank"><td class="ln">3</td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln">9</td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln">11</td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln">13</td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln">16</td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <p style="margin:8px 0 0;font-size:13px">Two of these rows share a height. When both are filled in, compare their SPEED boxes &mdash; and write one sentence about what you find.</p>
+  <div class="noprint">
+    <button class="reveal" onclick="reveal(this)">Check my readings</button>
+    <div class="answer" style="font-size:13.5px">
+      <strong>Tower 3</strong> &middot; height 33 &middot; TIME &asymp; 8.8 s &middot; SPEED 41 mph<br>
+      <strong>Tower 9</strong> &middot; height 18 &middot; TIME &asymp; 13.3 s &middot; SPEED 56 mph<br>
+      <strong>Tower 11</strong> &middot; height 30 &middot; TIME &asymp; 15.1 s &middot; SPEED 44 mph<br>
+      <strong>Tower 16</strong> &middot; height 0 &middot; TIME &asymp; 19.0 s &middot; SPEED 70 mph (the ride's end &mdash; the window holds this frame for 3 seconds)<br><br>
+      Tower 13 is left for you on purpose &mdash; but you already met it in Trace Round 2. Towers 9 and 13 share a height, so they must share a speed: that's the physics signing its name on your log.
+    </div>
+  </div>
+
+  <span class="logtag">Grid B &middot; your own ride (Version 2)</span>
+  <h3>Circle five towers on your track and catch them</h3>
+  <table>
+    <tr><th>Tower #</th><th class="var">Height &mdash; from the list (m)<i>fill this in BEFORE running</i></th><th>TIME on the dashboard (s)</th><th>SPEED on the dashboard (mph)</th><th>Match?</th></tr>
+    <tr class="blank"><td class="ln"></td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln"></td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln"></td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln"></td><td></td><td></td><td></td><td></td></tr>
+    <tr class="blank"><td class="ln"></td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <p style="margin:8px 0 0;font-size:13px">Circle the row with your <strong>smallest</strong> Height. Is it also your <strong>biggest</strong> SPEED? One sentence: why must that always be true on this simulator?</p>
+
+  <span class="logtag">Version note &middot; the engineer's story</span>
+  <h3>What changed between Version 1 and Version 2</h3>
+  <table>
+    <tr class="vnote"><td style="width:130px;font-family:'JetBrains Mono',monospace;font-size:11px">V1 TRACK</td><td></td></tr>
+    <tr class="vnote"><td style="font-family:'JetBrains Mono',monospace;font-size:11px">V2 TRACK</td><td></td></tr>
+    <tr class="vnote"><td style="font-family:'JetBrains Mono',monospace;font-size:11px">WHAT I CHANGED &amp; WHY</td><td></td></tr>
+  </table>
+
+  <div class="seenote"><strong>Prove it.</strong> Your list and the dashboard must agree at every tower you marked. If they disagree, one of them is wrong &mdash; and finding out which one is the actual job of an engineer.</div>
+
+  <p class="logfoot">
+  Collected as Coaster Lab evidence for <strong>E5-PRO-VD-??</strong> <span class="warn">&#9888; unverified &mdash; confirm the code at source before distributing</span> &middot; the Version note doubles as the modify-and-explain evidence for <strong>E5-PRO-PD-??</strong> <span class="warn">&#9888;</span> &middot; pairs with narrating the three physics lines out loud on your own Version 2.<br>
+  Mapped to: Computer Science Teachers Association. (2026). 2026 CSTA PK&ndash;12 computer science standards. https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this document's claim; it is not a CSTA-reviewed or CSTA-approved designation.
+  </p>
+</section>
+
+<!-- SELF CHECK -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Self-check &middot; before you call it done</span></div>
+  <h2>Tick what's true. Fix what isn't.</h2>
+  <div class="checkgroup"><strong>The track list</strong>
+    <label class="check"><input type="checkbox"><span>My first number is my lift hill, and I can say why the ride's whole budget lives there.</span></label>
+    <label class="check"><input type="checkbox"><span>My track has at least 10 towers and ends at 0.</span></label>
+    <label class="check"><input type="checkbox"><span>I can point at any tower and name its index without counting from 1.</span></label>
+  </div>
+  <div class="checkgroup"><strong>The physics lines</strong>
+    <label class="check"><input type="checkbox"><span>I can read the position line out loud using "gets."</span></label>
+    <label class="check"><input type="checkbox"><span>I can say what drop measures, in one sentence.</span></label>
+    <label class="check"><input type="checkbox"><span>I know what the speed floor is for &mdash; and what the train would do without it.</span></label>
+    <label class="check"><input type="checkbox"><span>I know when the inspector's if fires, and what stalled = 1 freezes.</span></label>
+  </div>
+  <div class="checkgroup"><strong>The redesign</strong>
+    <label class="check"><input type="checkbox"><span>Version 1 and Version 2 are both saved in my file.</span></label>
+    <label class="check"><input type="checkbox"><span>My what-changed-and-why note is on the Ride Log.</span></label>
+    <label class="check"><input type="checkbox"><span>Version 2 completes with no banner.</span></label>
+  </div>
+  <div class="checkgroup"><strong>The explanation</strong>
+    <label class="check"><input type="checkbox"><span>I narrated the three physics lines out loud &mdash; to a partner or a grown-up.</span></label>
+    <label class="check"><input type="checkbox"><span>I can explain why the train eats more meters per second at the bottom &mdash; without saying "the code tells it to."</span></label>
+  </div>
+</section>
+
+<!-- HONEST LIMITS -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">What this simulator ignores</span></div>
+  <h2>Every model leaves things out &mdash; good engineers say which</h2>
+  <p><strong>Friction.</strong> This train returns to full speed in every valley, forever. A real train pays a tax on every meter travelled &mdash; which is exactly the 4 mph gap you caught at Fury 325. The stretch exit gate is where you build the tax collector.</p>
+  <p><strong>Straight rails.</strong> Every gap between towers is a straight slope. No loops, no banking, no g-forces pressing you into your seat &mdash; the parts of coaster engineering that need real algebra and beyond. This lab runs on one square root, on purpose.</p>
+  <p><strong>Gravity only.</strong> The savings-account rule &mdash; the first hill pays for everything &mdash; holds for chain-lift coasters. Launched coasters (magnets, catapults) add energy mid-ride and break "no hill taller than the first" completely. Question for the walk home: would our STALLED inspector make any sense on a launched ride?</p>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">The stock ride runs on your machine (pygame or turtle), your Ride Log Grid A matches the dashboard at every marked tower, and you can point to the single line that moves the train.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your own track completes &mdash; Version 1 and Version 2 saved, the what-changed note written, Grid B checked against your own list &mdash; and at Test Ride you narrate the three physics lines.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Teach the engine friction. Change the drop line to <code>drop = top - height - position * 0.01</code> and rerun: the stock ride's top speed dips from 70 to 69 mph and it runs a touch longer. Then build a 99&nbsp;m Fury-style lift hill and raise the <code>0.01</code> until the predicted top speed lands on the real ride's 95 mph &mdash; the honest number is up near <code>0.08</code>. Say out loud where the missing speed physically went. (Fair warning: with friction on, a late hill your track barely cleared can now stall, exactly like a real train rolling back &mdash; your inspector already knows what to do. Keep the original line in a comment so you can roll back.)</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards &amp; evidence &mdash; teacher panel</summary>
+  <p style="margin:4px 0 10px"><strong>Placement (adopted):</strong> threaded through the week &mdash; a Day-2 projector teaser, stretch cards at the Day-3 and Day-4 fast-finisher tables (Chunks 01, 03, 04 + the Fury check), and the Broken-Coaster-05 crash as Day 5's debugging example &mdash; with this full page going home Friday alongside the printed Ride Log and the starter file. Because the build, the hinge, and the Ride Log happen at home after camp ends, the evidence below is a take-home product and is not reliably collected; the camp's five-day alignment tab is unchanged, and no gradebook claim rests on this page.</p>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 3, 8; Trace Rounds 1&ndash;2; gated by the hinge</td><td>Addressed</td><td>The completed Ride Log: pre-filled heights from the list checked against the live dashboard at marked towers &mdash; a take-home product; it can serve as gradebook evidence only if a camper brings it back.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>2; Broken Coasters; Design brief steps 1&ndash;4</td><td>Addressed</td><td>The track list in two saved versions plus the Ride Log's what-changed-and-why note (take-home).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>4, 5, 7; Design brief step 5</td><td>Addressed</td><td>The narration of the three physics lines on the camper's own Version 2 &mdash; to a partner if run at camp, to a grown-up at home (take-home).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> Section 05 is a debugging workout and plainly exercises the camp's testing-and-refining thread; that thread is claimed on Days 1 and 5 of the camp alignment tab and is not claimed on this page, under the three-standard cap. A science colleague will recognize grade-5 energy ideas in Sections 01&ndash;02; that mapping is deliberately left to the delivery note as a words-only suggestion. Camp-wide exclusions hold: no classes, no <code>while</code>, no <code>return</code>, no dictionaries, no file I/O, no exception handling. The engine contains a handful of read-only extras &mdash; <code>max()</code>, <code>.append()</code>, <code>break</code>, the pygame calls, and one nested <code>if</code> (the speed floor inside the inspector's <code>else</code>) &mdash; which the page names as machinery campers read but never write.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+<div class="note">Stuck? Start from the answer key. Get the stock ride running until your dashboard matches the Chunk-08 table exactly. Then change one number &mdash; just one &mdash; and run again. That is the entire craft of engineering, and it is enough.</div>
+
+</main>
+<script>
+function reveal(btn){
+  btn.classList.add('gone');
+  var a = btn.nextElementSibling;
+  if(a && a.classList.contains('answer')){ a.classList.add('open'); }
+  markDot(btn);
+}
+function revealT(btn, id){
+  btn.classList.add('gone');
+  var a = document.getElementById(id);
+  if(a){ a.classList.add('open'); }
+  markDot(btn);
+}
+function markDot(btn){
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+var hingeFB = {
+  A: "<strong>Not this time &mdash; but your instincts are good.</strong> On a real coaster, friction can let a train crawl over a slightly-too-tall hill's little brother, so \u201cslows and creeps\u201d feels right. But this simulator has no crawl-and-conquer: the speed line asks only one question &mdash; how far below the lift hill am I? &mdash; and at 50 m up that hill, the answer is \u201cnot below it at all.\u201d Drop hits zero with 5 m of hill left, goes negative on the next frame, and the inspector freezes the ride. The correct answer is B.",
+  B: "<strong>Exactly right.</strong> The train spends its way up to 50 m &mdash; every meter it started with &mdash; then drop goes negative, the inspector fires, stalled gets 1, and the STALLED banner comes up with the train frozen on the slope. You've just discovered the first rule every coaster engineer learns: <strong>no later hill can out-tall the lift hill.</strong> The chain deposits the ride's whole budget once; 50 m in the bank means never more than 50 m up.",
+  C: "<strong>So close &mdash; you clearly read Chunk 07.</strong> You're right that sqrt of a negative is the danger. But look at the order: the inspector's <code>if drop &lt; 0</code> runs <em>first</em>, so the square root never sees the negative number. No crash &mdash; the guard's entire job is making sure of that. What the player sees instead is answer B: the climb to 50 m, then the freeze and the banner.",
+  D: "<strong>Tempting &mdash; taller has meant faster all afternoon.</strong> But taller has meant a taller <em>lift hill</em>: more in the savings account. A taller <em>later</em> hill is the opposite &mdash; a bigger withdrawal. By 50 m up it, the account is empty with 5 m still to climb, drop goes negative, and the inspector freezes the ride: answer B. Speed comes from height <em>spent</em>, never from height in front of you."
+};
+function hinge(btn, letter){
+  var right = (letter === 'B');
+  var opts = document.querySelectorAll('button.opt');
+  for(var i = 0; i < opts.length; i++){ opts[i].disabled = true; }
+  btn.classList.add(right ? 'correct' : 'wrong');
+  if(!right){ document.getElementById('optB').classList.add('correct'); }
+  var fb = document.getElementById('hingefb');
+  fb.innerHTML = hingeFB[letter];
+  fb.classList.add('shown', right ? 'right' : 'wrongfb');
+}
+(function(){
+  var T = [50,48,42,33,22,11,2,0,8,18,26,30,26,18,9,3,0];
+  var SEG = 20, TOP = 50, LEN = 320;
+  var g = document.getElementById('trainG');
+  var dash = document.getElementById('hdash');
+  var tw = document.getElementById('towers');
+  var ns = 'http://www.w3.org/2000/svg';
+  for(var i = 0; i < T.length; i++){
+    var l = document.createElementNS(ns, 'line');
+    l.setAttribute('x1', 30 + i * 52.5); l.setAttribute('y1', 225 - T[i] * 3.9);
+    l.setAttribute('x2', 30 + i * 52.5); l.setAttribute('y2', 228);
+    l.setAttribute('stroke', 'rgba(248,250,252,.28)');
+    l.setAttribute('stroke-width', '2');
+    tw.appendChild(l);
+  }
+  function place(pos){
+    var seg = Math.floor(pos / SEG); if(seg > T.length - 2){ seg = T.length - 2; }
+    var frac = (pos - seg * SEG) / SEG;
+    var h = T[seg] + (T[seg + 1] - T[seg]) * frac;
+    g.setAttribute('transform', 'translate(' + (30 + (pos / SEG) * 52.5) + ',' + (225 - h * 3.9) + ')');
+    return h;
+  }
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    place(90);
+    dash.textContent = 'SPEED  \u2014 MPH';
+    return;
+  }
+  var pos = 0, speed = 2, wait = 0, last = null;
+  function tick(ts){
+    if(last === null){ last = ts; }
+    var dt = Math.min((ts - last) / 1000, 1 / 30); last = ts;
+    if(wait > 0){
+      wait -= dt;
+      requestAnimationFrame(tick);
+      return;
+    }
+    var seg = Math.floor(pos / SEG); if(seg > T.length - 2){ seg = T.length - 2; }
+    var frac = (pos - seg * SEG) / SEG;
+    var h = T[seg] + (T[seg + 1] - T[seg]) * frac;
+    var drop = TOP - h;
+    speed = Math.sqrt(2 * 9.8 * drop);
+    if(speed < 2){ speed = 2; }
+    pos = pos + speed * dt;
+    if(pos >= LEN){
+      place(LEN);
+      dash.textContent = 'SPEED 70 MPH';
+      pos = 0; speed = 2; wait = 1.6; last = null;
+      requestAnimationFrame(tick);
+      return;
+    }
+    place(pos);
+    var mph = Math.round(speed * 2.24);
+    dash.textContent = 'SPEED ' + (mph < 10 ? ' ' : '') + mph + ' MPH';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

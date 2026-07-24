@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 5 — Grand Opening</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);--shadow:0 4px 0 rgba(27,41,81,.12);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--navy);color:var(--cream);padding:46px 24px 44px;text-align:center;border-bottom:3px dashed var(--yellow);position:relative;overflow:hidden}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.fw{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:pop 2.6s ease-out infinite}
+.fw.b{background:#F8FAFC;animation-delay:1.3s}
+@keyframes pop{0%{transform:scale(.2);opacity:0}15%{opacity:1}60%{transform:scale(3.6);opacity:.55}100%{transform:scale(5);opacity:0}}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--navy-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--red)}
+pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--red)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--navy-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--navy-line)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.plan{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0;font-size:14px}
+.pbox{border:2px solid var(--navy);border-radius:10px;padding:8px 16px;background:var(--navy-soft);text-align:center}
+.pbox.loop{border-style:dashed}
+.pbox.dec{border-color:var(--red);border-radius:2px;transform:none;background:rgba(220,38,38,.07)}
+.parrow{font-size:18px;line-height:1}
+@media (prefers-reduced-motion: reduce){.fw{animation:none;opacity:0}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="fw" style="top:26%;left:16%"></span><span class="fw b" style="top:18%;left:78%"></span><span class="fw" style="top:58%;left:88%;animation-delay:.7s"></span><span class="fw b" style="top:62%;left:8%;animation-delay:1.9s"></span>
+  <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 5</div>
+  <h1>Grand Opening</h1>
+  <p class="hook">This afternoon the park gets smart — and then it gets the one thing it's been missing all week: an attraction designed by you.</p>
+  <p class="need">YOU'LL NEED: the no-code ML tool &middot; a device with a camera &middot; your blueprint template &middot; VS Code for the build</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can plan an attraction with a picture before I code it.</strong> <span class="chip">E5-ALG-PS-01</span></p>
+  <p><strong>I can teach a computer with examples — and explain why it gets things wrong.</strong> <span class="chip">E5-ALG-ML-02</span></p>
+  <div class="tracker" aria-label="chunk progress">
+    <span class="tlabel">Chunks explored</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span>
+  </div>
+</section>
+
+<!-- CHUNK 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Rules vs. examples</span></div>
+  <h2>Two ways to teach a machine</h2>
+  <p>All week you wrote <strong>rules</strong>: <em>if height &lt; 48, family rides.</em> You told the computer exactly what to do, and it did exactly that. But nobody ever gave you a rule for recognizing your best friend's face — you learned from <strong>examples</strong>.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Could you write an if/elif/else rule that recognizes a thumbs-up in a photo? Try to imagine the conditions you'd need. What makes it so much harder than the height gate?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">There's no clean rule to write — thumbs come at every angle, size, lighting, and skin tone, and "the thumb pixel is up" isn't a condition Python has. For problems like this, engineers flip the approach: instead of writing rules, they show the computer <strong>labeled examples</strong> and let it find its own patterns. That's <strong>machine learning</strong> — and it's what the park's new turnstile runs on.</div>
+</section>
+
+<!-- CHUNK 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; Train the Smart Turnstile</span><span class="chip">E5-ALG-ML-02</span></div>
+  <h2>Teach it with your own examples</h2>
+  <p>In the no-code tool, make two classes and train the park's turnstile:</p>
+  <p><strong>1.</strong> Class one: <code>OPEN</code> — record about 15 thumbs-up photos of yourself. Vary it: near, far, left hand, right hand.<br>
+     <strong>2.</strong> Class two: <code>STAY CLOSED</code> — record about 15 thumbs-down photos, varied the same way.<br>
+     <strong>3.</strong> Train the model, then test it live.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Now show it a brand-new thumbs-up it has never seen. Will it get it right — and if it does, does that mean it <em>knows</em> what a thumbs-up is?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">It very likely says <code>OPEN</code> — but it doesn't <em>know</em> anything. It found patterns in <strong>your 15 examples</strong> and is matching the new photo against them. Every answer it ever gives traces back to an example somebody supplied. Keep that sentence; you'll need it in Chunk 3.</div>
+  <div class="see"><span class="tag">You should see</span> A confidence bar (something like "OPEN — 97%") that updates live as you move your hand.</div>
+</section>
+
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Break it on purpose</span><span class="chip">E5-ALG-ML-02</span></div>
+  <h2>The lopsided turnstile</h2>
+  <p>Time for the Day-1 move, machine-learning edition: sabotage. Retrain the <code>OPEN</code> class using <strong>only your right hand, only close-up, only bright light</strong> — a deliberately lopsided set. Then test with your left hand, far away, in shade.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Two predictions: will the model still <em>act</em> confident? And will it still be <em>right</em>?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Confidence stays high — the bar still says 90-something percent — while accuracy falls apart. The model can't tell you what it never saw; it just matches against a lopsided memory <em>with total confidence</em>. Now the park question: if this turnstile were real, <strong>whose examples were missing? Who would this gate fail?</strong> Guests with different hands, heights, skin tones, lighting... A gap in the training data becomes a gap in who gets through the gate. That is why real engineers ask "who is missing from my examples?" before they ship — it's a design choice about who the technology serves.</div>
+  <div class="see"><span class="tag">You should see</span> High confidence, wrong answers — the most important broken thing you'll build all week.</div>
+</section>
+
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>Plan the attraction before you type</h2>
+  <p>Every ride at Loopline started as boxes and arrows. Your attraction does too: a visual plan showing the <strong>sequence</strong> (arrows), at least one <strong>loop</strong> (dashed box), at least one <strong>decision</strong> (red box), and the variables it uses. Here's a sample blueprint for a "Ride Recommender" booth:</p>
+  <div class="plan" aria-label="sample blueprint diagram">
+    <div class="pbox">START: greet guest, ask <code>name</code></div>
+    <div class="parrow">&darr;</div>
+    <div class="pbox loop">LOOP: for each ride in <code>rides</code> &rarr; print it</div>
+    <div class="parrow">&darr;</div>
+    <div class="pbox">ask <code>mood</code> — "thrill or chill?"</div>
+    <div class="parrow">&darr;</div>
+    <div class="pbox dec">DECISION: mood == "thrill" ? &rarr; Comet : Tea Cups</div>
+    <div class="parrow">&darr;</div>
+    <div class="pbox">print the guest's ticket</div>
+  </div>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which box is the decision, and which is the loop? And a check on the plan itself: which prior camp days do those two boxes come from?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The red box is the decision (Day 3), the dashed box is the loop (Day 2), and the name/mood questions are Day 1's <code>input()</code>. That's three days in one plan — the minimum for your own. Draw your blueprint on the template now. <strong>No code until your blueprint is approved and signed</strong> — that's the studio rule, and the cap is firm: one screen, one loop, one decision.</div>
+</section>
+
+<!-- CHUNK 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Read the error first</h2>
+  <p>During the build, things will break. That's the plan working. This crash comes from a real Loopline machine &mdash; the roller-coaster simulator going home with every engineer today. Line 1 of the file says <code>import math</code>. Deep inside, one line reads:</p>
+  <pre>        speed = sqrt(2 * GRAVITY * drop)</pre>
+  <pre>Traceback (most recent call last):
+  File "coaster.py", line 71, in &lt;module&gt;
+    speed = sqrt(2 * GRAVITY * drop)
+NameError: name 'sqrt' is not defined</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Which line of the traceback do you read first? <code>import math</code> is right there at the top of the file &mdash; so what does Python not recognize, and what's the fix?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Last line first</strong> &mdash; the week's oldest rule. <code>NameError</code>: the same species as Monday's <code>pint</code>. Importing <code>math</code> carries the toolbox into the room, but you still have to name the drawer &mdash; the function's full name is <code>math.sqrt</code>, and on its own <code>sqrt</code> names nothing. The computer does not guess: day one's rule, still the whole game on day five. Fix: <code>speed = math.sqrt(2 * GRAVITY * drop)</code>. (Today's likeliest crash in your <em>own</em> build is humbler &mdash; a missing <code>:</code> on an <code>if</code> line, <code>SyntaxError</code> &mdash; same protocol, last line first.) During the build, keep your two-line debugging log for every crash: <em>what broke, what fixed it</em>. Nobody fixes your code for you today &mdash; the log is proof it was you.</div>
+</section>
+
+<!-- HINGE -->
+<section class="card hinge">
+  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip">E5-ALG-ML-02</span></div>
+  <h2>The wrong prediction</h2>
+  <p>Your lopsided turnstile confidently called a real thumbs-up <code>STAY CLOSED</code>. In one sentence: <em>why</em> did the model get it wrong?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Because nothing like that photo was in its training examples — the model only matches against what it was shown, so a gap in the examples becomes a wrong answer. If your sentence says the model "didn't know" or "got confused," sharpen it: it's not about knowing. It's about <strong>what was missing from the examples</strong>. Write your final version on the reflection slip — it's collected.</div>
+</section>
+
+<!-- BUILD BRIEF -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Build brief &middot; Your attraction</span></div>
+  <h2>The Grand Opening build</h2>
+  <p>Build the attraction your approved blueprint describes. The contract:</p>
+  <p><strong>One screen. One loop. One decision.</strong> Constructs from at least <strong>three</strong> prior days. It runs, it matches the blueprint, and at the Grand Opening you present it in two minutes and name <strong>one design choice</strong> you made.</p>
+  <p><strong>Your toolbox from the week:</strong> <code>print()</code> / <code>input()</code> / <code>int()</code> / f-strings (Day 1) &middot; <code>for</code> + <code>range()</code>, turtle (Day 2) &middot; <code>if / elif / else</code>, lists (Day 3) &middot; <code>random.choice()</code>, <code>def</code> (Day 4).</p>
+  <p><strong>Suggested start:</strong> build your blueprint's first box only. Run it. Then the next box. Run after every box — small steps leave small bugs.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution (ideas only — yours will differ)</button>
+  <div class="answer">
+<pre># THE RIDE RECOMMENDER — Loopline Park
+import random
+
+rides = ["The Comet", "Splash Canyon", "Tea Cups", "Sky Drop"]
+
+name = input("Welcome to Loopline Park! Your name? ")
+print(f"Hello, {name}! Today's rides:")
+
+for ride in rides:
+    print("- " + ride)
+
+mood = input("Feeling thrill or chill today? ")
+
+if mood == "thrill":
+    print(f"{name}, sprint to {rides[0]}!")
+elif mood == "chill":
+    print(f"{name}, drift over to {rides[2]}.")
+else:
+    print("Spin the wheel: " + random.choice(rides))</pre>
+  Day 1 (input, f-strings) + Day 2 (loop) + Day 3 (list, decision) + Day 4 (random.choice) — four days in 16 lines. Note the design choice in the <code>else</code>: a guest who types something unexpected gets the prize wheel instead of a crash. That's the kind of choice to name at your walkthrough.
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your blueprint is approved, and your program runs with a sequence plus a loop <em>or</em> a decision. You can point to each on your blueprint.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your approved blueprint shows sequence, a loop, <em>and</em> a decision with its variables — and your program follows it, using constructs from at least three days. You present it and name one design choice.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">Your attraction survives a guest who types something unexpected without crashing (like the sample's <code>else</code> safety net) — and at the walkthrough you name the alternative design you rejected, and why.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards &amp; evidence — teacher panel</summary>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>4, build brief</td><td>Mastery</td><td>The approved, signed capstone blueprint showing sequence, a loop, and a branch — plus the built program that follows it.</td><td>Verified</td></tr>
+    <tr><td>E5-ALG-ML-02</td><td>Train a machine learning model to make a classification or prediction.</td><td>2, 3; gated by the hinge</td><td>Mastery</td><td>Trained Smart Turnstile classifier plus the written reflection on a wrong prediction (collected at the hinge).</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>5, build brief</td><td>Addressed</td><td>The independent two-line debugging log kept during the capstone build (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> two things a reader will expect from the camp's Day-5 plan. The human-centered-design reflection (the camp maps it to E5-ALG-IM-03) is seeded in Chunk 3's "who would this gate fail?" but the standard is claimed on the camp alignment tab, not this page, under the three-standard cap. The CIA-triad security debrief (E5-SYS-SE-13) is a live, teacher-led Grand Opening conversation — who can see, change, or reach your program — and is deliberately not on this self-paced page at all.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

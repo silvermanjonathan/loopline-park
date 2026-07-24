@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coaster Lab — Stretch Cards (Days 3–4)</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.45;font-size:14.5px}
+.sheet{max-width:800px;margin:0 auto;padding:24px 26px 40px}
+.sheet + .sheet{border-top:3px dashed var(--navy-line)}
+.head{border-bottom:3px dashed var(--yellow);padding-bottom:10px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin-bottom:2px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:30px;line-height:1;margin:0}
+.lede{font-size:14px;margin:10px 0 0;font-style:italic;opacity:.85}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:17px;margin:20px 0 6px}
+.tag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--red);font-weight:700;display:block;margin-top:20px}
+pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.55;border-radius:10px;padding:13px 15px;overflow-x:auto;margin:10px 0;position:relative}
+pre::before{content:'VS CODE';position:absolute;top:0;right:12px;font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:.18em;color:var(--cream);opacity:.45;background:#12203f;padding:2px 7px;border-radius:0 0 6px 6px}
+code{font-family:'JetBrains Mono',monospace;font-size:.92em;background:var(--navy-soft);border-radius:4px;padding:1px 5px}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13.5px}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+.wline{display:inline-block;min-width:72px;border-bottom:1.5px solid var(--navy);height:1em;vertical-align:baseline;margin:0 4px}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:13.5px}
+.see .stag{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:3px}
+.see pre{background:#0d3a2c;margin:8px 0 4px}
+.see pre::before{display:none}
+.newword{background:var(--navy-soft);border-radius:8px;padding:9px 13px;margin:10px 0;font-size:13px}
+.foot{border-top:1px solid var(--navy-line);margin-top:22px;padding-top:8px;font-size:10.5px;opacity:.72;line-height:1.5}
+.noprint button{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:7px 17px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:13.5px;cursor:pointer}
+.noprint button:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.printbtn{position:fixed;top:12px;right:14px}
+section{page-break-inside:avoid;break-inside:avoid}
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  .sheet{max-width:none;padding:0 0 10mm}
+  .sheet + .sheet{border-top:none}
+  .sheetA{page-break-after:always}
+  .noprint{display:none !important}
+  pre{background:#1B2951 !important;color:#F8FAFC !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .see pre{background:#0d3a2c !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .predict{background:#faf0d2 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .see{background:#e9f7f1 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .newword{background:#eef0f5 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  h2{margin-top:14px}
+  @page{margin:12mm}
+}
+</style>
+</head>
+<body>
+
+<div class="noprint printbtn"><button onclick="window.print()">Print both cards</button></div>
+
+<!-- ================= CARD A · DAY 3 ================= -->
+<div class="sheet sheetA">
+
+<div class="head">
+  <div class="eyebrow">Loopline Park &middot; Coaster Lab &middot; Stretch Card 01 &middot; Day-3 fast finishers</div>
+  <h1>The Shelf Gets Taller</h1>
+  <p class="lede">Park Map done early? Here's a first look at the roller-coaster simulator you take home Friday. Its entire track is one list &mdash; today's shelf, wearing meters.</p>
+</div>
+
+<section>
+<span class="tag">Experiment 1 &middot; seventeen numbers, one roller coaster</span>
+<h2>Type this in a scratch file. Do not run it yet.</h2>
+<pre>track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20   # each hill tower sits 20 meters from the next
+
+print(len(track))
+print(track[0])
+print(track[7])</pre>
+<div class="predict">
+  <span class="ptag">Predict &mdash; in pencil, before you run</span>
+  Each number is one support tower's height in meters, left to right.<br>
+  <code>print(len(track))</code> &rarr; <span class="wline"></span> &nbsp;&nbsp; <code>print(track[0])</code> &rarr; <span class="wline"></span> &nbsp;&nbsp; <code>print(track[7])</code> &rarr; <span class="wline"></span>
+</div>
+<div class="see"><span class="stag">Now run it &mdash; you should see</span>
+<pre>17
+50
+0</pre>
+The list is the shelf; the index picks the ride. <code>track[0]</code> is the first spot &mdash; the 50&nbsp;m lift hill. <code>track[7]</code> is the <em>eighth</em> tower: ground level, the bottom of the big drop. And with 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot are one apart. Today's rule, now load-bearing: get it wrong on a coaster and the crash is real.
+</div>
+</section>
+
+<section>
+<span class="tag">Experiment 2 &middot; where is the train?</span>
+<h2>Keep your track lines. Add this below them.</h2>
+<pre>position = 70.0
+
+seg = int(position / SEG_LEN)
+frac = (position - seg * SEG_LEN) / SEG_LEN
+height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+print(seg)
+print(frac)
+print(height)</pre>
+<div class="predict">
+  <span class="ptag">Predict &mdash; commit before you run</span>
+  The train is 70 meters along the track, and 70 &divide; 20 is 3.5. So does <code>seg</code> print <code>3.5</code>, <code>3</code>, or <code>4</code>? Circle one. Then: <code>frac</code> &rarr; <span class="wline"></span>
+</div>
+<div class="see"><span class="stag">Now run it &mdash; you should see</span>
+<pre>3
+0.5
+27.5</pre>
+<code>int()</code> chops the decimals off &mdash; always downward. Monday it converted a guest's typing at the door; here it chops 3.5 to 3, so the train is between tower 3 and tower 4, exactly halfway (<code>frac</code> is 0.5). Then the height line blends the two shelves: start at tower 3's height (33), add half the difference to tower 4 (22) &mdash; that's 27.5. This exact line tells the train how high it is, <strong>sixty times every second</strong>. Friday, you run the whole ride.
+</div>
+</section>
+
+<p class="foot">Coaster Lab stretch material &mdash; no new standards claims; reinforces Day-3 list and index work. The full lab (coaster_lab.html) goes home Friday with the printed Ride Log.</p>
+
+</div>
+
+<!-- ================= CARD B · DAY 4 ================= -->
+<div class="sheet">
+
+<div class="head">
+  <div class="eyebrow">Loopline Park &middot; Coaster Lab &middot; Stretch Card 02 &middot; Day-4 fast finishers</div>
+  <h1>The Speed of Falling</h1>
+  <p class="lede">Three wheels done? Here is the single line of physics that powers Friday's take-home roller coaster &mdash; and it surprises almost everyone.</p>
+</div>
+
+<section>
+<span class="tag">The experiment &middot; height lost becomes speed gained</span>
+<h2>Type this in a scratch file. Run it three times.</h2>
+<pre>import math
+
+GRAVITY = 9.8
+
+drop = 20
+speed = math.sqrt(2 * GRAVITY * drop)
+print(f"{speed * 2.24:.0f} mph")</pre>
+<div class="newword">
+<strong>Two new pieces, both small.</strong> <code>math.sqrt()</code> takes a square root; it lives in the <code>math</code> toolbox, so <code>import math</code> carries the toolbox in and <code>math.sqrt</code> names the drawer &mdash; the same pattern as yesterday's <code>random.choice</code>. And the <code>:.0f</code> inside the f-string is a rounding dial: whole numbers only. (The <code>2.24</code> converts meters-per-second into mph, because dashboards speak mph.)
+</div>
+<div class="predict">
+  <span class="ptag">Predict &mdash; commit in pencil first</span>
+  <code>drop</code> is how far the coaster has fallen below its lift hill. With <code>drop = 20</code> this prints <code>44 mph</code>. Now change it to <code>40</code> &mdash; exactly double the fall. Your guess before running: <span class="wline"></span> mph. (Does doubling the drop double the speed to 88?) Then try <code>80</code>: <span class="wline"></span> mph.
+</div>
+<div class="see"><span class="stag">Now run it &mdash; you should see</span>
+<pre>44 mph
+63 mph
+89 mph</pre>
+<strong>63, not 88.</strong> Climb the ladder: 20&nbsp;&rarr;&nbsp;44, 40&nbsp;&rarr;&nbsp;63, 80&nbsp;&rarr;&nbsp;89. Every doubling of the drop multiplies the speed by about 1.4 &mdash; that's what a square root does to a doubling. To truly double a coaster's speed you need <em>four times</em> the drop. Now you know why nobody builds them that way.
+</div>
+</section>
+
+<section>
+<span class="tag">Reality check &middot; Fury 325, Carowinds</span>
+<h2>Test your one line against a real ride</h2>
+<p style="margin:4px 0 0;font-size:13.5px">Fury 325's lift hill is <strong>99 meters</strong> &mdash; the tallest chain-lift coaster in the world. Set <code>drop = 99</code> and run.</p>
+<div class="predict">
+  <span class="ptag">Predict, run, then think</span>
+  Your program prints <span class="wline"></span> mph. The real Fury 325 tops out at <strong>95 mph</strong>. Your line is off by only a few mph &mdash; but always in the same direction: too fast. One sentence &mdash; where does the missing speed go on the real ride?<br><span class="wline" style="min-width:96%;margin-top:10px"></span>
+</div>
+<div class="see"><span class="stag">Check yourself</span>
+It prints <code>99 mph</code> &mdash; 4 mph hot. The missing speed leaks away as <strong>friction in the wheels and air pushing back on the train</strong>: every rattle and roar a coaster makes is energy that used to be speed. Your one line of Python landed within 4 mph of a thirty-million-dollar machine, <em>and</em> you can say exactly why it missed. That's the whole job of an engineer. Friday, this line powers a ride you design yourself.
+</div>
+</section>
+
+<p class="foot">Coaster Lab stretch material &mdash; no new standards claims; pairs with Day-4 reading work (naming what a line of code does). The full lab (coaster_lab.html) goes home Friday with the printed Ride Log.</p>
+
+</div>
+
+</body>
+</html>
