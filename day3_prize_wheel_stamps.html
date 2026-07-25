@@ -74,7 +74,7 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can change what a function draws by passing it a number.</strong> <span class="chip unv">E5-PRO-RD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span>
   </div>
 </section>
 
@@ -270,6 +270,46 @@ print(f"{speed * 2.24:.0f} mph")</pre>
 63 mph
 89 mph
 99 mph</pre></div>
+</section>
+
+<!-- CHUNK 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Chunk 9 &middot; The engine with no wheels</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>Tomorrow's coaster, in fourteen printed lines</h2>
+  <p>Tomorrow you assemble the coaster on screen. Its beating heart fits in one loop, and it runs in plain text &mdash; no pygame, no turtle, nothing to install. The new line is the <strong>move line</strong>: read it the Monday way, &ldquo;position <em>gets</em> its old self, plus one step.&rdquo; The real engine takes 60 tiny steps a second; here we take one big 1-second step so you can watch each one land.</p>
+  <pre>import math
+
+GRAVITY = 9.8
+top = 50
+
+position = 0.0
+speed = 2.0
+
+for step in range(14):
+    height = 50 - position / 4        # a dead-straight 200-meter ramp
+    drop = top - height
+    speed = math.sqrt(2 * GRAVITY * drop)
+    if speed &lt; 2:
+        speed = 2                     # the chain's shove
+    position = position + speed * 1.0     # one big 1-second step
+    print(f"after {step + 1} s:  position {position:.1f} m   speed {speed * 2.24:.0f} mph")</pre>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit before you run</span>
+    Steps 1 and 2 move the train about 2 and 3 meters. <strong>Nothing in this loop says &ldquo;speed up.&rdquo;</strong> So step 10: still about 3 meters &mdash; or more? Why?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><p>Step 10 covers about <strong>20 meters</strong> &mdash; and every step beats the one before it: 2, 3, 5, 7, 9&hellip; Nothing says speed up. But each pass through the loop the train sits lower, so <code>drop</code> is bigger, so the sqrt line hands the move line a bigger speed, so the step grows. The rushing <em>emerges</em> from two lines cooperating &mdash; that's the difference between an animation (a script that says where to be) and a simulation (a rule that decides what happens next).</p>
+  <p style="margin-bottom:0">Now the experiment that matters for tomorrow: <strong>delete the two chain's-shove lines and rerun.</strong> Fourteen identical lines: <code>position 0.0 m   speed 0 mph</code>. At the top, drop is 0, sqrt of 0 is 0, and a 0-speed train steps 0 meters &mdash; forever, silently, with no error. Remember this exact silence tomorrow. You will see it again on a real screen, and you'll be the one who knows the cure.</p></div>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>after 1 s:  position 2.0 m   speed 4 mph
+after 2 s:  position 5.1 m   speed 7 mph
+after 3 s:  position 10.1 m   speed 11 mph
+after 4 s:  position 17.2 m   speed 16 mph
+after 5 s:  position 26.4 m   speed 21 mph
+        ...
+after 13 s:  position 181.1 m   speed 61 mph
+after 14 s:  position 210.9 m   speed 67 mph</pre>
+  </div>
 </section>
 
 <!-- HINGE -->

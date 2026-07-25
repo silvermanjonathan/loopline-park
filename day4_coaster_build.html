@@ -77,7 +77,7 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 4</div>
   <h1>The Coaster Build</h1>
   <p class="hook">Today you design a ride and build it &mdash; booth, track, and all. Tomorrow the park opens; today's job is a coaster that runs, soft-launched for one guest.</p>
-  <p class="need">YOU'LL NEED: VS Code &middot; coaster.py (revealed on this page) &middot; pygame installed, or the turtle edition &middot; your blueprint template &middot; your printed Ride Log</p>
+  <p class="need">YOU'LL NEED: VS Code &middot; a new file saved as coaster.py (stages revealed on this page) &middot; pygame installed, or the turtle edition &middot; your blueprint template &middot; your printed Ride Log</p>
 </header>
 
 <main class="wrap">
@@ -88,20 +88,453 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can trace a live simulation against my own track list &mdash; and narrate the code that runs it.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
   </div>
 </section>
 
 <!-- CHUNK 1 -->
 <section class="card" data-chunk="1">
-  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; The engine arrives</span></div>
-  <h2>Run the stock ride</h2>
-  <p>Tuesday you met the track list. Yesterday you met the speed of falling. Today they snap together: the complete coaster simulator, ready to paste into a new file called <code>coaster.py</code>. It's about a hundred lines. The drawing parts are engine machinery &mdash; you read them, you never edit them. The parts that are yours: the track list, and the four physics lines.</p>
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Stage 1 &mdash; The park, no train</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Rails drawn straight from your list</h2>
+  <p>Today you don't paste a finished machine &mdash; you assemble one, in five staged runs, and one of the stages fails on purpose. New file: <code>coaster.py</code>. Paste Stage 1 and run it. There is no train yet and no physics &mdash; just the park, drawn from Tuesday's list.</p>
   <div class="predict">
-    <span class="ptag">Predict &mdash; before your first run</span>
-    Skim the RUN section of the file and find the four physics lines: the height blend, the drop line, the square root, the position step. Under ten seconds means Tuesday and Wednesday did their job. Then commit to this: <strong>no line in this file says "speed up."</strong> Will the train rush the bottom of the drop anyway?
+    <span class="ptag">Predict</span>
+    Before you run: which single line of this file decides how tall the fourth hill is? Then, after your first run: change the <code>33</code> to <code>45</code> and run again. How many <em>drawing</em> lines did you have to edit?
   </div>
-  <button class="reveal" onclick="reveal(this)">Reveal the complete file &mdash; coaster.py</button>
+  <button class="reveal" onclick="reveal(this)">Reveal Stage 1</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR - STAGE 1
+#  The park, no train. Rails drawn straight from your list.
+# ==========================================================
+
+import pygame
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+screen.fill(NAVY)
+pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+for i in range(len(track)):
+    pygame.draw.line(screen, (60, 80, 130),
+                     (rail_points[i][0], rail_points[i][1]),
+                     (rail_points[i][0], 550), 2)
+
+pygame.display.flip()
+pygame.time.wait(6000)      # hold the window open for 6 seconds
+pygame.quit()</pre>
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal the answer</button>
+  <div class="answer">The track list decides everything, and you edited <strong>zero</strong> drawing lines &mdash; the drawing loop reads your shelf fresh on every run and draws whatever it finds. That is the biggest engineering idea of the day: <strong>the track is data, not code.</strong> Change the data, change the ride. Nobody touches the drawing code &mdash; not today, not ever.</div>
+  <div class="see"><span class="tag">You should see</span>
+    A navy window, a green ground line, and yellow rails over 17 support towers &mdash; your park, waiting. The window holds for six seconds and closes. After your edit, the fourth hill stands taller.
+  </div>
+  <p style="margin-top:14px"><strong>No pygame on this machine?</strong> The turtle edition below is the whole machine in one file &mdash; no staging, nothing to install. Paste and run it when the room reaches Stage 4, and read along with Stages 1&ndash;3 anyway: they explain what each part of your file does.</p>
+  <button class="reveal" onclick="reveal(this)">Reveal coaster_turtle.py &mdash; the no-install edition</button>
+  <div class="answer">
+    <p style="margin-top:0">Same track, same physics, nothing to install. The train hops tower to tower instead of gliding, and there's no ride clock &mdash; leave the Ride Log's TIME column blank.</p>
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (turtle edition)
+#  Same track, same physics, nothing to install. The train
+#  steps from tower to tower instead of gliding.
+# ==========================================================
+
+import turtle
+import math
+import time
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+
+# --- SETUP ------------------------------------------------
+screen = turtle.Screen()
+screen.setup(900, 600)
+screen.bgcolor("#1B2951")
+screen.title("Loopline Park - Coaster Simulator (turtle)")
+
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / max(track)
+
+pen = turtle.Turtle()
+pen.hideturtle()
+pen.speed(0)
+pen.pensize(4)
+pen.color("#FCD34D")
+pen.penup()
+pen.goto(-400, track[0] * scale_y - 250)
+pen.pendown()
+for i in range(len(track)):
+    pen.goto(-400 + i * step_x, track[i] * scale_y - 250)
+
+train = turtle.Turtle()
+train.shape("square")
+train.color("#DC2626")
+train.penup()
+train.goto(-400, track[0] * scale_y - 240)
+
+dash = turtle.Turtle()
+dash.hideturtle()
+dash.penup()
+dash.color("#F8FAFC")
+dash.goto(-390, 240)
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+speed = 2.0
+stalled = 0
+
+for i in range(len(track)):
+    height = track[i]            # at a tower, the height IS the list number
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2            # the chain lift lets go at 2 m/s
+
+    if stalled == 1:
+        dash.clear()
+        dash.write("STALLED - hill taller than the lift!", font=("Courier", 18, "bold"))
+        break                    # engine word: ends the loop early
+
+    train.goto(-400 + i * step_x, track[i] * scale_y - 240)
+    dash.clear()
+    dash.write(f"SPEED {speed * 2.24:.0f} mph    HEIGHT {height:.0f} m", font=("Courier", 16, "bold"))
+    time.sleep(SEG_LEN / speed / 4)
+
+turtle.done()</pre>
+  </div>
+</section>
+
+<!-- CHUNK 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; Stage 2 &mdash; Place the train</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Where is it, and how high?</h2>
+  <p>Stage 2 adds a train &mdash; parked, not moving. Select everything in your file, paste Stage 2 over it, and look at the new block before running: it's Tuesday's Class Card, line for line. <code>position</code> is meters along the track; the three new lines work out which two towers the train is between and blend their heights.</p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; Wednesday's card, live</span>
+    <code>position</code> is <code>70.0</code>, and the towers sit 20 m apart. Which two towers is the train between, and what will the HEIGHT readout say? (You computed this exact number on Tuesday's card.)
+  </div>
+  <button class="reveal" onclick="reveal(this)">Reveal Stage 2</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR - STAGE 2
+#  Place the train. No motion yet - just: where is it, how high?
+# ==========================================================
+
+import pygame
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+small = pygame.font.SysFont("couriernew", 18)
+
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- WHERE IS THE TRAIN? ----------------------------------
+position = 70.0
+
+seg = int(position / SEG_LEN)
+frac = (position - seg * SEG_LEN) / SEG_LEN
+height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+screen.fill(NAVY)
+pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+for i in range(len(track)):
+    pygame.draw.line(screen, (60, 80, 130),
+                     (rail_points[i][0], rail_points[i][1]),
+                     (rail_points[i][0], 550), 2)
+
+tx = 50 + (position / SEG_LEN) * step_x
+ty = 550 - height * scale_y
+pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+
+pygame.display.flip()
+pygame.time.wait(6000)
+pygame.quit()</pre>
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal the answer</button>
+  <div class="answer">Between towers 3 and 4, halfway across &mdash; and HEIGHT reads <strong>27&nbsp;m</strong>: the blend of 33 and 22 is 27.5, and the <code>:.0f</code> dial rounds the display. Yesterday that was arithmetic on a card; today it's a red train hanging on a slope. Try <code>position = 300.0</code> and predict the spot before you run: fifteen towers in, on the last little hills.</div>
+  <div class="see"><span class="tag">You should see</span>
+    The same park with a red train parked partway down the first big drop, and a HEIGHT readout in the corner. No motion &mdash; that's Stage 3's job.
+  </div>
+</section>
+
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Stages 3 and 4 &mdash; First motion</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The stage that fails on purpose</h2>
+  <p>Stage 3 adds the physics &mdash; the drop line, the square root, and the move line, inside a 60-frames-a-second loop &mdash; and <em>nothing else</em>. Paste it over your file. Before you run, read the three physics lines out loud, the Monday way: &ldquo;position <em>gets</em> its old self, plus one frame's step.&rdquo;</p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit before running</span>
+    The physics is correct. The drawing is correct. When you run Stage 3, does the train move? (You saw this exact question yesterday, in fourteen lines of text.)
+  </div>
+  <button class="reveal" onclick="reveal(this)">Reveal Stage 3</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR - STAGE 3
+#  First motion. The physics, with nothing else. Will it move?
+# ==========================================================
+
+import pygame
+import math
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    speed = math.sqrt(2 * GRAVITY * drop)
+
+    # move forward by however fast we are going
+    position = position + speed * DT
+
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal what happens &mdash; and Stage 4</button>
+  <div class="answer"><p><strong>It does not move.</strong> SPEED 0 mph, fifty silent seconds, no error anywhere &mdash; yesterday's deleted-shove experiment, now on a real screen. At the very top, <code>drop</code> is 0, <code>math.sqrt(0)</code> is 0, and a 0-speed train takes 0-meter steps forever. The physics isn't wrong; it's <em>waiting</em> &mdash; and silence is not the same as &ldquo;no bug.&rdquo;</p>
+  <p>Stage 4 is the cure, and it is exactly two lines &mdash; the chain lift's final shove, keeping the train above 2 m/s (about 4 mph, the crawl you feel at the crest of a real lift hill):</p>
+<pre>    if speed &lt; 2:
+        speed = 2                # the chain lift lets go at 2 m/s</pre>
+  <p style="margin-bottom:0">Add them right under the sqrt line (match the indentation), or paste the full Stage 4 below. Then run &mdash; this is the payoff of the whole week.</p></div>
+  <button class="reveal" onclick="reveal(this)">Reveal Stage 4 &mdash; the complete happy path</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR - STAGE 4
+#  The chain's shove. Two lines, and the ride comes alive.
+# ==========================================================
+
+import pygame
+import math
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    speed = math.sqrt(2 * GRAVITY * drop)
+    if speed &lt; 2:
+        speed = 2                # the chain lift lets go at 2 m/s
+
+    # move forward by however fast we are going
+    position = position + speed * DT
+
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    The full ride: a red train that crawls off the lift hill at 4 mph and pulls into the station <strong>19.0 seconds</strong> later, topping out at <strong>70 mph</strong> &mdash; and it rushes the bottom of every drop even though <strong>no line in this file says &ldquo;speed up.&rdquo;</strong> The sqrt line hands a bigger speed to the move line, the move line takes a bigger step, and the rushing <em>emerges</em>. Those three physics lines were written once and ran <strong>1,141 times</strong> to make this ride &mdash; Monday's rule at 60 frames a second.
+  </div>
+</section>
+
+<!-- CHUNK 7 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; Stage 5 &mdash; The inspector</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>The one thing square roots refuse to do</h2>
+  <p>Your Stage 4 engine has a hidden weakness. <code>math.sqrt</code> refuses negative numbers &mdash; run <code>print(math.sqrt(-1))</code> in a scratch file and it crashes with <code>ValueError: math domain error</code>. On the stock track, <code>drop</code> never goes below zero&hellip; but you are about to design your <em>own</em> tracks. Stage 5 posts an inspector at the door:</p>
+  <pre>    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2
+
+    if stalled == 0:
+        position = position + speed * DT</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Read the inspector's lines. <code>stalled</code> is the engine's light switch &mdash; 0 running, 1 frozen &mdash; and <code>if stalled == 0</code> (that's <code>==</code> asking, Tuesday's question mark) is the only gate that lets the train move. So: <em>when</em> would <code>drop</code> ever go below zero? What would the train have to be doing? Hold that thought &mdash; the next chunk makes you commit.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Reveal the complete file &mdash; this is your engine now</button>
   <div class="answer">
 <pre># ==========================================================
 #  LOOPLINE PARK - COASTER SIMULATOR  (pygame edition)
@@ -214,111 +647,14 @@ for frame in range(3000):
 pygame.time.wait(3000)
 pygame.quit()</pre>
   </div>
-  <button class="reveal" onclick="reveal(this)">No pygame on this machine? Reveal coaster_turtle.py</button>
-  <div class="answer">
-    <p style="margin-top:0">Same track, same physics, nothing to install. The train hops tower to tower instead of gliding, and there's no ride clock &mdash; leave the Ride Log's TIME column blank.</p>
-<pre># ==========================================================
-#  LOOPLINE PARK - COASTER SIMULATOR  (turtle edition)
-#  Same track, same physics, nothing to install. The train
-#  steps from tower to tower instead of gliding.
-# ==========================================================
-
-import turtle
-import math
-import time
-
-# --- YOUR TRACK -------------------------------------------
-# Each number is a hill height in meters, left to right.
-# Rule 1: the FIRST number is the lift hill. It must be the tallest.
-# Rule 2: change these numbers and rerun. That IS the design job.
-
-track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
-
-SEG_LEN = 20          # each hill tower sits 20 meters from the next
-GRAVITY = 9.8
-
-# --- SETUP ------------------------------------------------
-screen = turtle.Screen()
-screen.setup(900, 600)
-screen.bgcolor("#1B2951")
-screen.title("Loopline Park - Coaster Simulator (turtle)")
-
-step_x = 800 / (len(track) - 1)
-scale_y = 400 / max(track)
-
-pen = turtle.Turtle()
-pen.hideturtle()
-pen.speed(0)
-pen.pensize(4)
-pen.color("#FCD34D")
-pen.penup()
-pen.goto(-400, track[0] * scale_y - 250)
-pen.pendown()
-for i in range(len(track)):
-    pen.goto(-400 + i * step_x, track[i] * scale_y - 250)
-
-train = turtle.Turtle()
-train.shape("square")
-train.color("#DC2626")
-train.penup()
-train.goto(-400, track[0] * scale_y - 240)
-
-dash = turtle.Turtle()
-dash.hideturtle()
-dash.penup()
-dash.color("#F8FAFC")
-dash.goto(-390, 240)
-
-# --- RUN THE RIDE -----------------------------------------
-top = track[0]
-speed = 2.0
-stalled = 0
-
-for i in range(len(track)):
-    height = track[i]            # at a tower, the height IS the list number
-
-    # THE PHYSICS: height you have lost becomes speed you have gained
-    drop = top - height
-    if drop &lt; 0:
-        stalled = 1
-    else:
-        speed = math.sqrt(2 * GRAVITY * drop)
-        if speed &lt; 2:
-            speed = 2            # the chain lift lets go at 2 m/s
-
-    if stalled == 1:
-        dash.clear()
-        dash.write("STALLED - hill taller than the lift!", font=("Courier", 18, "bold"))
-        break                    # engine word: ends the loop early
-
-    train.goto(-400 + i * step_x, track[i] * scale_y - 240)
-    dash.clear()
-    dash.write(f"SPEED {speed * 2.24:.0f} mph    HEIGHT {height:.0f} m", font=("Courier", 16, "bold"))
-    time.sleep(SEG_LEN / speed / 4)
-
-turtle.done()</pre>
-  </div>
   <div class="see"><span class="tag">You should see</span>
-    A navy window: yellow rails across 17 towers, a red train that leaves the lift hill at a crawl and pulls into the station <strong>19.0 seconds</strong> later, topping out at <strong>70 mph</strong>. And yes &mdash; it rushes the bottom, even though nothing says "speed up." Yesterday's line hands a bigger speed to the move line, the move line takes a bigger step, and the rushing <em>emerges</em>. Those four lines were written once and ran <strong>1,141 times</strong> to make this ride &mdash; Monday's rule at 60 frames a second.
+    Paste the complete file and run it once more: same perfect ride, 19.0 seconds &mdash; the inspector changes nothing on a legal track. And take ten seconds to point at all four physics lines in your own file: the height blend, the drop line, the square root, the position step. You watched every one of them get installed.
   </div>
 </section>
 
-<!-- CHUNK 2 -->
-<section class="card" data-chunk="2">
-  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The Ride Log</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
-  <h2>Monday's trace table, with the parking brake off</h2>
-  <p>The dashboard in the corner is three variables &mdash; SPEED, HEIGHT, TIME &mdash; re-printed sixty times a second. Your Ride Log is the pencil checking the machine. On <strong>Grid A</strong>: fill the Height column straight from the track list <em>before</em> you run, then catch towers 3, 9, 11, 13, and 16 as the train crosses and jot TIME and SPEED off the dashboard. One tower per run is plenty; reruns are free. Close counts &mdash; within a second and a couple of mph is a match. <strong>Your completed Grid A is collected today.</strong></p>
-  <div class="predict">
-    <span class="ptag">Predict &mdash; commit before you catch them</span>
-    Towers 9 and 13 are both exactly 18&nbsp;m tall. The train <em>climbs</em> through tower 9 about 13 seconds in, and <em>drops</em> through tower 13 about 17 seconds in &mdash; near the very end. Is the late crossing slower (the ride is running out of steam), faster (it's heading downhill), or exactly the same speed?
-  </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>56 mph. Both. Identical.</strong> The speed line asks the track exactly one question &mdash; <em>how far below the lift hill am I?</em> &mdash; and 50 &minus; 18 = 32 both times. It never asks which direction you're moving or how long you've been riding. Same height, same speed, anywhere on the ride. (Your gut said the late one is slower &mdash; and on a <em>real</em> coaster your gut is right, because friction taxes every meter travelled. This engine doesn't charge that tax. The stretch exit gate hands you the tax collector's badge.)</div>
-</section>
-
-<!-- CHUNK 3 · HINGE -->
-<section class="card hinge" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Chunk 3 &middot; Hinge question &mdash; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+<!-- CHUNK 5 · HINGE -->
+<section class="card hinge" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Chunk 5 &middot; Hinge question &mdash; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>The 55-meter hill</h2>
   <p>Before you design anything, the one question that decides whether your ride finishes. You keep the 50&nbsp;m lift hill &mdash; but partway along, you build a second hill that's <strong>55&nbsp;m</strong> tall:</p>
   <pre>track = [50, 35, 15, 0, 25, 55, 25, 0]</pre>
@@ -330,11 +666,26 @@ turtle.done()</pre>
     <button class="opt" onclick="hinge(this,'D')"><span class="letter">D</span><span>The train speeds up &mdash; a taller hill means a faster ride.</span></button>
   </div>
   <div class="hingefb" id="hingefb"></div>
+  <p style="margin-top:14px"><strong>Then prove it in your own engine:</strong> paste that exact track list into your Stage-5 file and run it. Six seconds in, you'll watch your answer come true &mdash; whichever answer you gave.</p>
 </section>
 
-<!-- CHUNK 4 -->
-<section class="card" data-chunk="4">
-  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
+<!-- CHUNK 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Chunk 6 &middot; The Ride Log</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Monday's trace table, with the parking brake off</h2>
+  <p>Restore the stock track. The dashboard in the corner is three variables &mdash; SPEED, HEIGHT, TIME &mdash; re-printed sixty times a second. Your Ride Log is the pencil checking the machine. On <strong>Grid A</strong>: fill the Height column straight from the track list <em>before</em> you run, then catch <strong>towers 3, 9, and 13 at minimum</strong> (all five rows if time allows) as the train crosses, jotting TIME and SPEED off the dashboard. One tower per run is plenty; reruns are free. Close counts &mdash; within a second and a couple of mph is a match. <strong>Your completed Grid A is collected today.</strong></p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit before you catch them</span>
+    Towers 9 and 13 are both exactly 18&nbsp;m tall. The train <em>climbs</em> through tower 9 about 13 seconds in, and <em>drops</em> through tower 13 about 17 seconds in &mdash; near the very end. Is the late crossing slower (the ride is running out of steam), faster (it's heading downhill), or exactly the same speed?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>56 mph. Both. Identical.</strong> The speed line asks the track exactly one question &mdash; <em>how far below the lift hill am I?</em> &mdash; and 50 &minus; 18 = 32 both times. It never asks which direction you're moving or how long you've been riding. Same height, same speed, anywhere on the ride. (Your gut said the late one is slower &mdash; and on a <em>real</em> coaster your gut is right, because friction taxes every meter travelled. This engine doesn't charge that tax. Friday's Stretch Garage hands you the tax collector's badge.)</div>
+</section>
+
+
+<!-- CHUNK 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
   <h2>The Operator's Booth &mdash; plan it before you type it</h2>
   <p>Here is the studio rule for today, and it decides what counts as a capstone: <strong>a new track list alone is not a capstone.</strong> The engine isn't yours &mdash; you didn't write it, and typing numbers into its list isn't programming. Your program is the <strong>Operator's Booth</strong> that wraps it: it greets the guest, shows the rides, asks a question, and <em>decides which track to load</em> &mdash; then the engine opens your ride as the grand finale. Here's a sample booth blueprint:</p>
   <div class="plan">
@@ -356,9 +707,9 @@ turtle.done()</pre>
   <div class="answer">The red box is the decision (Day 3), the dashed box is the loop (Day 2), and the name and mood questions are Day 1's <code>input()</code> &mdash; three days in one plan, the minimum for yours. And the decision hands the engine a <strong>track list in a variable</strong>: whichever list <code>track</code> gets is the ride that opens. That's the whole architecture &mdash; your booth chooses the data; the engine obeys it. Draw your blueprint on the template now: sequence, at least one loop, at least one decision, and the variables it uses. <strong>No code until your blueprint is approved and signed</strong> &mdash; and the cap is firm: one screen, one loop, one decision.</div>
 </section>
 
-<!-- CHUNK 5 -->
-<section class="card" data-chunk="5">
-  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>Read the error first</h2>
   <p>During the build, things will break. That's the plan working. This crash comes from a real Loopline machine &mdash; the very engine you just ran. Line 1 of the file says <code>import math</code>. Deep inside, one line reads:</p>
   <pre>        speed = sqrt(2 * GRAVITY * drop)</pre>

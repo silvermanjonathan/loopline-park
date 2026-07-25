@@ -51,7 +51,7 @@ section{page-break-inside:avoid;break-inside:avoid}
 </head>
 <body>
 
-<div class="noprint printbtn"><button onclick="window.print()">Print both cards</button></div>
+<div class="noprint printbtn"><button onclick="window.print()">Print all three cards</button></div>
 
 <!-- ================= CARD A · DAY 3 ================= -->
 <div class="sheet sheetA">
@@ -114,7 +114,7 @@ print(height)</pre>
 </div>
 
 <!-- ================= CARD B · DAY 4 ================= -->
-<div class="sheet">
+<div class="sheet sheetA">
 
 <div class="head">
   <div class="eyebrow">Loopline Park &middot; Coaster Lab &middot; Class Card 02 &middot; Day 3</div>
@@ -157,6 +157,68 @@ print(f"{speed * 2.24:.0f} mph")</pre>
 </div>
 <div class="see"><span class="stag">Check yourself</span>
 It prints <code>99 mph</code> &mdash; 4 mph hot. The missing speed leaks away as <strong>friction in the wheels and air pushing back on the train</strong>: every rattle and roar a coaster makes is energy that used to be speed. Your one line of Python landed within 4 mph of a thirty-million-dollar machine, <em>and</em> you can say exactly why it missed. That's the whole job of an engineer. Thursday, this line powers a ride you design yourself.
+</div>
+</section>
+
+<p class="foot">Coaster Lab class material &mdash; no new standards claims; supports the Day-3 reading work claimed on that day's page. The full lab (coaster_lab.html) is the Day-4 build's engine room.</p>
+
+</div>
+
+
+<!-- ================= CARD C · DAY 3 ================= -->
+<div class="sheet">
+
+<div class="head">
+  <div class="eyebrow">Loopline Park &middot; Coaster Lab &middot; Class Card 03 &middot; Day 3</div>
+  <h1>The Engine With No Wheels</h1>
+  <p class="lede">Tomorrow you assemble the coaster on screen. Today its beating heart runs in plain text &mdash; fourteen printed lines, and a surprise.</p>
+</div>
+
+<section>
+<span class="tag">The experiment &middot; move by however fast you are going</span>
+<h2>Type this in a scratch file. Read the move line aloud first: &ldquo;position gets its old self, plus one step.&rdquo;</h2>
+<pre>import math
+
+GRAVITY = 9.8
+top = 50
+
+position = 0.0
+speed = 2.0
+
+for step in range(14):
+    height = 50 - position / 4        # a dead-straight 200-meter ramp
+    drop = top - height
+    speed = math.sqrt(2 * GRAVITY * drop)
+    if speed &lt; 2:
+        speed = 2                     # the chain's shove
+    position = position + speed * 1.0     # one big 1-second step
+    print(f"after {step + 1} s:  position {position:.1f} m   speed {speed * 2.24:.0f} mph")</pre>
+<div class="predict">
+  <span class="ptag">Predict &mdash; commit in pencil first</span>
+  Steps 1 and 2 move the train about 2 and 3 meters. <strong>Nothing in this loop says &ldquo;speed up.&rdquo;</strong> Step 10 will move it about <span class="wline"></span> meters. Why? <span class="wline" style="min-width:60%"></span>
+</div>
+<div class="see"><span class="stag">Now run it &mdash; you should see</span>
+<pre>after 1 s:  position 2.0 m   speed 4 mph
+after 2 s:  position 5.1 m   speed 7 mph
+after 3 s:  position 10.1 m   speed 11 mph
+after 4 s:  position 17.2 m   speed 16 mph
+after 5 s:  position 26.4 m   speed 21 mph
+        ...
+after 13 s:  position 181.1 m   speed 61 mph
+after 14 s:  position 210.9 m   speed 67 mph</pre>
+Step 10 covers about <strong>20 meters</strong> &mdash; every step beats the last: 2, 3, 5, 7, 9&hellip; Nothing says speed up. Each pass, the train sits lower, so <code>drop</code> grows, so the sqrt line hands the move line a bigger speed, so the step grows. The rushing <em>emerges</em>. That is a simulation: not a script that says where to be, but a rule that decides what happens next.
+</div>
+</section>
+
+<section>
+<span class="tag">The second experiment &middot; remember this silence</span>
+<h2>Delete the two chain's-shove lines. Rerun.</h2>
+<div class="predict">
+  <span class="ptag">Predict first</span>
+  Without <code>if speed &lt; 2:</code> and <code>speed = 2</code> &mdash; what do the fourteen lines say now? <span class="wline" style="min-width:55%"></span>
+</div>
+<div class="see"><span class="stag">Check yourself</span>
+Fourteen identical lines: <code>position 0.0 m   speed 0 mph</code>. At the very top, drop is 0, the square root of 0 is 0, and a 0-speed train takes 0-meter steps &mdash; forever, silently, with <strong>no error anywhere</strong>. The physics isn't wrong; it's waiting for a shove. Remember this exact silence: tomorrow you will see it on a real screen, and you'll be the engineer who already knows the cure.
 </div>
 </section>
 
