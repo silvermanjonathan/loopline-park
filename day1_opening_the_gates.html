@@ -53,6 +53,9 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .dot.done{background:var(--green);border-color:var(--green)}
 .tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
 @media (prefers-reduced-motion: reduce){.bulb{animation:none}}
+.angles{border-collapse:collapse;margin:10px 0 6px;font-size:13px}
+.angles th,.angles td{border:1px solid var(--navy-line);padding:4px 12px;text-align:center}
+.angles th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
 </style>
 </head>
 <body>
@@ -60,83 +63,53 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 <header class="hero">
   <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 1</div>
   <h1>Opening the Gates</h1>
-  <p class="hook">The park opens today — and nothing turns on until an engineer tells the computer <em>exactly</em> what to do.</p>
+  <p class="hook">The park opens today &mdash; nothing turns on until an engineer tells the computer <em>exactly</em> what to do. And by closing time, you'll be drawing ride blueprints with a loop.</p>
   <div class="marquee">LOOPLINE PARK
     <div class="bulbs"><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span><span class="bulb"></span></div>
   </div>
-  <p class="need">YOU'LL NEED: VS Code open &middot; a new file saved as day1.py &middot; <a href="day1_trace_table_handout.html" style="color:var(--yellow)">your trace-table handout</a></p>
+  <p class="need">YOU'LL NEED: VS Code open &middot; files saved as day1.py and day1_track.py &middot; <a href="day1_trace_table_handout.html" style="color:var(--yellow)">your trace-table handout</a></p>
 </header>
 
 <main class="wrap">
 
 <section class="card">
   <h2>Today's target</h2>
-  <p><strong>I can make the computer print exactly what I write.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
-  <p><strong>I can store a value in a variable and use what a guest types.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <p><strong>I can make the computer print exactly what I write, and store what a guest types.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
+  <p><strong>I can use a loop to repeat drawing steps instead of copying lines.</strong> <span class="chip">E5-ALG-PS-01</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span>
   </div>
 </section>
 
 <!-- CHUNK 1 -->
 <section class="card" data-chunk="1">
-  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Your first line</span></div>
-  <h2>Turn on the gate speaker</h2>
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Your first line &mdash; then break it</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>The computer does not guess</h2>
   <p>Type this one line into your file, exactly as written, and run it.</p>
   <pre>print("Welcome to Loopline Park!")</pre>
   <div class="predict">
     <span class="ptag" style="color:#b45309">Predict</span>
-    Before you run it: what will appear in the output panel? Will the quotation marks be part of it? Say your guess out loud, then run.
+    What appears in the output panel &mdash; and will the quotation marks be part of it? Say your guess out loud, then run.
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The words appear <strong>without</strong> the quotation marks. The quotes are for Python, not for the guests — they mark where your message starts and ends. Everything between them is called a <strong>string</strong>.</div>
+  <div class="answer">The words appear <strong>without</strong> the quotation marks. The quotes are for Python, not for the guests &mdash; they mark where your message starts and ends. Everything between them is called a <strong>string</strong>. Now sabotage your own line: change <code>print</code> to <code>pint</code> and run again. You get an error message called a <strong>traceback</strong>:
+    <pre>Traceback (most recent call last):
+  File "day1.py", line 1, in &lt;module&gt;
+    pint("Welcome to Loopline Park!")
+NameError: name 'pint' is not defined</pre>
+    <p style="margin:8px 0 0"><strong>Engineer's rule:</strong> read the traceback <em>last line first</em>. It names the problem (<code>pint</code> is not a thing) and the line number where it lives. The computer does only what is written &mdash; nothing has ever demanded exactness from you like this before, and that's the whole game.</p></div>
   <div class="see"><span class="tag">You should see</span>
     <pre>Welcome to Loopline Park!</pre>
+    &hellip;and then, after the sabotage, the traceback. Fix it back before Chunk 2.
   </div>
 </section>
 
 <!-- CHUNK 2 -->
 <section class="card" data-chunk="2">
-  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; Break it on purpose</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
-  <h2>The computer does not guess</h2>
-  <p>Now sabotage your own line. Change <code>print</code> to <code>pint</code> and run it again.</p>
-  <pre>pint("Welcome to Loopline Park!")</pre>
-  <div class="predict">
-    <span class="ptag" style="color:#b45309">Predict</span>
-    Will the computer figure out what you meant, like autocorrect on a phone? What do you think will happen instead?
-  </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">
-    It refuses. You get an error message called a <strong>traceback</strong>:
-    <pre>Traceback (most recent call last):
-  File "day1.py", line 1, in &lt;module&gt;
-    pint("Welcome to Loopline Park!")
-NameError: name 'pint' is not defined</pre>
-    <p style="margin:8px 0 0"><strong>Engineer's rule:</strong> read the traceback <em>last line first</em>. It names the problem (<code>pint</code> is not a thing) and the line number where it lives. The computer does only what is written — nothing has ever demanded exactness from you like this before, and that's the whole game.</p>
-  </div>
-</section>
-
-<!-- CHUNK 3 -->
-<section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Notes to humans</span></div>
-  <h2>The # symbol</h2>
-  <p>Fix your line back to <code>print</code>, then add a label above it:</p>
-  <pre># Gate speaker — plays when the park opens
-print("Welcome to Loopline Park!")</pre>
-  <div class="predict">
-    <span class="ptag" style="color:#b45309">Predict</span>
-    Will the line starting with <code>#</code> show up in the output?
-  </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">No. A line starting with <code>#</code> is a <strong>comment</strong> — a note for human engineers. Python skips it completely. Real engineers label their work so the next person (or Friday-you) knows what each part does.</div>
-</section>
-
-<!-- CHUNK 4 -->
-<section class="card" data-chunk="4">
-  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The marquee</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The marquee</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>Build the entrance marquee</h2>
-  <p>One <code>print()</code> makes one line of output. Stack several to build the big sign, and use comments to label the sections.</p>
+  <p>One <code>print()</code> makes one line of output. Stack several to build the big sign &mdash; and label the sections with <code>#</code>. A line starting with <code>#</code> is a <strong>comment</strong>: a note for human engineers that Python skips completely.</p>
   <pre># Top border
 print("* * * * * * * * * * *")
 # Park name
@@ -146,10 +119,10 @@ print("  GATES OPEN TODAY")
 print("* * * * * * * * * * *")</pre>
   <div class="predict">
     <span class="ptag" style="color:#b45309">Predict</span>
-    How many lines of output will this program make — four, five, or six?
+    How many lines of output will this program make &mdash; four, five, or six?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>Four.</strong> There are six lines of <em>code</em>, but two are comments, and comments never print. Each <code>print()</code> makes exactly one output line, in the order written — top to bottom, like reading.</div>
+  <div class="answer"><strong>Four.</strong> There are six lines of <em>code</em>, but two are comments, and comments never print. Each <code>print()</code> makes exactly one output line, in the order written &mdash; top to bottom, like reading. Real engineers label their work so the next person (or Friday-you) knows what each part does.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre>* * * * * * * * * * *
    LOOPLINE  PARK
@@ -159,9 +132,9 @@ print("* * * * * * * * * * *")</pre>
   </div>
 </section>
 
-<!-- CHUNK 5 -->
-<section class="card" data-chunk="5">
-  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; Variables</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Variables</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>A labeled box that holds a value</h2>
   <p>The ticket booth needs to remember the price. In Python, <code>=</code> does <strong>not</strong> mean "equals." It means <strong>"gets the value of."</strong> Say it out loud: "price <em>gets</em> 20."</p>
   <pre>price = 20
@@ -173,20 +146,20 @@ print(price)</pre>
     What two numbers print? And after line 3 runs, is <code>price</code> both 20 <em>and</em> 15?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">It prints <code>20</code>, then <code>15</code>. A variable is a labeled box holding <strong>one</strong> value at a time. Line 3 takes the 20 out and puts 15 in — the 20 is gone. That's why <code>=</code> is an <em>action</em>, not a fact. Fill in the first two rows of your trace table for this program: one row per line, tracking what <code>price</code> holds.</div>
+  <div class="answer">It prints <code>20</code>, then <code>15</code>. A variable is a labeled box holding <strong>one</strong> value at a time. Line 3 takes the 20 out and puts 15 in &mdash; the 20 is gone. That's why <code>=</code> is an <em>action</em>, not a fact. Fill in the first two rows of your trace table for this program: one row per line, tracking what <code>price</code> holds.</div>
   <div class="see"><span class="tag">You should see</span><pre>20
 15</pre></div>
 </section>
 
-<!-- CHUNK 6 -->
-<section class="card" data-chunk="6">
-  <div class="chunkhead"><span class="chunklabel">Chunk 6 &middot; Listening to guests</span></div>
-  <h2>input() — the booth asks a question</h2>
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; Listening to guests</span></div>
+  <h2>input() &mdash; the booth asks a question</h2>
   <pre>name = input("Welcome! What is your name? ")
 print("Hello, " + name + "!")</pre>
   <div class="predict">
     <span class="ptag" style="color:#b45309">Predict</span>
-    When you run this, what happens first — does anything print right away? What is the program waiting for?
+    When you run this, what happens first &mdash; does anything print right away? What is the program waiting for?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">The question prints, then the program <strong>stops and waits</strong>. Whatever the guest types gets stored in the box labeled <code>name</code>. The <code>+</code> glues strings together, so the greeting uses whatever name was typed.</div>
@@ -197,9 +170,9 @@ Hello, Maya!</pre>
   </div>
 </section>
 
-<!-- CHUNK 7 -->
-<section class="card" data-chunk="7">
-  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; A famous bug</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+<!-- CHUNK 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; A famous bug</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>The '2' + '3' problem</h2>
   <p>The booth needs to add two numbers a guest types. Try it the obvious way:</p>
   <pre>a = input("First number? ")
@@ -207,17 +180,17 @@ b = input("Second number? ")
 print(a + b)</pre>
   <div class="predict">
     <span class="ptag" style="color:#b45309">Predict</span>
-    Type <code>2</code> and then <code>3</code>. What will print — <code>5</code>, or something else?
+    Type <code>2</code> and then <code>3</code>. What will print &mdash; <code>5</code>, or something else?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>It prints <code>23</code>.</strong> Here's the rule that explains it: <code>input()</code> <em>always</em> hands back text, even when the guest types digits. So <code>a</code> holds the string <code>"2"</code> and <code>b</code> holds the string <code>"3"</code>, and <code>+</code> glues strings together instead of adding. It <em>looks</em> numeric on screen — that's exactly why this bug fools professional engineers too. Try <code>print(type(a))</code> to see the proof: <code>&lt;class 'str'&gt;</code>.</div>
+  <div class="answer"><strong>It prints <code>23</code>.</strong> Here's the rule that explains it: <code>input()</code> <em>always</em> hands back text, even when the guest types digits. So <code>a</code> holds the string <code>"2"</code> and <code>b</code> holds the string <code>"3"</code>, and <code>+</code> glues strings together instead of adding. It <em>looks</em> numeric on screen &mdash; that's exactly why this bug fools professional engineers too. Try <code>print(type(a))</code> to see the proof: <code>&lt;class 'str'&gt;</code>.</div>
 </section>
 
-<!-- CHUNK 8 -->
-<section class="card" data-chunk="8">
-  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; int() at the door</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+<!-- CHUNK 6 -->
+<section class="card" data-chunk="6">
+  <div class="chunkhead"><span class="chunklabel">Chunk 6 &middot; int() at the door</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>Convert, then compute the ticket price</h2>
-  <p>Fix the bug by converting text to a number <em>the moment it arrives</em> — "convert at the door." Then use an <strong>f-string</strong> to build a tidy receipt: put an <code>f</code> before the quotes, and anything inside <code>{ }</code> gets swapped for its value. Keep this tool close: on Friday, three f-strings exactly like this one paint a live roller-coaster dashboard sixty times a second.</p>
+  <p>Fix the bug by converting text to a number <em>the moment it arrives</em> &mdash; "convert at the door." Then use an <strong>f-string</strong> to build a tidy receipt: put an <code>f</code> before the quotes, and anything inside <code>{ }</code> gets swapped for its value. Keep this tool close: on Thursday, three f-strings exactly like this one paint a live roller-coaster dashboard sixty times a second.</p>
   <pre>name = input("Welcome! What is your name? ")
 tickets = int(input("How many tickets? "))
 total = tickets * 12
@@ -227,7 +200,7 @@ print(f"{name}, {tickets} tickets cost ${total}.")</pre>
     If the guest is <code>Sam</code> and buys <code>3</code> tickets, what exact line prints? Trace it: what does <code>total</code> hold before line 4 runs?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><code>total</code> holds <code>36</code> (3 &times; 12), so it prints <code>Sam, 3 tickets cost $36.</code> The <code>int()</code> wrapper turns the typed <code>"3"</code> into the number <code>3</code> before it ever lands in the box — so the math works. Finish your trace table for this program: four lines, four rows.</div>
+  <div class="answer"><code>total</code> holds <code>36</code> (3 &times; 12), so it prints <code>Sam, 3 tickets cost $36.</code> The <code>int()</code> wrapper turns the typed <code>"3"</code> into the number <code>3</code> before it ever lands in the box &mdash; so the math works. Finish your trace table for this program: four lines, four rows.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre>Welcome! What is your name? Sam
 How many tickets? 3
@@ -235,40 +208,117 @@ Sam, 3 tickets cost $36.</pre>
   </div>
 </section>
 
+<!-- CHUNK 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; The drafting turtle, the long way</span></div>
+  <h2>A square track, eight lines of code</h2>
+  <p>New file: <code>day1_track.py</code>. The <strong>turtle</strong> is your drafting pen &mdash; it starts in the middle of a window, facing right, and draws wherever it walks. <code>forward(100)</code> walks 100 steps; <code>right(90)</code> turns 90 degrees clockwise <em>on the spot</em>. The park wants a square child-sized coaster track, and here's the brute-force blueprint:</p>
+  <pre>import turtle
+t = turtle.Turtle()
+
+t.forward(100)
+t.right(90)
+t.forward(100)
+t.right(90)
+t.forward(100)
+t.right(90)
+t.forward(100)
+t.right(90)
+
+turtle.done()</pre>
+  <div class="predict">
+    <span class="ptag" style="color:#b45309">Predict</span>
+    Look at the eight drawing lines. How many of them are copies of each other? What exact pair repeats, and how many times?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">All eight are copies: the pair <code>forward(100)</code> + <code>right(90)</code>, repeated <strong>4 times</strong>. Imagine a 36-sided track this way &mdash; 72 lines. Repeating yourself is the computer's job, not yours. That's what the next chunk fixes. (<code>turtle.done()</code> at the end keeps the window open &mdash; it goes at the bottom of every drawing file.)</div>
+  <div class="see"><span class="tag">You should see</span> A window opens and a square gets drawn one side at a time, ending back where the turtle started.</div>
+</section>
+
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The for loop</span><span class="chip">E5-ALG-PS-01</span></div>
+  <h2>Same square, three lines</h2>
+  <pre>import turtle
+t = turtle.Turtle()
+
+for i in range(4):
+    t.forward(100)
+    t.right(90)
+
+turtle.done()</pre>
+  <div class="predict">
+    <span class="ptag" style="color:#b45309">Predict</span>
+    The loop body &mdash; the indented lines &mdash; is written <strong>once</strong>. How many times does it actually <em>run</em>: once, or four times? What will the drawing look like?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Four times</strong> &mdash; the exact same square as Chunk 7. <code>for i in range(4):</code> means "run the indented block 4 times." <strong>Written once &ne; runs once</strong>: that's the single most important idea of the afternoon &mdash; and on Thursday you'll watch four lines written once run over a <em>thousand</em> times to fly a roller coaster. Prove it to yourself now: add <code>print("lap!")</code> inside the loop and count the laps in the output panel.</div>
+  <div class="see"><span class="tag">You should see</span> The identical square from Chunk 7 &mdash; from 8 drawing lines down to 3. If you added the print, the word <code>lap!</code> appears 4 times.</div>
+</section>
+
+<!-- CHUNK 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Chunk 9 &middot; The angle rule</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>360 &divide; sides &mdash; a pentagon track</h2>
+  <p>Change two numbers and the square becomes any shape. But which turn angle? To finish a lap, the turtle's turns must add up to <strong>one full spin: 360&deg;</strong>.</p>
+  <pre>for i in range(5):
+    t.forward(100)
+    t.right(72)</pre>
+  <div class="predict">
+    <span class="ptag" style="color:#b45309">Predict &mdash; this one traps almost everyone</span>
+    Geometry class says a pentagon's <em>interior</em> angle is 108&deg;. So should line 3 say <code>right(108)</code> or <code>right(72)</code>? Why?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>72</strong>, because 360 &divide; 5 = 72. The turtle turns through the <em>exterior</em> angle &mdash; walk a pentagon on the floor and you'll feel it: at each corner you swing past the straight-ahead direction by 72&deg;, and five of those swings make one full 360&deg; spin. Try <code>right(108)</code> anyway and watch the drawing go wrong &mdash; a star-ish tangle, not a track. And push the rule: <code>range(36)</code> with <code>forward(10)</code> and <code>right(10)</code> (36 &times; 10 = 360, still one full spin) draws something that looks like a <strong>circle</strong> &mdash; the loop-the-loop blueprint, 72 brute-force lines for the price of 3.
+  <table class="angles"><tr><th>Sides</th><th>Turn angle</th></tr><tr><td>3</td><td>120</td></tr><tr><td>4</td><td>90</td></tr><tr><td>5</td><td>72</td></tr><tr><td>6</td><td>60</td></tr><tr><td>8</td><td>?</td></tr></table>
+  Fill in the last row on the class chart.</div>
+  <div class="see"><span class="tag">You should see</span> A closed pentagon &mdash; the turtle ends exactly where it started, facing the way it began.</div>
+</section>
+
 <!-- HINGE -->
 <section class="card hinge">
   <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
-  <h2>The two-price ticket</h2>
-  <p>A program runs these two lines, in order: <code>price = 20</code> and then <code>price = 15</code>.<br>What does <code>price</code> hold now — 20, 15, both, or 35?</p>
+  <h2>The two-price ticket, and the octagon contract</h2>
+  <p>Two quick ones &mdash; commit to both before you tap. First: a program runs <code>price = 20</code> and then <code>price = 15</code>. What does <code>price</code> hold now &mdash; 20, 15, both, or 35? Second: the park orders an octagon track, 8 sides. What angle goes in <code>t.right( ? )</code>?</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>15, and only 15.</strong> If you said "both" or "20," re-read Chunk 5 before moving on — everything at the ticket booth (and everything for the rest of camp) depends on this: a variable holds one value, and <code>=</code> replaces it. If you said 15, you're cleared for the build.</div>
+  <div class="answer"><strong>15, and only 15</strong> &mdash; a variable holds one value, and <code>=</code> replaces it. If you said "both" or "20," re-read Chunk 3 before the build; everything for the rest of camp depends on this. And <strong>45</strong>, because 360 &divide; 8 = 45 &mdash; if you reached for the interior angle (135), walk the shape once more. Two rights? You're cleared for the build.</div>
 </section>
 
 <!-- BUILD BRIEF -->
 <section class="card">
-  <div class="chunkhead"><span class="chunklabel">Build brief &middot; The Ticket Booth</span></div>
-  <h2>Your booth, fully staffed</h2>
-  <p>Build a Ticket Booth program that:</p>
-  <p>1. Greets the park by printing a small marquee (2&ndash;3 lines).<br>
+  <div class="chunkhead"><span class="chunklabel">Build brief &middot; The Booth &amp; the Track</span></div>
+  <h2>Open the gates, then draw the midway</h2>
+  <p>Two small builds, in order. <strong>Part 1 &mdash; The Ticket Booth</strong> (in <code>day1.py</code>):</p>
+  <p>1. Prints your marquee, with a comment labeling each section.<br>
      2. Asks the guest's name with <code>input()</code>.<br>
      3. Asks how many tickets they want, converting with <code>int()</code>.<br>
      4. Computes the total (tickets cost $12) and prints a receipt with an f-string.</p>
-  <p><strong>Useful pieces:</strong> <code>print()</code> &middot; <code>input()</code> &middot; <code>int()</code> &middot; <code>*</code> &middot; <code>f"..."</code> &middot; <code>#</code> comments to label each section.</p>
-  <p><strong>Suggested start:</strong> get the marquee printing first. Then add one question at a time, running after every line you add.</p>
+  <p><strong>Part 2 &mdash; The Track Blueprint</strong> (in <code>day1_track.py</code>): a polygon coaster track of <em>your</em> shape &mdash; you pick the sides, you compute the angle with 360 &divide; sides, the loop does the repeating. Add <code>t.color("red")</code> before drawing to paint it. Nobody else's track should match yours.</p>
+  <p><strong>Useful pieces:</strong> <code>print()</code> &middot; <code>input()</code> &middot; <code>int()</code> &middot; <code>*</code> &middot; <code>f"..."</code> &middot; <code>#</code> comments &middot; <code>for i in range(n):</code> &middot; <code>t.forward()</code> / <code>t.right()</code></p>
+  <p><strong>Suggested start:</strong> get the marquee printing first, then add one question at a time, running after every line. For the track: run the square as-is, then change only the sides count and its matching angle. One change per run &mdash; that's how engineers keep control of a blueprint.</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution</button>
   <div class="answer">
 <pre># --- Marquee ---
 print("* * * * * * * * *")
-print(" LOOPLINE  PARK")
+print("  LOOPLINE PARK")
 print("* * * * * * * * *")
 
 # --- Ticket booth ---
 name = input("Welcome! What is your name? ")
-tickets = int(input("How many tickets today? "))
+tickets = int(input("How many tickets? "))
 total = tickets * 12
-print(f"Enjoy the park, {name}!")
-print(f"Receipt: {tickets} tickets = ${total}")</pre>
-    Yours doesn't have to match this — it has to run, and you have to be able to say what each line does.
+print(f"{name}, {tickets} tickets cost ${total}.")</pre>
+<pre># --- Track blueprint: a hexagon midway loop ---
+import turtle
+t = turtle.Turtle()
+t.color("red")
+
+for i in range(6):
+    t.forward(90)
+    t.right(60)
+
+turtle.done()</pre>
+  Hexagon: 360 &divide; 6 = 60. Be ready to say your angle rule out loud at the gallery &mdash; and to name what <code>=</code> means in the booth.
   </div>
 </section>
 
@@ -277,28 +327,29 @@ print(f"Receipt: {tickets} tickets = ${total}")</pre>
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">Your marquee prints correctly, and you can break <code>print</code> on purpose and fix it by reading the traceback last line first.</p></div>
+      <p style="margin:6px 0 0">Your marquee prints correctly, you can break <code>print</code> on purpose and fix it by reading the traceback last line first, and you can draw the square track with a <code>for</code> loop.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">Your full Ticket Booth runs — name, tickets, <code>int()</code> conversion, f-string receipt — and your trace table for the four-line ticket program is complete and correct.</p></div>
+      <p style="margin:6px 0 0">Your full Ticket Booth runs &mdash; name, tickets, <code>int()</code> conversion, f-string receipt &mdash; your trace table for the four-line ticket program is complete, and your own polygon track runs with an angle you computed from 360 &divide; sides.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
-      <p style="margin:6px 0 0">Add a snack stand: ask how many $4 snacks the guest wants, and print one grand-total receipt combining tickets and snacks. Label every section with a comment.</p></div>
+      <p style="margin:6px 0 0">Add a snack stand to the booth: ask how many $4 snacks the guest wants, and print one grand-total receipt combining tickets and snacks. Then make the track spiral: use the loop's variable in the drawing &mdash; <code>t.forward(40 + i * 5)</code> &mdash; and explain why every side grows.</p></div>
   </div>
 </section>
 
 <!-- TEACHER PANEL -->
 <details class="teacher">
-  <summary>Standards &amp; evidence — teacher panel</summary>
+  <summary>Standards &amp; evidence &mdash; teacher panel</summary>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>5, 8; gated by the hinge</td><td>Mastery</td><td>Completed ticket-price trace table (collected); hinge answer on the Maintenance Log.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>2, 7</td><td>Addressed</td><td>Class list of error messages seen and named; student fixes own sabotaged print.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>4, 8, build brief</td><td>Addressed</td><td>Working Ticket Booth program built by extending the marquee.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>3, 4, 6; gated by the hinge</td><td>Addressed</td><td>The completed trace table for the four-line ticket program (collected via the handout).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>1, 5</td><td>Addressed</td><td>Deliberate sabotage-and-repair of print; the '2' + '3' diagnosis; error names collected at the briefing.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>7, 8, 9; build Part 2</td><td>Addressed (partial &mdash; sequence and iteration; selection joins on Day 2, and the full visual plan is Thursday's blueprint)</td><td>Class track-geometry chart; the camper's own polygon track with its 360 &divide; sides angle; octagon-angle Maintenance Log.</td><td>Verified</td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> decisions (<code>if</code>) and repetition (<code>for</code>) — a reader might expect a price that changes with age; that requires selection, which lives on Day 3. Loops live on Day 2. <code>return</code> values are excluded from the whole camp by design.</p>
+  <p><strong>Deliberately not covered here:</strong> E5-PRO-PD-?? is exercised in every chunk that modifies working code (the marquee remix, the booth, the track redesign) and is claimed for Day 1 on the camp alignment tab, not on this page, under the three-standard cap. Nested loops and the <code>rich</code> console library, both part of an earlier five-day layout, are no longer taught in this camp; functions arrive Wednesday, and the coaster build owns Thursday.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 
 </main>
+
 <script>
 // TEACHER SETUP (only if you PASTE embeds into Google Sites): paste the
 // handout page's full https:// address between the quotes and the hero link

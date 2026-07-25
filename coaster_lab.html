@@ -157,8 +157,8 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 <section class="card">
   <div class="chunkhead"><span class="chunklabel">Before you build &middot; Two ways to run this lab</span></div>
   <h2>pygame if you can. turtle if you can't.</h2>
-  <p>The main build uses <strong>pygame</strong>, which draws smooth motion at 60 frames a second. Like Monday's <code>rich</code>, pygame is a real package you install once: type <code>pip install pygame</code> in the VS Code terminal. Unlike <code>rich</code>, it's a big compiled package &mdash; on a managed school machine that install can need an IT ticket, so put the request in <em>before</em> lab day and test it, the same way <code>rich</code> was tested before Monday.</p>
-  <p><strong>pygame is not required for this lab.</strong> If the install isn't happening, use the turtle edition below. Turtle has been running on every machine since Tuesday and installs nothing.</p>
+  <p>The main build uses <strong>pygame</strong>, which draws smooth motion at 60 frames a second. It's a real installed package: type <code>pip install pygame</code> in the VS Code terminal. It's also a big compiled package &mdash; on a managed school machine that install can need an IT ticket, so put the request in <em>before</em> camp and test it on a real camper machine early in the week.</p>
+  <p><strong>pygame is not required for this lab.</strong> If the install isn't happening, use the turtle edition below. Turtle has been running on every machine since Monday and installs nothing.</p>
   <p>What the turtle edition trades away: the train <em>steps</em> from tower to tower instead of gliding &mdash; motion is discrete, not continuous &mdash; there's no ride clock, and a stalled train freezes at the last safe tower instead of partway up the slope. The four physics lines are identical. The speeds, the heights, the stall: identical. Smoothness is the only casualty.</p>
   <button class="reveal" onclick="reveal(this)">Reveal coaster_turtle.py &mdash; the no-install edition</button>
   <div class="answer">
@@ -280,10 +280,10 @@ print(track[0])
 print(track[7])</pre>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Three numbers print. Which three? One is a count of towers, two are heights in meters &mdash; and Wednesday's rule about spot numbers is lurking in here. Commit before you run.
+    Three numbers print. Which three? One is a count of towers, two are heights in meters &mdash; and Tuesday's rule about spot numbers is lurking in here. Commit before you run.
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><code>17</code>, then <code>50</code>, then <code>0</code>. The list is the shelf; the index picks the ride &mdash; Wednesday's roster, wearing meters. <code>track[0]</code> is the <em>first</em> spot: the lift hill, 50 m tall. <code>track[7]</code> is the <em>eighth</em> tower: 0 m, ground level, the bottom of the big drop. And since <code>len(track)</code> counts 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot are one apart, exactly the gap from Wednesday. Nothing new to learn here; the shelf just got taller.</div>
+  <div class="answer"><code>17</code>, then <code>50</code>, then <code>0</code>. The list is the shelf; the index picks the ride &mdash; Tuesday's roster, wearing meters. <code>track[0]</code> is the <em>first</em> spot: the lift hill, 50 m tall. <code>track[7]</code> is the <em>eighth</em> tower: 0 m, ground level, the bottom of the big drop. And since <code>len(track)</code> counts 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot are one apart, exactly the gap from Tuesday. Nothing new to learn here; the shelf just got taller.</div>
   <div class="see"><span class="tag">You should see</span>
     <pre class="out">17
 50
@@ -295,7 +295,7 @@ print(track[7])</pre>
 <section class="card" data-chunk="2">
   <div class="chunkhead"><span class="chunklabel">Chunk 02 &mdash; Drawing the park from the shelf</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>The block you will read but never edit</h2>
-  <p>The engine turns each tower into a spot on screen. You'll recognize the shape of the loop from Wednesday; the rest is new machinery. Read it &mdash; don't memorize it.</p>
+  <p>The engine turns each tower into a spot on screen. You'll recognize the shape of the loop from Monday; the rest is new machinery. Read it &mdash; don't memorize it.</p>
   <pre>tallest = max(track)
 step_x = 800 / (len(track) - 1)
 scale_y = 400 / tallest
@@ -421,7 +421,7 @@ if speed &lt; 2:
     At the very top of the lift hill, <code>height</code> equals <code>top</code>, so <code>drop</code> is 0. What is <code>math.sqrt(0)</code>? And if <code>speed</code> were allowed to keep that value, what would Chunk 05's position line do &mdash; frame after frame, forever?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><code>math.sqrt(0)</code> is <strong>0</strong>. A speed of 0 means a step of 0, which means a train parked at the crest of its own ride &mdash; no error, no traceback, just a red rectangle sitting at the top for the full 50 seconds. Silence is not the same as &ldquo;no bug&rdquo;; Thursday's uncalled stamp taught you that. These two lines are the chain lift's final shove: the train is never allowed below 2 m/s &mdash; about 4 mph, the exact creeping crawl you feel at the top of a real lift hill, right before everything happens.</div>
+  <div class="answer"><code>math.sqrt(0)</code> is <strong>0</strong>. A speed of 0 means a step of 0, which means a train parked at the crest of its own ride &mdash; no error, no traceback, just a red rectangle sitting at the top for the full 50 seconds. Silence is not the same as &ldquo;no bug&rdquo;; Wednesday's uncalled stamp taught you that. These two lines are the chain lift's final shove: the train is never allowed below 2 m/s &mdash; about 4 mph, the exact creeping crawl you feel at the top of a real lift hill, right before everything happens.</div>
 </section>
 
 <!-- CHUNK 7 -->
@@ -455,7 +455,7 @@ if stalled == 0:
     position = position + speed * DT</pre>
   <button class="reveal" onclick="reveal(this)">Tap to reveal what these lines are guarding against</button>
   <div class="answer"><p>Read the traceback last line first, Monday's rule: <code>ValueError: math domain error</code>. &ldquo;Domain&rdquo; is math-speak for &ldquo;that number is not allowed in here.&rdquo; Square roots do not do negatives &mdash; ever.</p>
-  <p>So the engine posts an inspector at the door. <code>if drop &lt; 0</code>: don't touch the math at all &mdash; set <code>stalled</code> to 1 instead. (<code>stalled</code> is the engine's light switch: 0 means running, 1 means frozen.) Only <em>one</em> of the two branches runs, Wednesday's fork. And at the bottom, <code>if stalled == 0</code> &mdash; that's <code>==</code> asking, not <code>=</code> assigning &mdash; is the single gate that lets the train move. Once <code>stalled</code> becomes 1, nothing moves again, and a red STALLED banner comes up for the rest of the run.</p>
+  <p>So the engine posts an inspector at the door. <code>if drop &lt; 0</code>: don't touch the math at all &mdash; set <code>stalled</code> to 1 instead. (<code>stalled</code> is the engine's light switch: 0 means running, 1 means frozen.) Only <em>one</em> of the two branches runs, Tuesday's fork. And at the bottom, <code>if stalled == 0</code> &mdash; that's <code>==</code> asking, not <code>=</code> assigning &mdash; is the single gate that lets the train move. Once <code>stalled</code> becomes 1, nothing moves again, and a red STALLED banner comes up for the rest of the run.</p>
   <p>On the track you've been given, <code>drop</code> never goes below zero. So here is the question this chunk refuses to answer: <strong>when would it?</strong> What would the train have to be doing? Hold that exact question in your hands &mdash; Section 04 makes you commit to an answer.</p></div>
 </section>
 
@@ -507,7 +507,7 @@ for frame in range(3000):
 
     if position &gt;= track_length:
         break</pre>
-  <p>Two engine details worth naming, then never worrying about again. The <code>if seg &gt; len(track) - 2</code> guard keeps <code>seg</code> pointing at a gap that actually exists: 17 towers means the last tower is spot <code>len(track) - 1</code> &mdash; Wednesday's gap &mdash; so the last <em>gap between towers</em> starts one spot earlier still. And <code>break</code> is the train pulling into the station: it ends the <code>for</code> loop early, the moment the ride is complete. <code>break</code> is engine vocabulary &mdash; read it here; don't reach for it in your own builds this week.</p>
+  <p>Two engine details worth naming, then never worrying about again. The <code>if seg &gt; len(track) - 2</code> guard keeps <code>seg</code> pointing at a gap that actually exists: 17 towers means the last tower is spot <code>len(track) - 1</code> &mdash; Tuesday's gap &mdash; so the last <em>gap between towers</em> starts one spot earlier still. And <code>break</code> is the train pulling into the station: it ends the <code>for</code> loop early, the moment the ride is complete. <code>break</code> is engine vocabulary &mdash; read it here; don't reach for it in your own builds this week.</p>
   <button class="reveal" onclick="reveal(this)">Reveal the complete file &mdash; copy it into coaster.py</button>
   <div class="answer">
 <pre># ==========================================================
@@ -631,7 +631,7 @@ TIME 12.5 s   HEIGHT  7 m   SPEED 65 mph
 TIME 15.0 s   HEIGHT 30 m   SPEED 45 mph
 TIME 17.5 s   HEIGHT 11 m   SPEED 62 mph
 TIME 19.0 s   HEIGHT  0 m   SPEED 70 mph   &larr; pulls in; window holds 3 s</pre>
-    And the proof that the train is truly accelerating, not just sliding along a script: in the <em>first</em> 2.5 seconds it covers about <strong>6 meters</strong>. In the 2.5 seconds after the 10-second mark, it covers about <strong>73</strong>. Same clock, twelve times the ground &mdash; and nobody told it to. One more count worth saying out loud: the four physics lines are written once and ran <strong>1,141 times</strong> to make this ride. Written once &ne; runs once &mdash; Tuesday's rule, at 60 frames a second.
+    And the proof that the train is truly accelerating, not just sliding along a script: in the <em>first</em> 2.5 seconds it covers about <strong>6 meters</strong>. In the 2.5 seconds after the 10-second mark, it covers about <strong>73</strong>. Same clock, twelve times the ground &mdash; and nobody told it to. One more count worth saying out loud: the four physics lines are written once and ran <strong>1,141 times</strong> to make this ride. Written once &ne; runs once &mdash; Monday's rule, at 60 frames a second.
   </div>
 </section>
 
@@ -732,7 +732,7 @@ TOWER 13  (dropping, t &asymp; 16.9 s):  SPEED 56 mph</pre>
         position = position + speed * DT</pre>
   <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
   <div class="answer"><p><strong>Bug:</strong> the speed floor is gone &mdash; the two <code>if speed &lt; 2</code> lines were deleted.</p>
-  <p><strong>Why it happens:</strong> at the crest, <code>drop</code> is 0, so <code>math.sqrt(0)</code> is 0, so the step is 0 meters &mdash; and a train that never moves never gets a drop to spend. It looked like those two lines were decoration; they're the chain's last shove over the top. Silence, not a traceback &mdash; the same trap as Thursday's uncalled stamp.</p>
+  <p><strong>Why it happens:</strong> at the crest, <code>drop</code> is 0, so <code>math.sqrt(0)</code> is 0, so the step is 0 meters &mdash; and a train that never moves never gets a drop to spend. It looked like those two lines were decoration; they're the chain's last shove over the top. Silence, not a traceback &mdash; the same trap as Wednesday's uncalled stamp.</p>
   <p><strong>Fix:</strong> restore the floor under the sqrt line: <code>if speed &lt; 2:</code> then <code>speed = 2</code>.</p></div>
 </section>
 
@@ -751,7 +751,7 @@ for i in range(len(track) + 1):
 IndexError: list index out of range</pre>
   <button class="reveal" onclick="reveal(this)">Reveal the bug</button>
   <div class="answer"><p><strong>Bug:</strong> <code>range(len(track) + 1)</code> counts 0 through 17 &mdash; and spot 17 is off the shelf.</p>
-  <p><strong>Why it happens:</strong> there are 17 towers, so it <em>feels</em> like the last one should be number 17. But Wednesday's gap says otherwise: the last spot is <code>len(track) - 1</code>, which is 16. <code>range(len(track))</code> already visits every tower, first to last &mdash; adding one asks for a tower that was never built.</p>
+  <p><strong>Why it happens:</strong> there are 17 towers, so it <em>feels</em> like the last one should be number 17. But Tuesday's gap says otherwise: the last spot is <code>len(track) - 1</code>, which is 16. <code>range(len(track))</code> already visits every tower, first to last &mdash; adding one asks for a tower that was never built.</p>
   <p><strong>Fix:</strong> <code>for i in range(len(track)):</code></p></div>
 </section>
 
@@ -1187,11 +1187,11 @@ pygame.quit()</pre>
 <!-- TEACHER PANEL -->
 <details class="teacher">
   <summary>Standards &amp; evidence &mdash; teacher panel</summary>
-  <p style="margin:4px 0 10px"><strong>Placement (adopted):</strong> core capstone resource. Chunks 01, 03, and 04 run whole-class on Days 3&ndash;4 (via the day pages and class handouts); the engine, Ride Log, hinge, and design build are Day 5's capstone blocks, run from the Day 5 manual, which carries the operator's-booth build brief; and this full page goes home Friday for the encore build with the starter file. Evidence below is collected in camp on Day 5.</p>
+  <p style="margin:4px 0 10px"><strong>Placement (adopted):</strong> core capstone resource. Chunks 01, 03, and 04 run whole-class on Days 2&ndash;3 (via the day pages and class handouts); the engine, Ride Log, hinge, and design build are Day 4's build blocks, run from the Day 4 manual, which carries the operator's-booth build brief; the fix-it clinic and Grand Opening run Friday from the Day 5 manual; and this full page goes home Friday for the encore build with the starter file. Evidence below is collected in camp on Days 4&ndash;5.</p>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 3, 8; Trace Rounds 1&ndash;2; gated by the hinge</td><td>Mastery</td><td>The completed Ride Log: pre-filled heights from the list checked against the live dashboard at marked towers (collected on Day 5).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>2; Broken Coasters; Design brief steps 1&ndash;4</td><td>Addressed</td><td>The track list in two saved versions plus the Ride Log's what-changed-and-why note (collected on Day 5).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 3, 8; Trace Rounds 1&ndash;2; gated by the hinge</td><td>Mastery</td><td>The completed Ride Log: pre-filled heights from the list checked against the live dashboard at marked towers (collected on Day 4).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>2; Broken Coasters; Design brief steps 1&ndash;4</td><td>Addressed</td><td>The track list in two saved versions plus the Ride Log's what-changed-and-why note (collected on Day 4).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
     <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>4, 5, 7; Design brief step 5</td><td>Addressed</td><td>The narration of the three physics lines on the camper's own Version 2 at the Day-5 Grand Opening (home encore encouraged).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
   <p><strong>Deliberately not covered here:</strong> Section 05 is a debugging workout and plainly exercises the camp's testing-and-refining thread; that thread is claimed on Days 1 and 5 of the camp alignment tab and is not claimed on this page, under the three-standard cap. A science colleague will recognize grade-5 energy ideas in Sections 01&ndash;02; that mapping is deliberately left to the delivery note as a words-only suggestion. Camp-wide exclusions hold: no classes, no <code>while</code>, no <code>return</code>, no dictionaries, no file I/O, no exception handling. The engine contains a handful of read-only extras &mdash; <code>max()</code>, <code>.append()</code>, <code>break</code>, the pygame calls, and one nested <code>if</code> (the speed floor inside the inspector's <code>else</code>) &mdash; which the page names as machinery campers read but never write.</p>
