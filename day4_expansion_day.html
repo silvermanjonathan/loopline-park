@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day 4 — Expansion Day</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);--shadow:0 4px 0 rgba(27,41,81,.12);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--navy);color:var(--cream);padding:46px 24px 44px;text-align:center;border-bottom:3px dashed var(--yellow);position:relative;overflow:hidden}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.fw{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:pop 2.6s ease-out infinite}
+.fw.b{background:#F8FAFC;animation-delay:1.3s}
+@keyframes pop{0%{transform:scale(.2);opacity:0}15%{opacity:1}60%{transform:scale(3.6);opacity:.55}100%{transform:scale(5);opacity:0}}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--navy-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--red)}
+pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px;margin-right:8px}
+button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--red)}
+.opts{display:grid;gap:10px;margin:14px 0 0}
+button.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--cream);border:1.5px solid var(--navy-line);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--navy);cursor:pointer;transition:border-color .15s}
+button.opt:hover:enabled{border-color:var(--navy)}
+button.opt .letter{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);min-width:18px}
+button.opt.correct{border-color:var(--green);background:rgba(16,185,129,.10)}
+button.opt.wrong{border-color:var(--red);background:rgba(220,38,38,.08)}
+button.opt:disabled{cursor:default}
+button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.hingefb{display:none;margin-top:14px;padding:14px 16px;border-radius:0 10px 10px 0;font-size:15.5px}
+.hingefb.shown{display:block}
+.hingefb.right{border-left:4px solid var(--green);background:rgba(16,185,129,.08)}
+.hingefb.wrongfb{border-left:4px solid var(--red);background:rgba(220,38,38,.06)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--navy-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--navy-line)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.plan{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0;font-size:14px}
+.pbox{border:2px solid var(--navy);border-radius:10px;padding:8px 16px;background:var(--navy-soft);text-align:center}
+.pbox.loop{border-style:dashed}
+.pbox.dec{border-color:var(--red);border-radius:2px;transform:none;background:rgba(220,38,38,.07)}
+.parrow{font-size:18px;line-height:1}
+@media (prefers-reduced-motion: reduce){.fw{animation:none;opacity:0}}
+.design{border-left:4px solid var(--yellow)}
+.cardsec{margin:14px 0 0}
+.cardseclabel{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <span class="fw" style="top:26%;left:16%"></span><span class="fw b" style="top:18%;left:78%"></span><span class="fw" style="top:58%;left:88%;animation-delay:.7s"></span><span class="fw b" style="top:62%;left:8%;animation-delay:1.9s"></span>
+  <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 4</div>
+  <h1>Expansion Day</h1>
+  <p class="hook">Real parks never stop building. Yesterday you opened your ride for one inspector; today the engineering department fixes what broke &mdash; and ships an upgrade.</p>
+  <p class="need">YOU'LL NEED: VS Code &middot; your booth and coaster from yesterday &middot; your debugging log &middot; your Ride Log (Grid B side) &middot; the Coaster Lab page</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>Today's target</h2>
+  <p><strong>I can find and fix what's broken in my own build &mdash; reading the error first.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
+  <p><strong>I can ship one tested upgrade &mdash; and prove my own ride's numbers on the Ride Log.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
+  <div class="tracker" aria-label="chunk progress">
+    <span class="tlabel">Chunks explored</span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
+  </div>
+</section>
+
+<!-- CHUNK 1 -->
+<section class="card" data-chunk="1">
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Triage</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Three lanes on the board</h2>
+  <p>Every ride breaks the night before opening day &mdash; real parks budget the whole morning for it, and so do we. Run your build from yesterday once, exactly as you left it, and put your name in a lane:</p>
+  <p><strong>RUNNING</strong> &mdash; booth and coaster both work, start to finish. Head for the Stretch Garage below.<br>
+     <strong>ALMOST</strong> &mdash; it runs, but something's wrong: a message misprints, the wrong track loads, the ride stalls.<br>
+     <strong>STUCK</strong> &mdash; it won't start: a traceback before the window even opens.</p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Whichever lane you're in: before you touch anything, what is the <em>first line you will read</em>, and where is it?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The <strong>last line of the traceback</strong> if there is one &mdash; the week's oldest rule, still undefeated. If there's no traceback (the ALMOST lane's silent bugs), the first thing you read is the <strong>dashboard</strong>: SPEED 0 means the floor is missing, a STALLED banner means a hill out-talled the lift, a parked train at 4 mph means the position line lost its old self. Being in STUCK this morning is not failure &mdash; it's why Expansion Day exists, and why the ribbon isn't until Friday. </div>
+</section>
+
+<!-- CHUNK 2 -->
+<section class="card" data-chunk="2">
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The clinic rules</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+  <h2>Nobody's hands on your keyboard</h2>
+  <p>The clinic runs in pairs: one engineer drives, the partner reads over their shoulder &mdash; out loud, last line first. Nobody fixes code on someone else's machine, including the teacher. Every fix goes in the two-line debugging log: <em>what broke, what fixed it.</em> <strong>The log is collected today &mdash; it's your proof that the fixing was yours.</strong></p>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    From yesterday's soft launches, three bugs will show up all over the room this morning. Before you tap: name the two most likely <em>crashes</em>, and the one most likely <em>silent</em> failure.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The crashes: a missing <code>:</code> on an <code>if</code> line (<code>SyntaxError</code> &mdash; refuses to run at all), and <code>=</code> where <code>==</code> belongs in the mood decision (also <code>SyntaxError</code> &mdash; an assignment where a question goes). The silent one: the <strong>STALLED banner</strong> &mdash; a later hill out-talling the lift. That last one isn't a Python bug at all; it's a physics bug, your inspector caught it, and the fix is a smaller number, not different code. If your bug isn't one of these three, the protocol doesn't change: run it, read it, log it, fix one thing, run again.</div>
+</section>
+
+<!-- STRETCH GARAGE -->
+<section class="card design">
+  <div class="chunkhead"><span class="chunklabel">The Stretch Garage &middot; for the RUNNING lane</span></div>
+  <h2>Upgrades, tested and priced</h2>
+  <p>One rule before any upgrade: <strong>copy your working version into a comment first.</strong> Engineers never modify the only working copy. Then pick:</p>
+  <div class="cardsec"><span class="cardseclabel">Teach the engine friction</span>
+    <p style="margin:4px 0 0">Change the drop line to <code>drop = top - height - position * 0.01</code> and rerun: the stock ride's top speed dips from 70 to 69 mph. Then build a 99&nbsp;m Fury-style lift hill and raise the <code>0.01</code> until the predicted top speed lands on the real Fury 325's 95 mph &mdash; the honest number is up near <code>0.08</code>. Be ready to say where the missing speed physically went.</p></div>
+  <div class="cardsec"><span class="cardseclabel">The mystery ride</span>
+    <p style="margin:4px 0 0">A third booth option where <code>track</code> gets chosen by <code>random.choice()</code> from a list of your track lists &mdash; Tuesday's spinner, now spinning whole roller coasters.</p></div>
+  <div class="cardsec"><span class="cardseclabel">The fast-pass lane</span>
+    <p style="margin:4px 0 0">A second decision in the booth: fast-pass guests get a different greeting, a shorter message, or their own express track.</p></div>
+  <div class="cardsec"><span class="cardseclabel">Opening-day polish</span>
+    <p style="margin:4px 0 0">A grander boarding pass with f-strings, a renamed ride caption, repainted park colors &mdash; cosmetic dials, all safe.</p></div>
+</section>
+
+<!-- CHUNK 3 -->
+<section class="card" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Prove your own ride</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Grid B &mdash; the Ride Log, on your numbers</h2>
+  <p>Yesterday you checked the machine on the stock track. Today you check it on <em>yours</em>. Flip your Ride Log to <strong>Grid B</strong>: circle five towers on your own track, fill the Height column straight from your list <em>before</em> you run, then catch TIME and SPEED at each as the train crosses. One tower per run; reruns are free; turtle riders leave TIME blank. <strong>Grid B is collected today.</strong></p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit before you run</span>
+    Circle the row with your <strong>smallest</strong> Height. Will it also be your <strong>biggest</strong> SPEED &mdash; and why must that always be true on this engine?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>Always.</strong> The speed line asks the track exactly one question &mdash; how far below the lift hill am I? &mdash; so the lowest point is the biggest withdrawal is the biggest speed, on your track, on anyone's track, every time. If your list and the dashboard disagree at any tower, one of them is wrong &mdash; and finding out which one is the actual job of an engineer.</div>
+</section>
+
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The upgrade note</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Version 3 &mdash; what changed, and why</h2>
+  <p>Every engineer ships at least one change today: a Garage upgrade, or a track redesign with a goal (Version 3). The rule stands: <strong>working version into a comment first</strong> &mdash; never modify the only working copy. Then, under the Version note on your Ride Log, write today's line: <em>what you changed, and why</em>. One sentence, collected.</p>
+  <div class="predict">
+    <span class="ptag">Before you write it</span>
+    The weakest upgrade note in the park is "I made it better." Say your note out loud first: does it name the change <em>and</em> the goal? "Raised the third hill to 40 so the middle stops dragging" &mdash; that's an engineer talking.
+  </div>
+</section>
+
+<!-- EXITS -->
+<section class="card">
+  <h2>Choose your exit gate</h2>
+  <div class="exits">
+    <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
+      <p style="margin:6px 0 0">Your bug count went down today &mdash; your log shows at least one fix you made yourself &mdash; and your ride runs start to finish.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
+      <p style="margin:6px 0 0">Your build runs, Grid B matches your own list at five towers, and one upgrade shipped with a what-changed-and-why note that names the change and the goal.</p></div>
+    <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
+      <p style="margin:6px 0 0">The friction tune lands your 99&nbsp;m build on Fury 325's real 95 mph, or your booth gains a second decision <em>and</em> survives a guest typing nonsense &mdash; and you can explain where the missing speed physically goes, or which line makes the booth unbreakable.</p></div>
+  </div>
+</section>
+
+<!-- TEACHER PANEL -->
+<details class="teacher">
+  <summary>Standards &amp; evidence &mdash; teacher panel</summary>
+  <table>
+    <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
+    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>1, 2; the clinic</td><td>Mastery</td><td>The camper independently diagnoses and repairs their own build; the two-line debugging log (begun on Day 3) is collected today. This is the rubric's protected row &mdash; it cannot be satisfied by anyone else's hands.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>3</td><td>Mastery</td><td>Ride Log Grid B: the camper's own track, heights pre-filled from their list and checked live against the dashboard (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>4; the Garage</td><td>Addressed</td><td>One shipped upgrade or Version 3 with the what-changed-and-why note (collected on the Ride Log).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+  </table>
+  <p><strong>Deliberately not covered here:</strong> the physics-lines narration is rehearsed and performed at Friday's Grand Opening, where E5-PRO-RD-?? is claimed on the Day 5 page, along with the human-centered-design reflection (E5-ALG-IM-03) and the CIA-triad security debrief (E5-SYS-SE-13). The capstone blueprint (E5-ALG-PS-01) was collected yesterday on the Day 3 page. And machine learning: the Smart Turnstile module has been removed from this camp; E5-ALG-ML-02 is no longer claimed anywhere.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+</main>
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>

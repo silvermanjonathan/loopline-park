@@ -79,69 +79,38 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <span class="fw" style="top:26%;left:16%"></span><span class="fw b" style="top:18%;left:78%"></span><span class="fw" style="top:58%;left:88%;animation-delay:.7s"></span><span class="fw b" style="top:62%;left:8%;animation-delay:1.9s"></span>
   <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 5</div>
   <h1>Grand Opening</h1>
-  <p class="hook">Every ride breaks the night before opening day. Real parks fix, rehearse, and cut the ribbon &mdash; today, so do you.</p>
-  <p class="need">YOU'LL NEED: VS Code &middot; your booth and coaster from yesterday &middot; your debugging log &middot; your Ride Log and reflection slip</p>
+  <p class="hook">Fixed. Upgraded. Rehearsed. Today the ribbon actually gets cut &mdash; and your ride meets the public.</p>
+  <p class="need">YOU'LL NEED: VS Code &middot; your finished booth and coaster &middot; your reflection slip draft &middot; your narration, ready</p>
 </header>
 
 <main class="wrap">
 
 <section class="card">
   <h2>Today's target</h2>
-  <p><strong>I can find and fix what's broken in my own build &mdash; reading the error first.</strong> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
   <p><strong>I can present my ride, narrate the physics that runs it, and name who it's for.</strong> <span class="chip unv">E5-PRO-RD-?? &#9888;</span> <span class="chip">E5-ALG-IM-03</span></p>
+  <p><strong>My attraction opens inspected, rehearsed, and ready.</strong></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span>
   </div>
 </section>
 
 <!-- CHUNK 1 -->
 <section class="card" data-chunk="1">
-  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Triage</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
-  <h2>Three lanes on the board</h2>
-  <p>Every ride breaks the night before opening day &mdash; real parks budget the whole morning for it, and so do we. Run your build from yesterday once, exactly as you left it, and put your name in a lane:</p>
-  <p><strong>RUNNING</strong> &mdash; booth and coaster both work, start to finish. Head for the Stretch Garage below.<br>
-     <strong>ALMOST</strong> &mdash; it runs, but something's wrong: a message misprints, the wrong track loads, the ride stalls.<br>
-     <strong>STUCK</strong> &mdash; it won't start: a traceback before the window even opens.</p>
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; The opening-day inspection</span></div>
+  <h2>Run it once, exactly as it will run at 3:25</h2>
+  <p>Every real park does a final inspection the morning of opening day. Run your build once, start to finish, and check three things: the ride <strong>completes</strong> (no banner), the booth <strong>survives a strange answer</strong> at its question, and you can <strong>say the three physics lines</strong> without looking. Anything fails &rarr; the clinic corner is open all morning &mdash; the clinic never really closes &mdash; while everyone else rehearses.</p>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Whichever lane you're in: before you touch anything, what is the <em>first line you will read</em>, and where is it?
+    Before the run: which of the three checks are you least sure of &mdash; and what's your plan if it fails?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The <strong>last line of the traceback</strong> if there is one &mdash; the week's oldest rule, still undefeated. If there's no traceback (the ALMOST lane's silent bugs), the first thing you read is the <strong>dashboard</strong>: SPEED 0 means the floor is missing, a STALLED banner means a hill out-talled the lift, a parked train at 4 mph means the position line lost its old self. Being in STUCK on Friday morning is not failure &mdash; it's why the ribbon is at 3:30 and not 9:00.</div>
+  <div class="answer">Whatever you named &mdash; that's the one to rehearse hardest. A failed check this morning costs ten minutes; a failed check at the microphone costs the show. Real engineers inspect <em>because</em> they expect to find something.</div>
 </section>
 
 <!-- CHUNK 2 -->
 <section class="card" data-chunk="2">
-  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The clinic rules</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
-  <h2>Nobody's hands on your keyboard</h2>
-  <p>The clinic runs in pairs: one engineer drives, the partner reads over their shoulder &mdash; out loud, last line first. Nobody fixes code on someone else's machine, including the teacher. Every fix goes in the two-line debugging log: <em>what broke, what fixed it.</em> <strong>The log is collected today &mdash; it's your proof that the fixing was yours.</strong></p>
-  <div class="predict">
-    <span class="ptag">Predict</span>
-    From yesterday's soft launches, three bugs will show up all over the room this morning. Before you tap: name the two most likely <em>crashes</em>, and the one most likely <em>silent</em> failure.
-  </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The crashes: a missing <code>:</code> on an <code>if</code> line (<code>SyntaxError</code> &mdash; refuses to run at all), and <code>=</code> where <code>==</code> belongs in the mood decision (also <code>SyntaxError</code> &mdash; an assignment where a question goes). The silent one: the <strong>STALLED banner</strong> &mdash; a later hill out-talling the lift. That last one isn't a Python bug at all; it's a physics bug, your inspector caught it, and the fix is a smaller number, not different code. If your bug isn't one of these three, the protocol doesn't change: run it, read it, log it, fix one thing, run again.</div>
-</section>
-
-<!-- STRETCH GARAGE -->
-<section class="card design">
-  <div class="chunkhead"><span class="chunklabel">The Stretch Garage &middot; for the RUNNING lane</span></div>
-  <h2>Upgrades, tested and priced</h2>
-  <p>One rule before any upgrade: <strong>copy your working version into a comment first.</strong> Engineers never modify the only working copy. Then pick:</p>
-  <div class="cardsec"><span class="cardseclabel">Teach the engine friction</span>
-    <p style="margin:4px 0 0">Change the drop line to <code>drop = top - height - position * 0.01</code> and rerun: the stock ride's top speed dips from 70 to 69 mph. Then build a 99&nbsp;m Fury-style lift hill and raise the <code>0.01</code> until the predicted top speed lands on the real Fury 325's 95 mph &mdash; the honest number is up near <code>0.08</code>. Be ready to say where the missing speed physically went.</p></div>
-  <div class="cardsec"><span class="cardseclabel">The mystery ride</span>
-    <p style="margin:4px 0 0">A third booth option where <code>track</code> gets chosen by <code>random.choice()</code> from a list of your track lists &mdash; Wednesday's spinner, now spinning whole roller coasters.</p></div>
-  <div class="cardsec"><span class="cardseclabel">The fast-pass lane</span>
-    <p style="margin:4px 0 0">A second decision in the booth: fast-pass guests get a different greeting, a shorter message, or their own express track.</p></div>
-  <div class="cardsec"><span class="cardseclabel">Opening-day polish</span>
-    <p style="margin:4px 0 0">A grander boarding pass with f-strings, a renamed ride caption, repainted park colors &mdash; cosmetic dials, all safe.</p></div>
-</section>
-
-<!-- CHUNK 3 -->
-<section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; The rehearsal</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The rehearsal</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
   <h2>Run it once for one person</h2>
   <p>Before the room, one partner. Run your booth with them as the guest, and practice the narration: as your train runs, say the three physics lines <em>on your own track</em> &mdash; where-am-I (the height line), height-into-speed (the sqrt line), move-by-my-speed (the position line). Time it: the whole walkthrough is two minutes.</p>
   <div class="predict">
@@ -152,8 +121,8 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <div class="answer">Something like: <em>"Nothing tells it to speed up. The lower the train gets, the bigger the speed the sqrt line computes, so the position line takes bigger steps &mdash; the rushing happens on its own."</em> If you can say that sentence, you understand your machine better than most adults who ride one. Last step of rehearsal: draft your reflection slip &mdash; one design choice you made, and who your ride serves&hellip; and who it doesn't.</div>
 </section>
 
-<!-- CHUNK 4 · GRAND OPENING -->
-<section class="card" data-chunk="4">
+<!-- CHUNK 3 · GRAND OPENING -->
+<section class="card" data-chunk="3">
   <div class="chunkhead"><span class="chunklabel">3:25 &middot; The Grand Opening</span><span class="chip">E5-ALG-IM-03</span></div>
   <h2>Two minutes at the microphone</h2>
   <p>Every engineer presents. The walkthrough contract:</p>
@@ -172,11 +141,11 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">Your ride runs by 3:25 and you presented it &mdash; pointing at the loop and the decision <em>you</em> wrote.</p></div>
+      <p style="margin:6px 0 0">Your ride runs at 3:25 and you presented it &mdash; pointing at the loop and the decision <em>you</em> wrote.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">You diagnosed and fixed at least one bug yourself today &mdash; your log shows it &mdash; your booth and ride meet Thursday's contract, and your walkthrough narrated the three physics lines and named your design choice and its audience.</p></div>
+      <p style="margin:6px 0 0">Your walkthrough ran live on a classmate's answers, narrated the three physics lines on your own track, and named your design choice and its audience &mdash; slip handed in.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
-      <p style="margin:6px 0 0">One Garage upgrade shipped and explained &mdash; where the friction speed physically goes, or how the mystery ride chooses &mdash; plus, at the walkthrough, the design you rejected and why.</p></div>
+      <p style="margin:6px 0 0">A guest asks a question during your walkthrough and you answer it with a <em>live experiment</em> &mdash; change one number, rerun, point at the difference &mdash; plus the design you rejected, and why.</p></div>
   </div>
 </section>
 
@@ -185,16 +154,14 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <summary>Standards &amp; evidence &mdash; teacher panel</summary>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>1, 2; the clinic</td><td>Mastery</td><td>The camper independently diagnoses and repairs their own build; the two-line debugging log (Days 4&ndash;5) is collected today. This is the rubric's protected row &mdash; it cannot be satisfied by anyone else's hands.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>3, 4</td><td>Addressed</td><td>The Grand Opening narration of the three physics lines on the camper's own Version 2.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-ALG-IM-03</td><td>Articulate how human-centered design principles are incorporated into the development of a computing technology.</td><td>3, 4</td><td>Mastery</td><td>The collected reflection slip: one design choice in the camper's own ride and who it serves or excludes.</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-RD-??</td><td>Grade-5 progression: students describe how code completes tasks and explain program steps. [Confirm exact code and wording at source.]</td><td>2, 3</td><td>Addressed</td><td>The Grand Opening narration of the three physics lines on the camper's own final version.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-ALG-IM-03</td><td>Articulate how human-centered design principles are incorporated into the development of a computing technology.</td><td>2, 3</td><td>Mastery</td><td>The collected reflection slip: one design choice in the camper's own ride and who it serves or excludes.</td><td>Verified</td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> the fix-it clinic is Program Development at its richest &mdash; E5-PRO-PD-?? is claimed for Day 5 on the camp alignment tab, not on this page, under the three-standard cap. The CIA-triad security debrief (E5-SYS-SE-13) is scripted into the Grand Opening block above but remains a live, teacher-led conversation, claimed on the camp tab. The capstone blueprint (E5-ALG-PS-01) was collected yesterday on the Day 4 page. And machine learning: the Smart Turnstile module has been removed from this camp; E5-ALG-ML-02 is no longer claimed anywhere.</p>
+  <p><strong>Deliberately not covered here:</strong> the fix-it clinic and the debugging log belong to Days 3&ndash;4, where E5-PRO-TR-?? and E5-PRO-PD-?? are claimed &mdash; this morning's inspection is warranty work, not new evidence. The CIA-triad security debrief (E5-SYS-SE-13) is scripted into the Grand Opening block above but remains a live, teacher-led conversation, claimed on the camp tab. The capstone blueprint (E5-ALG-PS-01) was collected Wednesday on the Day 3 page. And machine learning: the Smart Turnstile module has been removed from this camp; E5-ALG-ML-02 is no longer claimed anywhere.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 
 </main>
-
 <script>
 function reveal(btn){
   if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
