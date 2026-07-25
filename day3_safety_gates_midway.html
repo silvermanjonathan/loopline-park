@@ -73,7 +73,7 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can keep a list of rides and pick one out by its number.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
   </div>
 </section>
 
@@ -122,12 +122,12 @@ Not this ride today — Splash Canyon awaits!</pre>
 <!-- CHUNK 3 -->
 <section class="card" data-chunk="3">
   <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Three-way fork</span><span class="chip">E5-ALG-PS-01</span></div>
-  <h2>elif — kiddie, family, or thrill</h2>
+  <h2>elif — child, family, or thrill</h2>
   <p>The park has three ride bands. <code>elif</code> ("else if") adds a middle path. Python checks top to bottom and takes the <strong>first</strong> true path — then skips the rest.</p>
   <pre>height = int(input("Your height in inches? "))
 
 if height &lt; 36:
-    print("Kiddie rides — the Tea Cups are calling!")
+    print("Child rides — the Tea Cups are calling!")
 elif height &lt; 48:
     print("Family rides — all aboard Splash Canyon!")
 else:
@@ -236,6 +236,27 @@ print(len(rides))</pre>
 - Sky Drop
 4</pre>
   </div>
+</section>
+
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The other list</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Friday preview &mdash; a list that holds a roller coaster</h2>
+  <p>Everything you just did with ride names works on numbers &mdash; and on Friday, one list of numbers becomes the Grand Opening's roller coaster. Each number is a support tower's height in meters, left to right. Same shelf, higher stakes.</p>
+  <pre>track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+print(len(track))
+print(track[0])
+print(track[7])</pre>
+  <div class="predict">
+    <span class="ptag">Predict</span>
+    Three numbers print: one is a count of towers, two are heights in meters. Which three? And the trap from Chunk 7 is lurking: what's the <em>last</em> tower's index?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><code>17</code>, then <code>50</code>, then <code>0</code>. <code>track[0]</code> is the first tower &mdash; the 50&nbsp;m lift hill. <code>track[7]</code> is the <em>eighth</em>: ground level, the bottom of the big drop. And with 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot, one apart, exactly Chunk 7's gap. On a name roster, getting that wrong prints the wrong ride. On Friday's coaster, it crashes a real one.</div>
+  <div class="see"><span class="tag">You should see</span><pre>17
+50
+0</pre></div>
 </section>
 
 <!-- HINGE -->

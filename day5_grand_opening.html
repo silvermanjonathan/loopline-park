@@ -27,7 +27,7 @@ h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;m
 pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
 .predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
 .ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
-button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px;margin-right:8px}
 button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
 .answer.open{display:block}
@@ -35,6 +35,18 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
 .see pre{background:#0d3a2c;margin:10px 0 2px}
 .hinge{border:2px solid var(--red)}
+.opts{display:grid;gap:10px;margin:14px 0 0}
+button.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--cream);border:1.5px solid var(--navy-line);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--navy);cursor:pointer;transition:border-color .15s}
+button.opt:hover:enabled{border-color:var(--navy)}
+button.opt .letter{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);min-width:18px}
+button.opt.correct{border-color:var(--green);background:rgba(16,185,129,.10)}
+button.opt.wrong{border-color:var(--red);background:rgba(220,38,38,.08)}
+button.opt:disabled{cursor:default}
+button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.hingefb{display:none;margin-top:14px;padding:14px 16px;border-radius:0 10px 10px 0;font-size:15.5px}
+.hingefb.shown{display:block}
+.hingefb.right{border-left:4px solid var(--green);background:rgba(16,185,129,.08)}
+.hingefb.wrongfb{border-left:4px solid var(--red);background:rgba(220,38,38,.06)}
 .exits{display:grid;gap:14px}
 .exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
 .lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
@@ -64,8 +76,8 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <span class="fw" style="top:26%;left:16%"></span><span class="fw b" style="top:18%;left:78%"></span><span class="fw" style="top:58%;left:88%;animation-delay:.7s"></span><span class="fw b" style="top:62%;left:8%;animation-delay:1.9s"></span>
   <div class="eyebrow">Loopline Park &middot; Junior Engineering Crew &middot; Day 5</div>
   <h1>Grand Opening</h1>
-  <p class="hook">This afternoon the park gets smart — and then it gets the one thing it's been missing all week: an attraction designed by you.</p>
-  <p class="need">YOU'LL NEED: the no-code ML tool &middot; a device with a camera &middot; your blueprint template &middot; VS Code for the build</p>
+  <p class="hook">This afternoon the park gets the one thing it has been missing all week: a roller coaster &mdash; designed by you, opened to the public.</p>
+  <p class="need">YOU'LL NEED: VS Code &middot; coaster.py (revealed on this page) &middot; pygame installed, or the turtle edition &middot; your blueprint template &middot; your printed Ride Log</p>
 </header>
 
 <main class="wrap">
@@ -73,7 +85,7 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 <section class="card">
   <h2>Today's target</h2>
   <p><strong>I can plan an attraction with a picture before I code it.</strong> <span class="chip">E5-ALG-PS-01</span></p>
-  <p><strong>I can teach a computer with examples — and explain why it gets things wrong.</strong> <span class="chip">E5-ALG-ML-02</span></p>
+  <p><strong>I can trace a live simulation against my own track list &mdash; and narrate the code that runs it.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
     <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span>
@@ -82,77 +94,273 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 
 <!-- CHUNK 1 -->
 <section class="card" data-chunk="1">
-  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; Rules vs. examples</span></div>
-  <h2>Two ways to teach a machine</h2>
-  <p>All week you wrote <strong>rules</strong>: <em>if height &lt; 48, family rides.</em> You told the computer exactly what to do, and it did exactly that. But nobody ever gave you a rule for recognizing your best friend's face — you learned from <strong>examples</strong>.</p>
+  <div class="chunkhead"><span class="chunklabel">Chunk 1 &middot; The engine arrives</span></div>
+  <h2>Run the stock ride</h2>
+  <p>Wednesday you met the track list. Thursday you met the speed of falling. Today they snap together: the complete coaster simulator, ready to paste into a new file called <code>coaster.py</code>. It's about a hundred lines. The drawing parts are engine machinery &mdash; you read them, you never edit them. The parts that are yours: the track list, and the four physics lines.</p>
   <div class="predict">
-    <span class="ptag">Predict</span>
-    Could you write an if/elif/else rule that recognizes a thumbs-up in a photo? Try to imagine the conditions you'd need. What makes it so much harder than the height gate?
+    <span class="ptag">Predict &mdash; before your first run</span>
+    Skim the RUN section of the file and find the four physics lines: the height blend, the drop line, the square root, the position step. Under ten seconds means Wednesday and Thursday did their job. Then commit to this: <strong>no line in this file says "speed up."</strong> Will the train rush the bottom of the drop anyway?
   </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">There's no clean rule to write — thumbs come at every angle, size, lighting, and skin tone, and "the thumb pixel is up" isn't a condition Python has. For problems like this, engineers flip the approach: instead of writing rules, they show the computer <strong>labeled examples</strong> and let it find its own patterns. That's <strong>machine learning</strong> — and it's what the park's new turnstile runs on.</div>
+  <button class="reveal" onclick="reveal(this)">Reveal the complete file &mdash; coaster.py</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (pygame edition)
+#  Design a track. Watch the physics run it. 60 frames a second.
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN
+speed = 2.0
+stalled = 0
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # WHERE ARE WE? -- find the two towers we are between
+    seg = int(position / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (position - seg * SEG_LEN) / SEG_LEN
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+    # move forward by however fast we are going
+    if stalled == 0:
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    # the train
+    tx = 50 + (position / SEG_LEN) * step_x
+    ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  </div>
+  <button class="reveal" onclick="reveal(this)">No pygame on this machine? Reveal coaster_turtle.py</button>
+  <div class="answer">
+    <p style="margin-top:0">Same track, same physics, nothing to install. The train hops tower to tower instead of gliding, and there's no ride clock &mdash; leave the Ride Log's TIME column blank.</p>
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (turtle edition)
+#  Same track, same physics, nothing to install. The train
+#  steps from tower to tower instead of gliding.
+# ==========================================================
+
+import turtle
+import math
+import time
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+GRAVITY = 9.8
+
+# --- SETUP ------------------------------------------------
+screen = turtle.Screen()
+screen.setup(900, 600)
+screen.bgcolor("#1B2951")
+screen.title("Loopline Park - Coaster Simulator (turtle)")
+
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / max(track)
+
+pen = turtle.Turtle()
+pen.hideturtle()
+pen.speed(0)
+pen.pensize(4)
+pen.color("#FCD34D")
+pen.penup()
+pen.goto(-400, track[0] * scale_y - 250)
+pen.pendown()
+for i in range(len(track)):
+    pen.goto(-400 + i * step_x, track[i] * scale_y - 250)
+
+train = turtle.Turtle()
+train.shape("square")
+train.color("#DC2626")
+train.penup()
+train.goto(-400, track[0] * scale_y - 240)
+
+dash = turtle.Turtle()
+dash.hideturtle()
+dash.penup()
+dash.color("#F8FAFC")
+dash.goto(-390, 240)
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+speed = 2.0
+stalled = 0
+
+for i in range(len(track)):
+    height = track[i]            # at a tower, the height IS the list number
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2            # the chain lift lets go at 2 m/s
+
+    if stalled == 1:
+        dash.clear()
+        dash.write("STALLED - hill taller than the lift!", font=("Courier", 18, "bold"))
+        break                    # engine word: ends the loop early
+
+    train.goto(-400 + i * step_x, track[i] * scale_y - 240)
+    dash.clear()
+    dash.write(f"SPEED {speed * 2.24:.0f} mph    HEIGHT {height:.0f} m", font=("Courier", 16, "bold"))
+    time.sleep(SEG_LEN / speed / 4)
+
+turtle.done()</pre>
+  </div>
+  <div class="see"><span class="tag">You should see</span>
+    A navy window: yellow rails across 17 towers, a red train that leaves the lift hill at a crawl and pulls into the station <strong>19.0 seconds</strong> later, topping out at <strong>70 mph</strong>. And yes &mdash; it rushes the bottom, even though nothing says "speed up." Thursday's line hands a bigger speed to the move line, the move line takes a bigger step, and the rushing <em>emerges</em>. Those four lines were written once and ran <strong>1,141 times</strong> to make this ride &mdash; Tuesday's rule at 60 frames a second.
+  </div>
 </section>
 
 <!-- CHUNK 2 -->
 <section class="card" data-chunk="2">
-  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; Train the Smart Turnstile</span><span class="chip">E5-ALG-ML-02</span></div>
-  <h2>Teach it with your own examples</h2>
-  <p>In the no-code tool, make two classes and train the park's turnstile:</p>
-  <p><strong>1.</strong> Class one: <code>OPEN</code> — record about 15 thumbs-up photos of yourself. Vary it: near, far, left hand, right hand.<br>
-     <strong>2.</strong> Class two: <code>STAY CLOSED</code> — record about 15 thumbs-down photos, varied the same way.<br>
-     <strong>3.</strong> Train the model, then test it live.</p>
+  <div class="chunkhead"><span class="chunklabel">Chunk 2 &middot; The Ride Log</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>Monday's trace table, with the parking brake off</h2>
+  <p>The dashboard in the corner is three variables &mdash; SPEED, HEIGHT, TIME &mdash; re-printed sixty times a second. Your Ride Log is the pencil checking the machine. On <strong>Grid A</strong>: fill the Height column straight from the track list <em>before</em> you run, then catch towers 3, 9, 11, 13, and 16 as the train crosses and jot TIME and SPEED off the dashboard. One tower per run is plenty; reruns are free. Close counts &mdash; within a second and a couple of mph is a match. <strong>Your completed Grid A is collected today.</strong></p>
   <div class="predict">
-    <span class="ptag">Predict</span>
-    Now show it a brand-new thumbs-up it has never seen. Will it get it right — and if it does, does that mean it <em>knows</em> what a thumbs-up is?
+    <span class="ptag">Predict &mdash; commit before you catch them</span>
+    Towers 9 and 13 are both exactly 18&nbsp;m tall. The train <em>climbs</em> through tower 9 about 13 seconds in, and <em>drops</em> through tower 13 about 17 seconds in &mdash; near the very end. Is the late crossing slower (the ride is running out of steam), faster (it's heading downhill), or exactly the same speed?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">It very likely says <code>OPEN</code> — but it doesn't <em>know</em> anything. It found patterns in <strong>your 15 examples</strong> and is matching the new photo against them. Every answer it ever gives traces back to an example somebody supplied. Keep that sentence; you'll need it in Chunk 3.</div>
-  <div class="see"><span class="tag">You should see</span> A confidence bar (something like "OPEN — 97%") that updates live as you move your hand.</div>
+  <div class="answer"><strong>56 mph. Both. Identical.</strong> The speed line asks the track exactly one question &mdash; <em>how far below the lift hill am I?</em> &mdash; and 50 &minus; 18 = 32 both times. It never asks which direction you're moving or how long you've been riding. Same height, same speed, anywhere on the ride. (Your gut said the late one is slower &mdash; and on a <em>real</em> coaster your gut is right, because friction taxes every meter travelled. This engine doesn't charge that tax. The stretch exit gate hands you the tax collector's badge.)</div>
 </section>
 
-<!-- CHUNK 3 -->
-<section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Break it on purpose</span><span class="chip">E5-ALG-ML-02</span></div>
-  <h2>The lopsided turnstile</h2>
-  <p>Time for the Day-1 move, machine-learning edition: sabotage. Retrain the <code>OPEN</code> class using <strong>only your right hand, only close-up, only bright light</strong> — a deliberately lopsided set. Then test with your left hand, far away, in shade.</p>
-  <div class="predict">
-    <span class="ptag">Predict</span>
-    Two predictions: will the model still <em>act</em> confident? And will it still be <em>right</em>?
+<!-- CHUNK 3 · HINGE -->
+<section class="card hinge" data-chunk="3">
+  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Chunk 3 &middot; Hinge question &mdash; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <h2>The 55-meter hill</h2>
+  <p>Before you design anything, the one question that decides whether your ride finishes. You keep the 50&nbsp;m lift hill &mdash; but partway along, you build a second hill that's <strong>55&nbsp;m</strong> tall:</p>
+  <pre>track = [50, 35, 15, 0, 25, 55, 25, 0]</pre>
+  <p>You run it. What happens?</p>
+  <div class="opts">
+    <button class="opt" onclick="hinge(this,'A')"><span class="letter">A</span><span>The train slows to a crawl, creeps over the 55&nbsp;m hill, and finishes the ride a little late.</span></button>
+    <button class="opt" id="optB" onclick="hinge(this,'B')"><span class="letter">B</span><span>The train climbs to 50&nbsp;m &mdash; as high as it started &mdash; then freezes on the slope with the STALLED banner up.</span></button>
+    <button class="opt" onclick="hinge(this,'C')"><span class="letter">C</span><span>Python crashes with <code>ValueError: math domain error</code>, because square roots can't take negatives.</span></button>
+    <button class="opt" onclick="hinge(this,'D')"><span class="letter">D</span><span>The train speeds up &mdash; a taller hill means a faster ride.</span></button>
   </div>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Confidence stays high — the bar still says 90-something percent — while accuracy falls apart. The model can't tell you what it never saw; it just matches against a lopsided memory <em>with total confidence</em>. Now the park question: if this turnstile were real, <strong>whose examples were missing? Who would this gate fail?</strong> Guests with different hands, heights, skin tones, lighting... A gap in the training data becomes a gap in who gets through the gate. That is why real engineers ask "who is missing from my examples?" before they ship — it's a design choice about who the technology serves.</div>
-  <div class="see"><span class="tag">You should see</span> High confidence, wrong answers — the most important broken thing you'll build all week.</div>
+  <div class="hingefb" id="hingefb"></div>
 </section>
 
 <!-- CHUNK 4 -->
 <section class="card" data-chunk="4">
   <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
-  <h2>Plan the attraction before you type</h2>
-  <p>Every ride at Loopline started as boxes and arrows. Your attraction does too: a visual plan showing the <strong>sequence</strong> (arrows), at least one <strong>loop</strong> (dashed box), at least one <strong>decision</strong> (red box), and the variables it uses. Here's a sample blueprint for a "Ride Recommender" booth:</p>
-  <div class="plan" aria-label="sample blueprint diagram">
-    <div class="pbox">START: greet guest, ask <code>name</code></div>
+  <h2>The Operator's Booth &mdash; plan it before you type it</h2>
+  <p>Here is the studio rule for today, and it decides what counts as a capstone: <strong>a new track list alone is not a capstone.</strong> The engine isn't yours &mdash; you didn't write it, and typing numbers into its list isn't programming. Your program is the <strong>Operator's Booth</strong> that wraps it: it greets the guest, shows the rides, asks a question, and <em>decides which track to load</em> &mdash; then the engine opens your ride as the grand finale. Here's a sample booth blueprint:</p>
+  <div class="plan">
+    <div class="pbox">START: greet the guest, ask their name</div>
     <div class="parrow">&darr;</div>
-    <div class="pbox loop">LOOP: for each ride in <code>rides</code> &rarr; print it</div>
+    <div class="pbox loop">LOOP: for each ride in rides &rarr; print it</div>
     <div class="parrow">&darr;</div>
-    <div class="pbox">ask <code>mood</code> — "thrill or chill?"</div>
+    <div class="pbox">ask mood &mdash; "thrill or chill?"</div>
     <div class="parrow">&darr;</div>
-    <div class="pbox dec">DECISION: mood == "thrill" ? &rarr; Comet : Tea Cups</div>
+    <div class="pbox dec">DECISION: mood == "thrill" ? &rarr; track = thrill_track : track = family_track</div>
     <div class="parrow">&darr;</div>
-    <div class="pbox">print the guest's ticket</div>
+    <div class="pbox">print the boarding pass &mdash; then the engine opens the ride</div>
   </div>
   <div class="predict">
     <span class="ptag">Predict</span>
-    Which box is the decision, and which is the loop? And a check on the plan itself: which prior camp days do those two boxes come from?
+    Which box is the decision, and which is the loop? Which prior camp days do those boxes come from? And the new question this blueprint answers that Thursday's couldn't: what does the decision box <em>hand to the engine</em>?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">The red box is the decision (Day 3), the dashed box is the loop (Day 2), and the name/mood questions are Day 1's <code>input()</code>. That's three days in one plan — the minimum for your own. Draw your blueprint on the template now. <strong>No code until your blueprint is approved and signed</strong> — that's the studio rule, and the cap is firm: one screen, one loop, one decision.</div>
+  <div class="answer">The red box is the decision (Day 3), the dashed box is the loop (Day 2), and the name and mood questions are Day 1's <code>input()</code> &mdash; three days in one plan, the minimum for yours. And the decision hands the engine a <strong>track list in a variable</strong>: whichever list <code>track</code> gets is the ride that opens. That's the whole architecture &mdash; your booth chooses the data; the engine obeys it. Draw your blueprint on the template now: sequence, at least one loop, at least one decision, and the variables it uses. <strong>No code until your blueprint is approved and signed</strong> &mdash; and the cap is firm: one screen, one loop, one decision.</div>
 </section>
 
 <!-- CHUNK 5 -->
 <section class="card" data-chunk="5">
   <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>Read the error first</h2>
-  <p>During the build, things will break. That's the plan working. This crash comes from a real Loopline machine &mdash; the roller-coaster simulator going home with every engineer today. Line 1 of the file says <code>import math</code>. Deep inside, one line reads:</p>
+  <p>During the build, things will break. That's the plan working. This crash comes from a real Loopline machine &mdash; the very engine you just ran. Line 1 of the file says <code>import math</code>. Deep inside, one line reads:</p>
   <pre>        speed = sqrt(2 * GRAVITY * drop)</pre>
   <pre>Traceback (most recent call last):
   File "coaster.py", line 71, in &lt;module&gt;
@@ -163,49 +371,58 @@ NameError: name 'sqrt' is not defined</pre>
     Which line of the traceback do you read first? <code>import math</code> is right there at the top of the file &mdash; so what does Python not recognize, and what's the fix?
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer"><strong>Last line first</strong> &mdash; the week's oldest rule. <code>NameError</code>: the same species as Monday's <code>pint</code>. Importing <code>math</code> carries the toolbox into the room, but you still have to name the drawer &mdash; the function's full name is <code>math.sqrt</code>, and on its own <code>sqrt</code> names nothing. The computer does not guess: day one's rule, still the whole game on day five. Fix: <code>speed = math.sqrt(2 * GRAVITY * drop)</code>. (Today's likeliest crash in your <em>own</em> build is humbler &mdash; a missing <code>:</code> on an <code>if</code> line, <code>SyntaxError</code> &mdash; same protocol, last line first.) During the build, keep your two-line debugging log for every crash: <em>what broke, what fixed it</em>. Nobody fixes your code for you today &mdash; the log is proof it was you.</div>
-</section>
-
-<!-- HINGE -->
-<section class="card hinge">
-  <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip">E5-ALG-ML-02</span></div>
-  <h2>The wrong prediction</h2>
-  <p>Your lopsided turnstile confidently called a real thumbs-up <code>STAY CLOSED</code>. In one sentence: <em>why</em> did the model get it wrong?</p>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
-  <div class="answer">Because nothing like that photo was in its training examples — the model only matches against what it was shown, so a gap in the examples becomes a wrong answer. If your sentence says the model "didn't know" or "got confused," sharpen it: it's not about knowing. It's about <strong>what was missing from the examples</strong>. Write your final version on the reflection slip — it's collected.</div>
+  <div class="answer"><strong>Last line first</strong> &mdash; the week's oldest rule. <code>NameError</code>: the same species as Monday's <code>pint</code>. Importing <code>math</code> carries the toolbox into the room, but you still have to name the drawer &mdash; the function's full name is <code>math.sqrt</code>, and on its own <code>sqrt</code> names nothing. The computer does not guess: day one's rule, still the whole game on day five. Fix: <code>speed = math.sqrt(2 * GRAVITY * drop)</code>. (Today's likeliest crash in your <em>own</em> booth is humbler &mdash; a missing <code>:</code> on an <code>if</code> line, <code>SyntaxError</code> &mdash; same protocol, last line first.) During the build, keep your two-line debugging log for every crash: <em>what broke, what fixed it</em>. Nobody fixes your code for you today &mdash; the log is proof it was you.</div>
 </section>
 
 <!-- BUILD BRIEF -->
 <section class="card">
   <div class="chunkhead"><span class="chunklabel">Build brief &middot; Your attraction</span></div>
   <h2>The Grand Opening build</h2>
-  <p>Build the attraction your approved blueprint describes. The contract:</p>
-  <p><strong>One screen. One loop. One decision.</strong> Constructs from at least <strong>three</strong> prior days. It runs, it matches the blueprint, and at the Grand Opening you present it in two minutes and name <strong>one design choice</strong> you made.</p>
-  <p><strong>Your toolbox from the week:</strong> <code>print()</code> / <code>input()</code> / <code>int()</code> / f-strings (Day 1) &middot; <code>for</code> + <code>range()</code>, turtle (Day 2) &middot; <code>if / elif / else</code>, lists (Day 3) &middot; <code>random.choice()</code>, <code>def</code> (Day 4).</p>
-  <p><strong>Suggested start:</strong> build your blueprint's first box only. Run it. Then the next box. Run after every box — small steps leave small bugs.</p>
-  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution (ideas only — yours will differ)</button>
+  <p>Build what your approved blueprint describes. The contract has two halves:</p>
+  <p><strong>The booth</strong> (your program): one screen, one loop, one decision, constructs from at least three prior days. It runs, and it matches the blueprint.</p>
+  <p><strong>The ride</strong> (your data): a track list of at least 10 towers &mdash; first tower is your lift hill and the tallest, last tower is 0, and it completes with no STALLED banner (you know why from Chunk 3). Save it, then change at least three numbers with a goal &mdash; faster? gentler? longer? &mdash; and save again. <strong>Version 1 and Version 2 both kept</strong>, with the one-sentence what-changed-and-why note on your Ride Log.</p>
+  <p>Your toolbox from the week: <code>print()</code> / <code>input()</code> / <code>int()</code> / f-strings (Day 1) &middot; <code>for</code> + <code>range()</code>, turtle (Day 2) &middot; <code>if</code> / <code>elif</code> / <code>else</code>, lists (Day 3) &middot; <code>random.choice()</code>, <code>def</code> (Day 4).</p>
+  <p>Suggested start: build your blueprint's first box only. Run it. Then the next box. Run after every box &mdash; small steps leave small bugs. The engine pastes in <em>below</em> your booth, and the Coaster Lab page holds the full Track Design Card if you want tested shapes to start from.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution (ideas only &mdash; yours will differ)</button>
   <div class="answer">
-<pre># THE RIDE RECOMMENDER — Loopline Park
-import random
+<pre># THE OPERATOR'S BOOTH - Loopline Park Grand Opening
+import pygame
+import math
 
-rides = ["The Comet", "Splash Canyon", "Tea Cups", "Sky Drop"]
+thrill_track = [50, 46, 30, 8, 0, 14, 30, 44, 20, 0, 12, 0]
+family_track = [50, 47, 44, 40, 36, 33, 36, 40, 36, 33, 31, 30]
 
-name = input("Welcome to Loopline Park! Your name? ")
+rides = ["The Python Plunge", "The Family Cruiser"]
+
+name = input("Welcome to the Grand Opening! Your name? ")
 print(f"Hello, {name}! Today's rides:")
-
 for ride in rides:
     print("- " + ride)
 
 mood = input("Feeling thrill or chill today? ")
-
 if mood == "thrill":
-    print(f"{name}, sprint to {rides[0]}!")
-elif mood == "chill":
-    print(f"{name}, drift over to {rides[2]}.")
+    track = thrill_track
+    print(f"Boarding pass: {name} - THE PYTHON PLUNGE. Hold on!")
 else:
-    print("Spin the wheel: " + random.choice(rides))</pre>
-  Day 1 (input, f-strings) + Day 2 (loop) + Day 3 (list, decision) + Day 4 (random.choice) — four days in 16 lines. Note the design choice in the <code>else</code>: a guest who types something unexpected gets the prize wheel instead of a crash. That's the kind of choice to name at your walkthrough.
+    track = family_track
+    print(f"Boarding pass: {name} - THE FAMILY CRUISER. Enjoy the view!")
+
+SEG_LEN = 20
+# ... the engine from here down, exactly as revealed in Chunk 1,
+#     with its own "track = [...]" line DELETED - the booth already set it ...</pre>
+    <p>Day 1 (input, f-strings) + Day 2 (loop) + Day 3 (two lists, decision) &mdash; three days before the engine even starts. Both tracks are tested: the Python Plunge completes in 13.0 seconds at 70 mph; the Family Cruiser never drops below 30&nbsp;m and cruises 17.8 seconds at 44 mph &mdash; proof that <em>gentle</em> is a design choice you make with numbers. Two things to notice: the <code>else</code> is a safety net &mdash; a guest who types anything unexpected gets the family ride instead of a crash &mdash; and one engine line must go: the engine's own <code>track = [...]</code> line, because your booth already decided. For Day-4 flavor, add a third option where <code>track</code> gets chosen by <code>random.choice()</code> from a list of lists &mdash; the mystery ride.</p>
   </div>
+</section>
+
+<!-- GRAND OPENING -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">3:30 &middot; The Grand Opening</span></div>
+  <h2>Two minutes at the microphone</h2>
+  <p>Every engineer presents. The walkthrough contract:</p>
+  <p>1. Run your booth live, with a classmate as the guest &mdash; their answers, not yours.<br>
+     2. As your ride runs, <strong>narrate the three physics lines on your own track</strong>: where-am-I (the height line), height-into-speed (the sqrt line), move-by-my-speed (the position line). If you can say those three sentences, you can say the whole machine.<br>
+     3. Name <strong>one design choice you made, and who your ride serves</strong> &mdash; and who it doesn't. The 44-mph cruiser is <em>for</em> somebody. So is the 70-mph plunge. Neither is for everybody, and you chose. Write it on the reflection slip &mdash; it's collected.</p>
+  <p>Then the closing conversation, led live: your program asks guests for their names. Who can <strong>see</strong> what they type? Who could <strong>change</strong> your track while you weren't looking? Who can <strong>reach</strong> this program at all? Real parks answer those three questions before opening day &mdash; and now, so have you.</p>
 </section>
 
 <!-- EXITS -->
@@ -213,24 +430,24 @@ else:
   <h2>Choose your exit gate</h2>
   <div class="exits">
     <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
-      <p style="margin:6px 0 0">Your blueprint is approved, and your program runs with a sequence plus a loop <em>or</em> a decision. You can point to each on your blueprint.</p></div>
+      <p style="margin:6px 0 0">The stock ride runs on your machine (pygame or turtle), your Ride Log Grid A matches the dashboard at every marked tower, your blueprint is approved, and your booth runs with a sequence plus a loop or a decision.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">Your approved blueprint shows sequence, a loop, <em>and</em> a decision with its variables — and your program follows it, using constructs from at least three days. You present it and name one design choice.</p></div>
+      <p style="margin:6px 0 0">Your booth follows your approved blueprint &mdash; sequence, a loop, and a decision that chooses the track, using constructs from at least three days. Your own ride completes, Version 1 and Version 2 saved with the what-changed note &mdash; and at the Grand Opening you narrate the three physics lines.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
-      <p style="margin:6px 0 0">Your attraction survives a guest who types something unexpected without crashing (like the sample's <code>else</code> safety net) — and at the walkthrough you name the alternative design you rejected, and why.</p></div>
+      <p style="margin:6px 0 0">Your booth survives a guest who types something unexpected without crashing (the sample's <code>else</code> safety net) &mdash; <em>and</em> your ride carries one engineering upgrade you can explain: the friction line from the Coaster Lab's stretch gate (<code>drop = top - height - position * 0.01</code>, tuned), a mystery track drawn by <code>random.choice()</code>, or a second decision (a fast-pass lane). At the walkthrough, name the design you rejected, and why.</p></div>
   </div>
 </section>
 
 <!-- TEACHER PANEL -->
 <details class="teacher">
-  <summary>Standards &amp; evidence — teacher panel</summary>
+  <summary>Standards &amp; evidence &mdash; teacher panel</summary>
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
-    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>4, build brief</td><td>Mastery</td><td>The approved, signed capstone blueprint showing sequence, a loop, and a branch — plus the built program that follows it.</td><td>Verified</td></tr>
-    <tr><td>E5-ALG-ML-02</td><td>Train a machine learning model to make a classification or prediction.</td><td>2, 3; gated by the hinge</td><td>Mastery</td><td>Trained Smart Turnstile classifier plus the written reflection on a wrong prediction (collected at the hinge).</td><td>Verified</td></tr>
+    <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>4, build brief</td><td>Mastery</td><td>The approved, signed booth blueprint showing sequence, a loop, and the track-choosing decision with its variables &mdash; plus the built program that follows it. Guard the line at approval: a new track list alone is data entry, not this standard.</td><td>Verified</td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>1, 2; gated by the hinge (3)</td><td>Mastery</td><td>The completed Ride Log Grid A: pre-filled heights from the list checked live against the dashboard at five marked towers (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
     <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>5, build brief</td><td>Addressed</td><td>The independent two-line debugging log kept during the capstone build (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> two things a reader will expect from the camp's Day-5 plan. The human-centered-design reflection (the camp maps it to E5-ALG-IM-03) is seeded in Chunk 3's "who would this gate fail?" but the standard is claimed on the camp alignment tab, not this page, under the three-standard cap. The CIA-triad security debrief (E5-SYS-SE-13) is a live, teacher-led Grand Opening conversation — who can see, change, or reach your program — and is deliberately not on this self-paced page at all.</p>
+  <p><strong>Deliberately not covered here:</strong> four things a reader of the camp plan will look for. The Version 1 &rarr; Version 2 note and the Grand Opening narration serve E5-PRO-PD-?? and E5-PRO-RD-?? &mdash; both claimed for Day 5 on the camp alignment tab, not on this page, under the three-standard cap. The human-centered-design reflection (E5-ALG-IM-03) is the walkthrough's who-is-your-ride-for prompt and its collected slip &mdash; claimed on the tab. The CIA-triad security debrief (E5-SYS-SE-13) is the live, teacher-led close of the Grand Opening &mdash; who can see, change, or reach your program &mdash; and is deliberately not a self-paced chunk. And machine learning: the Smart Turnstile module has been removed from this camp; E5-ALG-ML-02 is no longer claimed anywhere and moves to the alignment tab's not-covered list.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 
@@ -241,6 +458,24 @@ function reveal(btn){
   var a = btn.nextElementSibling;
   var open = a.classList.toggle('open');
   btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+var hingeFB = {
+  A: "<strong>Not this time &mdash; but your instincts are good.</strong> On a real coaster, friction can let a train crawl over a slightly-too-tall hill's little brother, so \u201cslows and creeps\u201d feels right. But this simulator has no crawl-and-conquer: the speed line asks only one question &mdash; how far below the lift hill am I? &mdash; and at 50 m up that hill, the answer is \u201cnot below it at all.\u201d Drop hits zero with 5 m of hill left, goes negative on the next frame, and the inspector freezes the ride. The correct answer is B.",
+  B: "<strong>Exactly right.</strong> The train spends its way up to 50 m &mdash; every meter it started with &mdash; then drop goes negative, the inspector fires, stalled gets 1, and the STALLED banner comes up with the train frozen on the slope. You've just discovered the first rule every coaster engineer learns: <strong>no later hill can out-tall the lift hill.</strong> The chain deposits the ride's whole budget once; 50 m in the bank means never more than 50 m up. Carry that rule straight into your blueprint.",
+  C: "<strong>So close &mdash; you clearly know where the danger lives.</strong> You're right that sqrt of a negative is the threat. But look at the order: the inspector's <code>if drop &lt; 0</code> runs <em>first</em>, so the square root never sees the negative number. No crash &mdash; the guard's entire job is making sure of that. What the player sees instead is answer B: the climb to 50 m, then the freeze and the banner.",
+  D: "<strong>Tempting &mdash; taller has meant faster all week.</strong> But taller has meant a taller <em>lift hill</em>: more in the savings account. A taller <em>later</em> hill is the opposite &mdash; a bigger withdrawal. By 50 m up it, the account is empty with 5 m still to climb, drop goes negative, and the inspector freezes the ride: answer B. Speed comes from height <em>spent</em>, never from height in front of you."
+};
+function hinge(btn, letter){
+  var right = (letter === 'B');
+  var opts = document.querySelectorAll('button.opt');
+  for(var i = 0; i < opts.length; i++){ opts[i].disabled = true; }
+  btn.classList.add(right ? 'correct' : 'wrong');
+  if(!right){ document.getElementById('optB').classList.add('correct'); }
+  var fb = document.getElementById('hingefb');
+  fb.innerHTML = hingeFB[letter];
+  fb.classList.add('shown', right ? 'right' : 'wrongfb');
   var card = btn.closest('[data-chunk]');
   if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
 }

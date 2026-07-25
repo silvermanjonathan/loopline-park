@@ -74,7 +74,7 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can change what a function draws by passing it a number.</strong> <span class="chip unv">E5-PRO-RD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
   </div>
 </section>
 
@@ -246,6 +246,30 @@ draw_wheel(12, 50)</pre>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">First: 8 long spokes (length 100). Second, drawn on top: 12 short spokes (length 50) — more spokes, smaller wheel. It's the <em>position</em> of each number that decides which blank it fills, not any magic in the names.</div>
   <div class="see"><span class="tag">You should see</span> A big 8-spoke wheel with a small dense 12-spoke wheel layered at its center.</div>
+</section>
+
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The speed of falling</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
+  <h2>Friday preview &mdash; one line of physics</h2>
+  <p><code>random.choice</code> taught you the pattern: the toolbox is <code>random</code>, the drawer is <code>choice</code>. Same pattern, different toolbox &mdash; and this is the single line that powers Friday's roller coaster. <code>drop</code> is how far the coaster has fallen below its lift hill; <code>:.0f</code> is a rounding dial (whole numbers only), and <code>2.24</code> converts meters-per-second to mph.</p>
+  <pre>import math
+
+GRAVITY = 9.8
+
+drop = 20
+speed = math.sqrt(2 * GRAVITY * drop)
+print(f"{speed * 2.24:.0f} mph")</pre>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; this one surprises almost everyone</span>
+    With <code>drop = 20</code> this prints <code>44 mph</code>. Change it to <code>40</code> &mdash; exactly double the fall. Commit before you run: does the speed double to 88? Then try <code>80</code>. Then the showstopper: the real Fury 325 in Carolina drops from 99&nbsp;m and tops out at 95&nbsp;mph. What will <code>drop = 99</code> print?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer"><strong>63, not 88</strong> &mdash; and 80 gives 89. Every doubling of the drop multiplies the speed by about 1.4; that's what a square root does to a doubling. To truly double a coaster's speed you need <em>four times</em> the drop, which is why nobody builds them that way. And <code>drop = 99</code> prints <strong>99 mph</strong> &mdash; 4 mph hotter than the real Fury 325, because real trains pay friction and air resistance on every meter, and this line doesn't charge that tax yet. One line of Python, within 4 mph of a thirty-million-dollar machine &mdash; <em>and</em> you can say exactly why it missed. Tomorrow, this line runs your ride.</div>
+  <div class="see"><span class="tag">You should see</span><pre>44 mph
+63 mph
+89 mph
+99 mph</pre></div>
 </section>
 
 <!-- HINGE -->
