@@ -78,9 +78,10 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <h2>Today's target</h2>
   <p><strong>I can make the computer print exactly what I write, and store what a guest types.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span> <span class="chip unv">E5-PRO-TR-?? &#9888;</span></p>
   <p><strong>I can use a loop to repeat drawing steps instead of copying lines.</strong> <span class="chip">E5-ALG-PS-01</span></p>
+  <p><strong>I can name a block of code and run it by its name &mdash; so my program reads like a story.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span><span class="dot" id="d10"></span>
   </div>
 </section>
 
@@ -286,6 +287,37 @@ turtle.done()</pre>
 </section>
 
 <!-- HINGE -->
+<!-- CHUNK 10 -->
+<section class="card" data-chunk="10">
+  <div class="chunkhead"><span class="chunklabel">Chunk 10 &middot; Name the block</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>def &mdash; your program's table of contents</h2>
+  <p>One last tool today &mdash; the one this camp will sharpen every single day. Your marquee is three lines, and the park prints it when the gates open <em>and</em> when they close. Pasting those three lines twice is how bugs breed: fix one copy, forget the other. <code>def</code> names the block; the name runs it.</p>
+  <pre>def show_marquee():
+    print("=============================")
+    print("      LOOPLINE PARK")
+    print("=============================")
+
+show_marquee()
+print("Gates are open. Welcome!")
+show_marquee()</pre>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit to both</span>
+    The <code>def</code> block sits right at the top. Does Python print the marquee when it <em>reads</em> the def? And with two <code>show_marquee()</code> calls below, how many marquees appear?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Reading the <code>def</code> prints <strong>nothing</strong> &mdash; def only <em>makes</em> the stamp; it never presses it. Try it: delete both calls and run. Total silence, no error &mdash; the program made a stamp and went home. Remember that exact silence; you'll be tested on it tomorrow. With both calls: <strong>two marquees</strong>, written once, pressed twice &mdash; and the bottom of your program now reads like a table of contents: <code>show_marquee()</code> &hellip; <code>show_marquee()</code>. The best part arrives when you redecorate: change one line <em>inside</em> the def and both marquees update. <strong>One place to fix</strong> &mdash; keep that phrase; it's the reason this tool exists.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
+  <div class="see"><span class="tag">You should see</span>
+    <pre>=============================
+      LOOPLINE PARK
+=============================
+Gates are open. Welcome!
+=============================
+      LOOPLINE PARK
+=============================</pre>
+  </div>
+</section>
+
 <section class="card hinge">
   <div class="chunkhead"><span class="chunklabel" style="color:var(--red)">Hinge question &middot; stop here until you're sure</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>The two-price ticket, and the octagon contract</h2>
@@ -299,7 +331,7 @@ turtle.done()</pre>
   <div class="chunkhead"><span class="chunklabel">Build brief &middot; The Booth &amp; the Track</span></div>
   <h2>Open the gates, then draw the midway</h2>
   <p>Two small builds, in order. <strong>Part 1 &mdash; The Ticket Booth</strong> (in <code>day1.py</code>):</p>
-  <p>1. Prints your marquee, with a comment labeling each section.<br>
+  <p>1. Prints your marquee twice &mdash; as the gates open and again at close &mdash; from one <code>def show_marquee()</code> called by name (a comment labels each section).<br>
      2. Asks the guest's name with <code>input()</code>.<br>
      3. Asks how many tickets they want, converting with <code>int()</code>.<br>
      4. Computes the total (tickets cost $12) and prints a receipt with an f-string.</p>
@@ -354,7 +386,7 @@ turtle.done()</pre>
     <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>1, 5</td><td>Addressed</td><td>Deliberate sabotage-and-repair of print; the '2' + '3' diagnosis; error names collected at the briefing.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
     <tr><td>E5-ALG-PS-01</td><td>Create a visual representation of an algorithm that includes variables and a combination of sequence, events, iteration, and selection to solve a problem or express an idea.</td><td>7, 8, 9; build Part 2</td><td>Addressed (partial &mdash; sequence and iteration; selection joins on Day 2, and the full visual plan is Thursday's blueprint)</td><td>Class track-geometry chart; the camper's own polygon track with its 360 &divide; sides angle; octagon-angle Maintenance Log.</td><td>Verified</td></tr>
   </table>
-  <p><strong>Deliberately not covered here:</strong> E5-PRO-PD-?? is exercised in every chunk that modifies working code (the marquee remix, the booth, the track redesign) and is claimed for Day 1 on the camp alignment tab, not on this page, under the three-standard cap. Nested loops and the <code>rich</code> console library, both part of an earlier five-day layout, are no longer taught in this camp; functions arrive Tuesday, and the coaster build owns Wednesday.</p>
+  <p><strong>Deliberately not covered here:</strong> E5-PRO-PD-?? is exercised in every chunk that modifies working code (the marquee remix, the booth, the track redesign) and is claimed for Day 1 on the camp alignment tab, not on this page, under the three-standard cap. Nested loops and the <code>rich</code> console library, both part of an earlier five-day layout, are no longer taught in this camp; functions begin today with the named marquee &mdash; parameters arrive Tuesday, and the coaster build owns Wednesday.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
 </details>
 

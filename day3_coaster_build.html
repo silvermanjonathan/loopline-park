@@ -90,7 +90,7 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can trace a live simulation against my own track list &mdash; and narrate the code that runs it.</strong> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span><span class="dot" id="d6"></span><span class="dot" id="d7"></span><span class="dot" id="d8"></span><span class="dot" id="d9"></span>
   </div>
 </section>
 
@@ -521,6 +521,19 @@ pygame.quit()</pre>
 </section>
 
 <!-- CHUNK 7 -->
+<section class="card" data-chunk="7">
+  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; Functional thinking &mdash; name the paragraphs</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>The engine has no def &mdash; but it has paragraphs</h2>
+  <p>Look at the file you just assembled: about a hundred lines, and not a single <code>def</code> anywhere &mdash; one long street. But you can <em>see</em> the paragraphs, because you installed them one stage at a time: the setup, the rails, the physics, the drawing. Real engineers would name them. Take sixty seconds with a pencil (or comments): draw a box around each paragraph and give it a stamp-name &mdash; <code>make_window</code>, <code>build_rails</code>, <code>run_physics</code>, <code>draw_park</code>.</p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; the week's oldest rule, one more time</span>
+    Suppose the engine's author had wrapped the whole drawing paragraph in <code>def draw_park():</code>. How many times would the <em>call</em> be written &mdash; and how many times would it run?
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">Written <strong>once</strong> &mdash; inside the frame loop &mdash; and pressed about <strong>1,141 times</strong>, once per frame. Written once, run a thousand times: Monday's rule wearing a name. This is the reading skill called <strong>functional thinking</strong>: seeing a long program as named jobs, even when nobody wrote the names down. Your booth is next &mdash; and yours <em>will</em> write the names down: when you draw your blueprint in the next chunk, give every box a stamp-name, and let the booth's welcome and ride list live inside <code>def show_menu()</code>. A booth that opens with <code>show_menu()</code> reads like a script for a ride operator &mdash; and when the menu changes Friday morning, there is exactly one place to fix.</div>
+</section>
+
+<!-- CHUNK 8 -->
 <section class="card" data-chunk="4">
   <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; Stage 5 &mdash; The inspector</span><span class="chip unv">E5-PRO-RD-?? &#9888;</span></div>
   <h2>The one thing square roots refuse to do</h2>
@@ -689,9 +702,9 @@ pygame.quit()</pre>
 </section>
 
 
-<!-- CHUNK 7 -->
-<section class="card" data-chunk="7">
-  <div class="chunkhead"><span class="chunklabel">Chunk 7 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
+<!-- CHUNK 8 -->
+<section class="card" data-chunk="8">
+  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The blueprint</span><span class="chip">E5-ALG-PS-01</span></div>
   <h2>The Operator's Booth &mdash; plan it before you type it</h2>
   <p>Here is the studio rule for today, and it decides what counts as a capstone: <strong>a new track list alone is not a capstone.</strong> The engine isn't yours &mdash; you didn't write it, and typing numbers into its list isn't programming. Your program is the <strong>Operator's Booth</strong> that wraps it: it greets the guest, shows the rides, asks a question, and <em>decides which track to load</em> &mdash; then the engine opens your ride as the grand finale. Here's a sample booth blueprint:</p>
   <div class="plan">
@@ -713,9 +726,9 @@ pygame.quit()</pre>
   <div class="answer">The red box is the decision (Day 3), the dashed box is the loop (Day 2), and the name and mood questions are Day 1's <code>input()</code> &mdash; three days in one plan, the minimum for yours. And the decision hands the engine a <strong>track list in a variable</strong>: whichever list <code>track</code> gets is the ride that opens. That's the whole architecture &mdash; your booth chooses the data; the engine obeys it. Draw your blueprint on the template now: sequence, at least one loop, at least one decision, and the variables it uses. <strong>No code until your blueprint is approved and signed</strong> &mdash; and the cap is firm: one screen, one loop, one decision.</div>
 </section>
 
-<!-- CHUNK 8 -->
-<section class="card" data-chunk="8">
-  <div class="chunkhead"><span class="chunklabel">Chunk 8 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
+<!-- CHUNK 9 -->
+<section class="card" data-chunk="9">
+  <div class="chunkhead"><span class="chunklabel">Chunk 9 &middot; The debugging protocol</span><span class="chip unv">E5-PRO-TR-?? &#9888;</span></div>
   <h2>Read the error first</h2>
   <p>During the build, things will break. That's the plan working. This crash comes from a real Loopline machine &mdash; the very engine you just ran. Line 1 of the file says <code>import math</code>. Deep inside, one line reads:</p>
   <pre>        speed = sqrt(2 * GRAVITY * drop)</pre>
@@ -736,9 +749,9 @@ NameError: name 'sqrt' is not defined</pre>
   <div class="chunkhead"><span class="chunklabel">Build brief &middot; Your attraction</span></div>
   <h2>The Grand Opening build</h2>
   <p>Build what your approved blueprint describes. The contract has two halves:</p>
-  <p><strong>The booth</strong> (your program): one screen, one loop, one decision, constructs from at least three prior days. It runs, and it matches the blueprint.</p>
+  <p><strong>The booth</strong> (your program): one screen, one loop, one decision, constructs from at least three prior days &mdash; and its welcome + ride list wrapped in <code>def show_menu()</code>, called by name on line one. It runs, and it matches the blueprint.</p>
   <p><strong>The ride</strong> (your data): a track list of at least 10 towers &mdash; first tower is your lift hill and the tallest, last tower is 0, and it completes with no STALLED banner (you know why from Chunk 3). Save it, then change at least three numbers with a goal &mdash; faster? gentler? longer? &mdash; and save again. <strong>Version 1 and Version 2 both kept</strong>, with the one-sentence what-changed-and-why note on your Ride Log.</p>
-  <p>Your toolbox from the week: <code>print()</code> / <code>input()</code> / <code>int()</code> / f-strings (Day 1) &middot; <code>for</code> + <code>range()</code>, turtle (Day 1) &middot; <code>if</code> / <code>elif</code> / <code>else</code>, lists (Day 2) &middot; <code>random.choice()</code>, <code>def</code> (Day 2).</p>
+  <p>Your toolbox from the week: <code>print()</code> / <code>input()</code> / <code>int()</code> / f-strings (Day 1) &middot; <code>for</code> + <code>range()</code>, turtle (Day 1) &middot; <code>if</code> / <code>elif</code> / <code>else</code>, lists (Day 2) &middot; <code>random.choice()</code>, <code>def</code> + parameters (Days 1&ndash;2).</p>
   <p>Suggested start: build your blueprint's first box only. Run it. Then the next box. Run after every box &mdash; small steps leave small bugs. The engine pastes in <em>below</em> your booth, and the Coaster Lab page holds the full Track Design Card if you want tested shapes to start from.</p>
   <button class="reveal" onclick="reveal(this)">Tap to reveal a sample solution (ideas only &mdash; yours will differ)</button>
   <div class="answer">
@@ -768,6 +781,7 @@ SEG_LEN = 20
 # ... the engine from here down, exactly as revealed in Chunk 1,
 #     with its own "track = [...]" line DELETED - the booth already set it ...</pre>
     <p>Day 1 (input, f-strings) + Day 2 (loop) + Day 3 (two lists, decision) &mdash; three days before the engine even starts. Both tracks are tested: the Python Plunge completes in 13.0 seconds at 70 mph; the Family Cruiser never drops below 30&nbsp;m and cruises 17.8 seconds at 44 mph &mdash; proof that <em>gentle</em> is a design choice you make with numbers. Two things to notice: the <code>else</code> is a safety net &mdash; a guest who types anything unexpected gets the family ride instead of a crash &mdash; and one engine line must go: the engine's own <code>track = [...]</code> line, because your booth already decided. For extra flavor, add a third option where <code>track</code> gets chosen by <code>random.choice()</code> from a list of lists &mdash; Tuesday's spinner, spinning whole coasters: the mystery ride.</p>
+  <p style="margin-top:8px"><strong>The functional version:</strong> the welcome and ride-list lines above move inside <code>def show_menu():</code>, and the booth's first working line becomes the call &mdash; the program opens by saying its own title. Same behavior, better book.</p>
   </div>
 </section>
 
@@ -789,7 +803,7 @@ SEG_LEN = 20
     <div class="exit"><span class="lvl" style="color:#b45309">Floor <small>&middot; approaching the standard</small></span>
       <p style="margin:6px 0 0">The stock ride runs on your machine (pygame or turtle), your Ride Log Grid A matches the dashboard at every marked tower, your blueprint is approved, and your booth runs with a sequence plus a loop or a decision.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--green)">Middle <small>&middot; meets the standard</small></span>
-      <p style="margin:6px 0 0">Your booth follows your approved blueprint &mdash; sequence, a loop, and a decision that chooses the track, using constructs from at least three days. Your own ride completes, Version 1 and Version 2 saved with the what-changed note &mdash; and at today's soft launch you narrate the three physics lines &mdash; Friday you do it for the room.</p></div>
+      <p style="margin:6px 0 0">Your booth follows your approved blueprint &mdash; sequence, a loop, a decision that chooses the track, and a named <code>show_menu()</code> function, using constructs from at least three days. Your own ride completes, Version 1 and Version 2 saved with the what-changed note &mdash; and at today's soft launch you narrate the three physics lines &mdash; Friday you do it for the room.</p></div>
     <div class="exit"><span class="lvl" style="color:var(--red)">Stretch <small>&middot; exceeds the standard</small></span>
       <p style="margin:6px 0 0">Your booth survives a guest who types something unexpected without crashing (the sample's <code>else</code> safety net) &mdash; <em>and</em> your ride carries one engineering upgrade you can explain: the friction line from the Coaster Lab's stretch gate (<code>drop = top - height - position * 0.01</code>, tuned), a mystery track drawn by <code>random.choice()</code>, or a second decision (a fast-pass lane). Friday at the walkthrough, name the design you rejected, and why.</p></div>
   </div>

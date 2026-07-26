@@ -91,7 +91,7 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <p><strong>I can ship one tested upgrade &mdash; and prove my own ride's numbers on the Ride Log.</strong> <span class="chip unv">E5-PRO-PD-?? &#9888;</span> <span class="chip unv">E5-PRO-VD-?? &#9888;</span></p>
   <div class="tracker" aria-label="chunk progress">
     <span class="tlabel">Chunks explored</span>
-    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span>
+    <span class="dot" id="d1"></span><span class="dot" id="d2"></span><span class="dot" id="d3"></span><span class="dot" id="d4"></span><span class="dot" id="d5"></span>
   </div>
 </section>
 
@@ -133,6 +133,8 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
     <p style="margin:4px 0 0">Change the drop line to <code>drop = top - height - position * 0.01</code> and rerun: the stock ride's top speed dips from 70 to 69 mph. Then build a 99&nbsp;m Fury-style lift hill and raise the <code>0.01</code> until the predicted top speed lands on the real Fury 325's 95 mph &mdash; the honest number is up near <code>0.08</code>. Be ready to say where the missing speed physically went.</p></div>
   <div class="cardsec"><span class="cardseclabel">The mystery ride</span>
     <p style="margin:4px 0 0">A third booth option where <code>track</code> gets chosen by <code>random.choice()</code> from a list of your track lists &mdash; Tuesday's spinner, now spinning whole roller coasters.</p></div>
+  <div class="cardsec"><span class="cardseclabel">The Tidy Booth (a refactor)</span>
+    <p style="margin:4px 0 0">Pull any repeated or sprawling block of your booth into a named function &mdash; <code>show_menu()</code> if Wednesday didn't already &mdash; and prove the ride behaves <em>exactly</em> the same. Behavior unchanged is the test; readability is the upgrade.</p></div>
   <div class="cardsec"><span class="cardseclabel">The fast-pass lane</span>
     <p style="margin:4px 0 0">A second decision in the booth: fast-pass guests get a different greeting, a shorter message, or their own express track.</p></div>
   <div class="cardsec"><span class="cardseclabel">Opening-day polish</span>
@@ -141,7 +143,20 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 
 <!-- CHUNK 3 -->
 <section class="card" data-chunk="3">
-  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Prove your own ride</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
+  <div class="chunkhead"><span class="chunklabel">Chunk 3 &middot; Functional thinking &mdash; the refactor</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+  <h2>Same ride, better book</h2>
+  <p>There is an upgrade that changes <em>nothing</em> a guest can see &mdash; and it's the one professionals ship most. A <strong>refactor</strong> takes working code and reorganizes it: repeated lines get pulled into a named function, long stretches get names, and the program gets easier to read and easier to change. The behavior stays identical &mdash; that's not a side effect, that's the <em>definition</em>. If your booth still has its menu written out flat, or greets in two places, today it becomes the Tidy Booth: working copy into a comment, wrap the block in a <code>def</code>, call it by name.</p>
+  <div class="predict">
+    <span class="ptag">Predict &mdash; commit before you touch it</span>
+    After the refactor, how do you <em>prove</em> it worked? Name the one thing that should change &mdash; and the one thing that must not.
+  </div>
+  <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
+  <div class="answer">The <strong>text</strong> should change &mdash; shorter, named, one place to fix. The <strong>behavior</strong> must not: same questions, same menu, same ride, to the letter. So the proof is a double run: once from the comment copy, once from the refactored version, and a guest watching both should shrug. If anything a guest sees changed, it wasn't a refactor &mdash; it was a different edit wearing the name. The payoff comes with the very next change request: edit the welcome once inside <code>show_menu()</code> and every call updates. <strong>One place to fix</strong> &mdash; Monday's phrase, now a shipped upgrade.</div>
+</section>
+
+<!-- CHUNK 4 -->
+<section class="card" data-chunk="4">
+  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; Prove your own ride</span><span class="chip unv">E5-PRO-VD-?? &#9888;</span></div>
   <h2>Grid B &mdash; the Ride Log, on your numbers</h2>
   <p>Yesterday you checked the machine on the stock track. Today you check it on <em>yours</em>. Flip your Ride Log to <strong>Grid B</strong>: circle five towers on your own track, fill the Height column straight from your list <em>before</em> you run, then catch TIME and SPEED at each as the train crosses. One tower per run; reruns are free; turtle riders leave TIME blank. <strong>Grid B is collected today.</strong></p>
   <div class="predict">
@@ -152,14 +167,14 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <div class="answer"><strong>Always.</strong> The speed line asks the track exactly one question &mdash; how far below the lift hill am I? &mdash; so the lowest point is the biggest withdrawal is the biggest speed, on your track, on anyone's track, every time. If your list and the dashboard disagree at any tower, one of them is wrong &mdash; and finding out which one is the actual job of an engineer.</div>
 </section>
 
-<!-- CHUNK 4 -->
-<section class="card" data-chunk="4">
-  <div class="chunkhead"><span class="chunklabel">Chunk 4 &middot; The upgrade note</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
+<!-- CHUNK 5 -->
+<section class="card" data-chunk="5">
+  <div class="chunkhead"><span class="chunklabel">Chunk 5 &middot; The upgrade note</span><span class="chip unv">E5-PRO-PD-?? &#9888;</span></div>
   <h2>Version 3 &mdash; what changed, and why</h2>
   <p>Every engineer ships at least one change today: a Garage upgrade, or a track redesign with a goal (Version 3). The rule stands: <strong>working version into a comment first</strong> &mdash; never modify the only working copy. Then, under the Version note on your Ride Log, write today's line: <em>what you changed, and why</em>. One sentence, collected.</p>
   <div class="predict">
     <span class="ptag">Before you write it</span>
-    The weakest upgrade note in the park is "I made it better." Say your note out loud first: does it name the change <em>and</em> the goal? "Raised the third hill to 40 so the middle stops dragging" &mdash; that's an engineer talking.
+    The weakest upgrade note in the park is "I made it better." Say your note out loud first: does it name the change <em>and</em> the goal? "Raised the third hill to 40 so the middle stops dragging" &mdash; that's an engineer talking. (So is "Moved the menu into show_menu() so the welcome lives in one place" &mdash; a refactor is an upgrade.)
   </div>
 </section>
 
@@ -182,8 +197,8 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
   <table>
     <tr><th>Code</th><th>Standard (verbatim)</th><th>Chunk(s)</th><th>Addressed / Mastery</th><th>Evidence collected</th><th>Status</th></tr>
     <tr><td>E5-PRO-TR-??</td><td>Grade-5 progression: students identify and debug errors in simple programs. [Confirm exact code and wording at source.]</td><td>1, 2; the clinic</td><td>Mastery</td><td>The camper independently diagnoses and repairs their own build; the two-line debugging log (begun on Day 3) is collected today. This is the rubric's protected row &mdash; it cannot be satisfied by anyone else's hands.</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>3</td><td>Mastery</td><td>Ride Log Grid B: the camper's own track, heights pre-filled from their list and checked live against the dashboard (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
-    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>4; the Garage</td><td>Addressed</td><td>One shipped upgrade or Version 3 with the what-changed-and-why note (collected on the Ride Log).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-VD-??</td><td>Grade-5 progression: students identify and label data in everyday contexts, recognize values that change over time, and identify and trace data in programs. [Confirm exact code and wording at source.]</td><td>4</td><td>Mastery</td><td>Ride Log Grid B: the camper's own track, heights pre-filled from their list and checked live against the dashboard (collected).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
+    <tr><td>E5-PRO-PD-??</td><td>Grade-5 progression: students refine programs through feedback, compare solutions, and modify existing code to create new programs. [Confirm exact code and wording at source.]</td><td>3, 5; the Garage</td><td>Addressed</td><td>One shipped upgrade or Version 3 with the what-changed-and-why note (collected on the Ride Log).</td><td><span class="warn">&#9888; Needs verification</span></td></tr>
   </table>
   <p><strong>Deliberately not covered here:</strong> the physics-lines narration is rehearsed and performed at Friday's Grand Opening, where E5-PRO-RD-?? is claimed on the Day 5 page, along with the human-centered-design reflection (E5-ALG-IM-03) and the CIA-triad security debrief (E5-SYS-SE-13). The capstone blueprint (E5-ALG-PS-01) was collected yesterday on the Day 3 page. And machine learning: the Smart Turnstile module has been removed from this camp; E5-ALG-ML-02 is no longer claimed anywhere.</p>
   <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
