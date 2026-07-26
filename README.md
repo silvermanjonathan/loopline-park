@@ -20,13 +20,15 @@ Live: **https://silvermanjonathan.github.io/loopline-park/loopline_park_hub.html
 
 | Day | Page | Python introduced | Campers build |
 |---|---|---|---|
-| **1 · Monday** | [day1_opening_the_gates.html](day1_opening_the_gates.html) | `print()`, comments, variables, `input()`, `int()`, f-strings, turtle, `for` + `range()` | Park marquee, Ticket Booth, polygon track drawn with a loop |
+| **1 · Monday** | [day1_opening_the_gates.html](day1_opening_the_gates.html) | `print()`, comments, variables, `input()`, `int()`, f-strings, turtle, `for` + `range()`, `def` | Park marquee, Ticket Booth, polygon track drawn with a loop |
 | **2 · Tuesday** | [day2_safety_gates_midway.html](day2_safety_gates_midway.html) | `if` / `elif` / `else`, comparisons, lists, indexing, `random.choice()`, `def`, parameters | Ride Safety Gate, park map, Prize Wheel, `draw_wheel(spokes)` — plus two coaster-physics experiments |
 | **3 · Wednesday** | [day3_coaster_build.html](day3_coaster_build.html) | none new — the coaster engine is provided read-only | **Capstone:** the engine assembled in five staged runs, plus an Operator's Booth the camper writes, soft-launched |
 | **4 · Thursday** | [day4_expansion_day.html](day4_expansion_day.html) | none new — repair and refinement | Fix-it clinic, one shipped upgrade with its note, Ride Log Grid B on the camper's own track |
 | **5 · Friday** | [day5_grand_opening.html](day5_grand_opening.html) | none new — inspection and presentation | Opening-day inspection, rehearsal, Grand Opening walkthrough |
 
 Each day page follows the same shape: numbered chunks, a *predict-before-you-reveal* question in every chunk, a "you should see" box after anything runnable, one hinge question that gates the build, a build brief with a sample solution, three exit gates (approaching / meets / exceeds), and a collapsed teacher panel with standards and evidence.
+
+A **functional-thinking thread** runs Days 1–4: name a block so the program reads like a table of contents (Day 1), parameters and refactoring copied code into one stamp (Day 2), naming the engine's paragraphs and a `show_menu()` booth (Day 3), and the behavior-preserving refactor shipped as a real upgrade (Day 4). `return` is deliberately excluded at grade 5 — functions here are named blocks, and the payoff taught is readability and one-place-to-fix.
 
 ## Supporting material
 
