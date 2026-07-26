@@ -47,6 +47,10 @@ section{page-break-inside:avoid;break-inside:avoid}
   h2{margin-top:14px}
   @page{margin:12mm}
 }
+.see{display:none}
+.see.open{display:block}
+.seebtn{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.08em;color:#10B981;background:#fff;border:2px solid #10B981;border-radius:10px;padding:8px 14px;cursor:pointer;margin:10px 0 4px;display:block}
+@media print{.see{display:block!important}.seebtn{display:none!important}}
 </style>
 </head>
 <body>
@@ -77,6 +81,7 @@ print(track[7])</pre>
   Each number is one support tower's height in meters, left to right.<br>
   <code>print(len(track))</code> &rarr; <span class="wline"></span> &nbsp;&nbsp; <code>print(track[0])</code> &rarr; <span class="wline"></span> &nbsp;&nbsp; <code>print(track[7])</code> &rarr; <span class="wline"></span>
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Now run it &mdash; you should see</span>
 <pre>17
 50
@@ -101,6 +106,7 @@ print(height)</pre>
   <span class="ptag">Predict &mdash; commit before you run</span>
   The train is 70 meters along the track, and 70 &divide; 20 is 3.5. So does <code>seg</code> print <code>3.5</code>, <code>3</code>, or <code>4</code>? Circle one. Then: <code>frac</code> &rarr; <span class="wline"></span>
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Now run it &mdash; you should see</span>
 <pre>3
 0.5
@@ -139,6 +145,7 @@ print(f"{speed * 2.24:.0f} mph")</pre>
   <span class="ptag">Predict &mdash; commit in pencil first</span>
   <code>drop</code> is how far the coaster has fallen below its lift hill. With <code>drop = 20</code> this prints <code>44 mph</code>. Now change it to <code>40</code> &mdash; exactly double the fall. Your guess before running: <span class="wline"></span> mph. (Does doubling the drop double the speed to 88?) Then try <code>80</code>: <span class="wline"></span> mph.
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Now run it &mdash; you should see</span>
 <pre>44 mph
 63 mph
@@ -155,6 +162,7 @@ print(f"{speed * 2.24:.0f} mph")</pre>
   <span class="ptag">Predict, run, then think</span>
   Your program prints <span class="wline"></span> mph. The real Fury 325 tops out at <strong>95 mph</strong>. Your line is off by only a few mph &mdash; but always in the same direction: too fast. One sentence &mdash; where does the missing speed go on the real ride?<br><span class="wline" style="min-width:96%;margin-top:10px"></span>
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Check yourself</span>
 It prints <code>99 mph</code> &mdash; 4 mph hot. The missing speed leaks away as <strong>friction in the wheels and air pushing back on the train</strong>: every rattle and roar a coaster makes is energy that used to be speed. Your one line of Python landed within 4 mph of a thirty-million-dollar machine, <em>and</em> you can say exactly why it missed. That's the whole job of an engineer. Tomorrow, this line powers a ride you design yourself.
 </div>
@@ -197,6 +205,7 @@ for step in range(14):
   <span class="ptag">Predict &mdash; commit in pencil first</span>
   Steps 1 and 2 move the train about 2 and 3 meters. <strong>Nothing in this loop says &ldquo;speed up.&rdquo;</strong> Step 10 will move it about <span class="wline"></span> meters. Why? <span class="wline" style="min-width:60%"></span>
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Now run it &mdash; you should see</span>
 <pre>after 1 s:  position 2.0 m   speed 4 mph
 after 2 s:  position 5.1 m   speed 7 mph
@@ -217,6 +226,7 @@ Step 10 covers about <strong>20 meters</strong> &mdash; every step beats the las
   <span class="ptag">Predict first</span>
   Without <code>if speed &lt; 2:</code> and <code>speed = 2</code> &mdash; what do the fourteen lines say now? <span class="wline" style="min-width:55%"></span>
 </div>
+<button class="seebtn" onclick="revealSee(this)">Now run it &mdash; reveal what you should see</button>
 <div class="see"><span class="stag">Check yourself</span>
 Fourteen identical lines: <code>position 0.0 m   speed 0 mph</code>. At the very top, drop is 0, the square root of 0 is 0, and a 0-speed train takes 0-meter steps &mdash; forever, silently, with <strong>no error anywhere</strong>. The physics isn't wrong; it's waiting for a shove. Remember this exact silence: tomorrow you will see it on a real screen, and you'll be the engineer who already knows the cure.
 </div>
@@ -226,5 +236,12 @@ Fourteen identical lines: <code>position 0.0 m   speed 0 mph</code>. At the very
 
 </div>
 
+<script>
+function revealSee(btn){
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : 'Now run it \u2014 reveal what you should see';
+}
+</script>
 </body>
 </html>

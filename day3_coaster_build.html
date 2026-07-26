@@ -68,6 +68,8 @@ button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .pbox.dec{border-color:var(--red);border-radius:2px;transform:none;background:rgba(220,38,38,.07)}
 .parrow{font-size:18px;line-height:1}
 @media (prefers-reduced-motion: reduce){.fw{animation:none;opacity:0}}
+.see{display:none}
+.see.open{display:block}
 </style>
 </head>
 <body>
@@ -149,6 +151,7 @@ pygame.quit()</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal the answer</button>
   <div class="answer">The track list decides everything, and you edited <strong>zero</strong> drawing lines &mdash; the drawing loop reads your shelf fresh on every run and draws whatever it finds. That is the biggest engineering idea of the day: <strong>the track is data, not code.</strong> Change the data, change the ride. Nobody touches the drawing code &mdash; not today, not ever.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     A navy window, a green ground line, and yellow rails over 17 support towers &mdash; your park, waiting. The window holds for six seconds and closes. After your edit, the fourth hill stands taller.
   </div>
@@ -310,6 +313,7 @@ pygame.quit()</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal the answer</button>
   <div class="answer">Between towers 3 and 4, halfway across &mdash; and HEIGHT reads <strong>27&nbsp;m</strong>: the blend of 33 and 22 is 27.5, and the <code>:.0f</code> dial rounds the display. Yesterday that was arithmetic on a card; today it's a red train hanging on a slope. Try <code>position = 300.0</code> and predict the spot before you run: fifteen towers in, on the last little hills.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     The same park with a red train parked partway down the first big drop, and a HEIGHT readout in the corner. No motion &mdash; that's Stage 3's job.
   </div>
@@ -510,6 +514,7 @@ for frame in range(3000):
 pygame.time.wait(3000)
 pygame.quit()</pre>
   </div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     The full ride: a red train that crawls off the lift hill at 4 mph and pulls into the station <strong>19.0 seconds</strong> later, topping out at <strong>70 mph</strong> &mdash; and it rushes the bottom of every drop even though <strong>no line in this file says &ldquo;speed up.&rdquo;</strong> The sqrt line hands a bigger speed to the move line, the move line takes a bigger step, and the rushing <em>emerges</em>. Those three physics lines were written once and ran <strong>1,141 times</strong> to make this ride &mdash; Monday's rule at 60 frames a second.
   </div>
@@ -647,6 +652,7 @@ for frame in range(3000):
 pygame.time.wait(3000)
 pygame.quit()</pre>
   </div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     Paste the complete file and run it once more: same perfect ride, 19.0 seconds &mdash; the inspector changes nothing on a legal track. And take ten seconds to point at all four physics lines in your own file: the height blend, the drop line, the square root, the position step. You watched every one of them get installed.
   </div>

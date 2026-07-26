@@ -56,6 +56,8 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .angles{border-collapse:collapse;margin:10px 0 6px;font-size:13px}
 .angles th,.angles td{border:1px solid var(--navy-line);padding:4px 12px;text-align:center}
 .angles th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.see{display:none}
+.see.open{display:block}
 </style>
 </head>
 <body>
@@ -99,6 +101,7 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
     pint("Welcome to Loopline Park!")
 NameError: name 'pint' is not defined</pre>
     <p style="margin:8px 0 0"><strong>Engineer's rule:</strong> read the traceback <em>last line first</em>. It names the problem (<code>pint</code> is not a thing) and the line number where it lives. The computer does only what is written &mdash; nothing has ever demanded exactness from you like this before, and that's the whole game.</p></div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>Welcome to Loopline Park!</pre>
     &hellip;and then, after the sabotage, the traceback. Fix it back before Chunk 2.
@@ -123,6 +126,7 @@ print("* * * * * * * * * * *")</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><strong>Four.</strong> There are six lines of <em>code</em>, but two are comments, and comments never print. Each <code>print()</code> makes exactly one output line, in the order written &mdash; top to bottom, like reading. Real engineers label their work so the next person (or Friday-you) knows what each part does.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>* * * * * * * * * * *
    LOOPLINE  PARK
@@ -147,6 +151,7 @@ print(price)</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">It prints <code>20</code>, then <code>15</code>. A variable is a labeled box holding <strong>one</strong> value at a time. Line 3 takes the 20 out and puts 15 in &mdash; the 20 is gone. That's why <code>=</code> is an <em>action</em>, not a fact. Fill in the first two rows of your trace table for this program: one row per line, tracking what <code>price</code> holds.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span><pre>20
 15</pre></div>
 </section>
@@ -163,6 +168,7 @@ print("Hello, " + name + "!")</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">The question prints, then the program <strong>stops and waits</strong>. Whatever the guest types gets stored in the box labeled <code>name</code>. The <code>+</code> glues strings together, so the greeting uses whatever name was typed.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>Welcome! What is your name? Maya
 Hello, Maya!</pre>
@@ -201,6 +207,7 @@ print(f"{name}, {tickets} tickets cost ${total}.")</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><code>total</code> holds <code>36</code> (3 &times; 12), so it prints <code>Sam, 3 tickets cost $36.</code> The <code>int()</code> wrapper turns the typed <code>"3"</code> into the number <code>3</code> before it ever lands in the box &mdash; so the math works. Finish your trace table for this program: four lines, four rows.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>Welcome! What is your name? Sam
 How many tickets? 3
@@ -232,6 +239,7 @@ turtle.done()</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">All eight are copies: the pair <code>forward(100)</code> + <code>right(90)</code>, repeated <strong>4 times</strong>. Imagine a 36-sided track this way &mdash; 72 lines. Repeating yourself is the computer's job, not yours. That's what the next chunk fixes. (<code>turtle.done()</code> at the end keeps the window open &mdash; it goes at the bottom of every drawing file.)</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> A window opens and a square gets drawn one side at a time, ending back where the turtle started.</div>
 </section>
 
@@ -253,6 +261,7 @@ turtle.done()</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><strong>Four times</strong> &mdash; the exact same square as Chunk 7. <code>for i in range(4):</code> means "run the indented block 4 times." <strong>Written once &ne; runs once</strong>: that's the single most important idea of the afternoon &mdash; and on Wednesday you'll watch four lines written once run over a <em>thousand</em> times to fly a roller coaster. Prove it to yourself now: add <code>print("lap!")</code> inside the loop and count the laps in the output panel.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> The identical square from Chunk 7 &mdash; from 8 drawing lines down to 3. If you added the print, the word <code>lap!</code> appears 4 times.</div>
 </section>
 
@@ -272,6 +281,7 @@ turtle.done()</pre>
   <div class="answer"><strong>72</strong>, because 360 &divide; 5 = 72. The turtle turns through the <em>exterior</em> angle &mdash; walk a pentagon on the floor and you'll feel it: at each corner you swing past the straight-ahead direction by 72&deg;, and five of those swings make one full 360&deg; spin. Try <code>right(108)</code> anyway and watch the drawing go wrong &mdash; a star-ish tangle, not a track. And push the rule: <code>range(36)</code> with <code>forward(10)</code> and <code>right(10)</code> (36 &times; 10 = 360, still one full spin) draws something that looks like a <strong>circle</strong> &mdash; the loop-the-loop blueprint, 72 brute-force lines for the price of 3.
   <table class="angles"><tr><th>Sides</th><th>Turn angle</th></tr><tr><td>3</td><td>120</td></tr><tr><td>4</td><td>90</td></tr><tr><td>5</td><td>72</td></tr><tr><td>6</td><td>60</td></tr><tr><td>8</td><td>?</td></tr></table>
   Fill in the last row on the class chart.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> A closed pentagon &mdash; the turtle ends exactly where it started, facing the way it began.</div>
 </section>
 

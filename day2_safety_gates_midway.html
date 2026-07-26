@@ -53,6 +53,8 @@ button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
 .dot.done{background:var(--green);border-color:var(--green)}
 .tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
 @media (prefers-reduced-motion: reduce){.arm{animation:none;transform:rotate(-58deg)}}
+.see{display:none}
+.see.open{display:block}
 </style>
 </head>
 <body>
@@ -92,6 +94,7 @@ print(height &gt; 60)</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><code>True</code>, then <code>False</code>. 52 is more than 48, and not more than 60. These two values are called <strong>booleans</strong>, and they're the fuel every decision runs on.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span><pre>True
 False</pre></div>
 </section>
@@ -113,6 +116,7 @@ else:
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">Only <strong>one</strong>: <code>Not this ride today — Splash Canyon awaits!</code> The condition <code>height &gt;= 48</code> is <code>False</code> for 45, so Python skips the <code>if</code> block and runs the <code>else</code> block. Code being <em>visible</em> doesn't make it <em>run</em> — the condition is the switch. (<code>&gt;=</code> means "48 or more," so a guest who is exactly 48 gets in.)</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>Your height in inches? 45
 Not this ride today — Splash Canyon awaits!</pre>
@@ -139,6 +143,7 @@ else:
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><code>Family rides — all aboard Splash Canyon!</code> First check: <code>40 &lt; 36</code> is False, move on. Second check: <code>40 &lt; 48</code> is True — take this path and <strong>skip everything after it</strong>. An <code>elif</code> chain is a fork in the queue: one guest, one path, every time.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> Exactly one band message per run. Test all three bands: try 30, 40, and 55.</div>
 </section>
 
@@ -174,6 +179,7 @@ print(rides[2])</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><code>The Comet</code> (index 0 — the first spot) and <code>Tea Cups</code> (index 2 — the <em>third</em> spot). The list is the shelf; the index picks the ride. And what's at index 4? Nothing — asking for <code>rides[4]</code> crashes with an <code>IndexError</code>, because the four spots are numbered 0, 1, 2, 3.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span><pre>The Comet
 Tea Cups</pre></div>
 </section>
@@ -196,6 +202,7 @@ print(len(rides))</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">Four ride lines, and <code>len(rides)</code> is <code>4</code> — but the last index is <strong>3</strong>. Count of items and last spot number are always one apart, because counting starts at 0. That gap is where almost every list bug in the world lives: <em>last index = len() minus one</em>.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>LOOPLINE PARK — TODAY'S RIDES
 - The Comet
@@ -222,6 +229,7 @@ print("You won: " + winner)</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">Almost certainly <strong>not</strong> the same &mdash; every run is a fresh spin, repeats allowed, chance has no memory. And <code>winner</code> holds the <strong>item itself</strong> &mdash; the actual string, like <code>"glow bracelet"</code>, never a number like <code>2</code> &mdash; which is why line 5 can glue it straight into the message. Compare with <code>prizes[2]</code>: the index picks the <em>same</em> spot every single time. Chance and index &mdash; two different hands reaching for the same shelf.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span><pre>You won: free ride pass</pre>&hellip;with the prize varying run to run.</div>
 </section>
 
@@ -252,6 +260,7 @@ t.forward(90)
 t.pendown()
 draw_support()</pre>
   <p style="margin-bottom:0"><strong>Two triangles</strong> &mdash; one per call, with a pen-up hop between them. Two steps, always: <strong>make the stamp (def), then press it (call).</strong> And the triangle now lives in exactly one place: fix it once, every press is fixed.</p></div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> An empty window on the first run &mdash; then, after adding the calls, two triangles with a gap between them.</div>
 </section>
 
@@ -279,6 +288,7 @@ turtle.done()</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer">Six spokes, 60&deg; apart (360 &divide; 6) &mdash; and <code>draw_wheel(12)</code> gives twelve spokes 30&deg; apart, from the <strong>same unchanged function</strong>. The number you pass lands in the <code>spokes</code> blank, and Monday's angle rule does the rest. Stamps can hold two blanks &mdash; <code>def draw_wheel(spokes, size):</code> &mdash; and it is the <em>position</em> of each number that decides which blank it fills: <code>draw_wheel(8, 100)</code> then <code>draw_wheel(12, 50)</code> layers a small dense wheel inside a big sparse one. One stamp, any wheel.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span> A six-spoke wheel: the turtle walks out, walks back, turns, repeats.</div>
 </section>
 
@@ -298,6 +308,7 @@ print(track[7])</pre>
   </div>
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><code>17</code>, then <code>50</code>, then <code>0</code>. <code>track[0]</code> is the first tower &mdash; the 50&nbsp;m lift hill. <code>track[7]</code> is the <em>eighth</em>: ground level, the bottom of the big drop. And with 17 towers, the last one is <code>track[16]</code> &mdash; count and last spot, one apart, exactly Chunk 7's gap. On a name roster, getting that wrong prints the wrong ride. On this week's coaster, it crashes a real one.</div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span><pre>17
 50
 0</pre></div>
@@ -390,6 +401,7 @@ for step in range(14):
   <button class="reveal" onclick="reveal(this)">Tap to reveal</button>
   <div class="answer"><p>Step 10 covers about <strong>20 meters</strong>, and every step beats the last: 2, 3, 5, 7, 9&hellip; Each pass, the train sits lower, so <code>drop</code> grows, so the sqrt line hands the move line a bigger speed, so the step grows. The rushing <em>emerges</em> from two lines cooperating &mdash; a rule deciding what happens next, not a script saying where to be.</p>
   <p style="margin-bottom:0">Last move of the day: <strong>delete the two chain's-shove lines and rerun.</strong> Fourteen identical lines &mdash; <code>position 0.0 m   speed 0 mph</code> &mdash; forever, silently, with no error. Today's stamp silence, wearing physics. Remember it: tomorrow you will see it on a real screen, and you'll already know the cure.</p></div>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
   <div class="see"><span class="tag">You should see</span>
     <pre>after 1 s:  position 2.0 m   speed 4 mph
 after 2 s:  position 5.1 m   speed 7 mph
