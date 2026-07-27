@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Loop Garage — Loop-de-Loops</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1B2951;--red:#DC2626;--cream:#F8FAFC;--yellow:#FCD34D;--green:#10B981;--navy-soft:rgba(27,41,81,.08);--navy-line:rgba(27,41,81,.16);--shadow:0 4px 0 rgba(27,41,81,.12);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;line-height:1.6;font-size:16.5px}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px 90px}
+.hero{background:var(--navy);color:var(--cream);padding:46px 24px 44px;text-align:center;border-bottom:3px dashed var(--yellow);position:relative;overflow:hidden}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--yellow);margin-bottom:10px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(34px,6vw,54px);line-height:1.05;margin:.2em auto .35em;max-width:640px}
+.hook{max-width:560px;margin:0 auto 8px;font-size:17.5px;opacity:.94}
+.need{font-family:'JetBrains Mono',monospace;font-size:12.5px;opacity:.8;margin-top:14px}
+.fw{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--yellow);animation:pop 2.6s ease-out infinite}
+.fw.b{background:#F8FAFC;animation-delay:1.3s}
+@keyframes pop{0%{transform:scale(.2);opacity:0}15%{opacity:1}60%{transform:scale(3.6);opacity:.55}100%{transform:scale(5);opacity:0}}
+h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;margin:0 0 6px}
+.card{background:#fff;border:1px solid var(--navy-line);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px;margin:28px 0}
+.chunkhead{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.chunklabel{font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--red);font-weight:700}
+.chip{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;background:var(--navy-soft);color:var(--navy);border-radius:999px;padding:3px 11px;white-space:nowrap}
+.chip.unv{color:var(--red)}
+pre{background:var(--navy);color:var(--cream);font-family:'JetBrains Mono',monospace;font-size:13.5px;line-height:1.6;border-radius:10px;padding:16px 18px;overflow-x:auto;margin:14px 0}
+.predict{border-left:4px solid var(--yellow);background:rgba(252,211,77,.16);padding:13px 16px;border-radius:0 10px 10px 0;margin:14px 0}
+.ptag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;display:block;margin-bottom:4px;color:#b45309}
+button.reveal{background:var(--navy);color:var(--cream);border:none;border-radius:999px;padding:9px 20px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;margin-top:6px;margin-right:8px}
+button.reveal:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.answer{display:none;background:var(--navy-soft);border-radius:10px;padding:14px 16px;margin-top:12px}
+.answer.open{display:block}
+.see{border:2px solid var(--green);background:rgba(16,185,129,.08);border-radius:12px;padding:13px 16px;margin:14px 0}
+.see .tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);font-weight:700;display:block;margin-bottom:4px}
+.see pre{background:#0d3a2c;margin:10px 0 2px}
+.hinge{border:2px solid var(--red)}
+.opts{display:grid;gap:10px;margin:14px 0 0}
+button.opt{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;background:var(--cream);border:1.5px solid var(--navy-line);border-radius:10px;padding:12px 14px;font-family:'DM Sans',sans-serif;font-size:15.5px;color:var(--navy);cursor:pointer;transition:border-color .15s}
+button.opt:hover:enabled{border-color:var(--navy)}
+button.opt .letter{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--red);min-width:18px}
+button.opt.correct{border-color:var(--green);background:rgba(16,185,129,.10)}
+button.opt.wrong{border-color:var(--red);background:rgba(220,38,38,.08)}
+button.opt:disabled{cursor:default}
+button.opt:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+.hingefb{display:none;margin-top:14px;padding:14px 16px;border-radius:0 10px 10px 0;font-size:15.5px}
+.hingefb.shown{display:block}
+.hingefb.right{border-left:4px solid var(--green);background:rgba(16,185,129,.08)}
+.hingefb.wrongfb{border-left:4px solid var(--red);background:rgba(220,38,38,.06)}
+.exits{display:grid;gap:14px}
+.exit{border:1px solid var(--navy-line);border-radius:12px;padding:14px 16px}
+.lvl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+.lvl small{opacity:.65;letter-spacing:.06em}
+.teacher{background:var(--navy-soft);border:1px solid var(--navy-line);border-radius:14px;padding:6px 20px 16px;margin:34px 0;font-size:14.5px}
+.teacher summary{cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.18em;text-transform:uppercase;padding:12px 0;font-weight:700;opacity:.85}
+.teacher table{border-collapse:collapse;width:100%;font-size:12.5px;margin:8px 0}
+.teacher th,.teacher td{border:1px solid var(--navy-line);padding:7px 9px;text-align:left;vertical-align:top}
+.teacher th{font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase}
+.warn{color:var(--red);font-family:'JetBrains Mono',monospace;font-size:11px}
+.attr{font-size:12px;opacity:.75;margin-top:12px}
+.tracker{display:flex;align-items:center;gap:8px;margin:6px 0 0;flex-wrap:wrap}
+.dot{width:13px;height:13px;border-radius:50%;border:2px solid var(--navy-line)}
+.dot.done{background:var(--green);border-color:var(--green)}
+.tlabel{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+.plan{display:flex;flex-direction:column;align-items:center;gap:4px;margin:16px 0;font-size:14px}
+.pbox{border:2px solid var(--navy);border-radius:10px;padding:8px 16px;background:var(--navy-soft);text-align:center}
+.pbox.loop{border-style:dashed}
+.pbox.dec{border-color:var(--red);border-radius:2px;transform:none;background:rgba(220,38,38,.07)}
+.parrow{font-size:18px;line-height:1}
+@media (prefers-reduced-motion: reduce){.fw{animation:none;opacity:0}}
+.see{display:none}
+.see.open{display:block}
+pre .add{background:rgba(16,185,129,.20);display:block}
+.rule{border:2px solid var(--yellow);background:rgba(252,211,77,.10);border-radius:12px;padding:12px 16px;margin:14px 0;font-weight:500}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Loopline Park &middot; The Loop Garage &middot; Extension &mdash; Days 3&ndash;4 Stretch</div>
+  <h1>Loop-de-Loops</h1>
+  <p class="hook">Your Day 3 engine + five green zones = upside down. See exactly where they go, turn two dials, make it yours.</p>
+  <p class="need">YOU'LL NEED: your working coaster.py from Day 3 &middot; pygame (turtle riders: pair up with a pygame machine for this one) &middot; your Ride Log</p>
+</header>
+
+<main class="wrap">
+
+<section class="card">
+  <h2>How this page works</h2>
+  <p>For the <strong>RUNNING lane</strong>: your Day-3 ride completes and you want it upside down. Below is your engine with the loop code <span style="background:rgba(16,185,129,.25);padding:1px 6px;border-radius:4px">highlighted green</span> exactly where it lives &mdash; five zones, numbered in the comments. White lines are your engine, untouched. Copy your working file into a comment, then paste the whole thing.</p>
+  <div class="rule"><strong>The one rule</strong> (it decides every loop you'll ever place): the drop above the loop's base must be at least <strong>2&frac12; &times; the radius</strong>. Your budget = (lift height &minus; base height) &divide; 2.5. Overspend and the train lets go at the top.</div>
+</section>
+
+<!-- THE MAP -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">The map &middot; your engine + the five green zones</span></div>
+  <h2>Where the loop code goes</h2>
+  <p>Zone 1: the two dials. Zone 2: where the circle sits on screen. Zone 3: two single lines (more rail, a new flag). Zone 4: <em>before</em> the physics &mdash; it tells <code>height</code> the truth about the circle, and the physics eats <code>height</code>. Zone 5: the inspector, plus the drawing. Notice what's <em>not</em> green: the drop line, the square root, the move line. The loop never touches them.</p>
+  <pre># ==========================================================
+<span class="add">#  LOOPLINE PARK - COASTER SIMULATOR  (loop edition)</span>
+<span class="add">#  Your Day 3 engine + one vertical loop, in 5 numbered zones.</span>
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+
+<span class="add"># === LOOP ZONE 1 of 5: the dials ==========================</span>
+<span class="add">LOOP_AT = 120.0       # meters along the track (tower 6 = 6 x 20, the valley)</span>
+<span class="add">LOOP_R = 8.0          # loop radius in meters</span>
+<span class="add">LOOP_LEN = 2 * 3.14159 * LOOP_R      # extra rail the loop adds (~50 m)</span>
+
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+<span class="add"># === LOOP ZONE 2 of 5: where the circle sits on screen ====</span>
+<span class="add">loop_seg = int(LOOP_AT / SEG_LEN)</span>
+<span class="add">if loop_seg &gt; len(track) - 2:</span>
+<span class="add">    loop_seg = len(track) - 2        # same guard the engine uses</span>
+<span class="add">loop_frac = (LOOP_AT - loop_seg * SEG_LEN) / SEG_LEN</span>
+<span class="add">loop_base = track[loop_seg] + (track[loop_seg + 1] - track[loop_seg]) * loop_frac</span>
+<span class="add">loop_cx = 50 + (LOOP_AT / SEG_LEN) * step_x</span>
+<span class="add">loop_cy = 550 - (loop_base + LOOP_R) * scale_y</span>
+<span class="add">loop_rpx = LOOP_R * scale_y</span>
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+<span class="add">track_length = (len(track) - 1) * SEG_LEN + LOOP_LEN   # ZONE 3a: the loop adds rail</span>
+speed = 2.0
+stalled = 0
+<span class="add">fell = 0                             # ZONE 3b: the new failure flag</span>
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+<span class="add">    # === LOOP ZONE 4 of 5: are we on the loop? =============</span>
+<span class="add">    # (must run BEFORE the physics - the physics eats height)</span>
+<span class="add">    on_loop = (position &gt;= LOOP_AT) and (position &lt; LOOP_AT + LOOP_LEN)</span>
+<span class="add">    if on_loop:</span>
+<span class="add">        flat = LOOP_AT                       # the loop stands still on the map</span>
+<span class="add">        angle = (position - LOOP_AT) / LOOP_R    # how far around the circle</span>
+    else:
+<span class="add">        flat = position</span>
+<span class="add">        if position &gt;= LOOP_AT + LOOP_LEN:</span>
+<span class="add">            flat = position - LOOP_LEN       # past the loop: subtract its rail</span>
+<span class="add">        angle = 0.0</span>
+
+    # WHERE ARE WE? -- find the two towers we are between
+<span class="add">    seg = int(flat / SEG_LEN)</span>
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+<span class="add">    frac = (flat - seg * SEG_LEN) / SEG_LEN</span>
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+<span class="add">    if on_loop:</span>
+<span class="add">        height = height + LOOP_R * (1 - math.cos(angle))   # tell height the truth</span>
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+<span class="add">    # === LOOP ZONE 5 of 5: the loop inspector ==============</span>
+<span class="add">    # upside down, speed is the only thing holding the rail</span>
+<span class="add">    if on_loop and angle &gt; 1.57 and angle &lt; 4.71:</span>
+<span class="add">        if speed * speed &lt; GRAVITY * LOOP_R:</span>
+<span class="add">            fell = 1</span>
+
+    # move forward by however fast we are going
+<span class="add">    if stalled == 0 and fell == 0:</span>
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+<span class="add">    # the loop (drawn every frame, before the train)</span>
+<span class="add">    pygame.draw.circle(screen, YELLOW, (int(loop_cx), int(loop_cy)), int(loop_rpx), 4)</span>
+
+<span class="add">    # the train (rides the circle while on the loop)</span>
+<span class="add">    if on_loop:</span>
+<span class="add">        tx = loop_cx + loop_rpx * math.sin(angle)</span>
+<span class="add">        ty = loop_cy + loop_rpx * math.cos(angle)</span>
+    else:
+<span class="add">        tx = 50 + (flat / SEG_LEN) * step_x</span>
+        ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+<span class="add">    if fell == 1:</span>
+<span class="add">        screen.blit(big.render("TOO SLOW AT THE TOP - the train let go!", True, RED), (50, 500))</span>
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  <button class="reveal seebtn" onclick="reveal(this)">Now run it &mdash; reveal what you should see</button>
+  <div class="see"><span class="tag">You should see</span>
+    A yellow circle in the valley at tower 6. The train enters at <strong>11.2 s</strong>, visibly slows over the top &mdash; the dashboard reads <strong>56 mph</strong> up there, upside down &mdash; and finishes in <strong>20.8 s</strong> at <strong>70 mph</strong> top speed. (56 should ring a bell: the loop top stands at 18 m, the exact height of Ride Log twins 9 and 13. Same height, same speed &mdash; even upside down.)
+  </div>
+</section>
+
+<!-- THE REMIX -->
+<section class="card design">
+  <div class="chunkhead"><span class="chunklabel">The remix &middot; make it yours</span></div>
+  <h2>Turn the dials &mdash; or double them</h2>
+  <p><strong>One loop, your way:</strong> two dials, that's it. <code>LOOP_AT</code> = tower number &times; 20. <code>LOOP_R</code> = anything under your budget. Move it, grow it, shrink it &mdash; run after every change.</p>
+  <p><strong>Two loops:</strong> every zone gets a twin with a <code>2</code> in its name &mdash; <code>LOOP2_AT</code>, <code>on_loop2</code>, <code>angle2</code> &mdash; plus <strong>one new rule</strong>: the ride is longer than the map now, because loop 1 added ~50 m of rail. So loop 2's trigger is <code>LOOP2_START = LOOP2_AT + LOOP_LEN</code> &mdash; its map address, plus every earlier loop's rail. The complete remix, ready to run (loop 2 at tower 14):</p>
+  <button class="reveal" onclick="reveal(this)">Reveal coaster_two_loops.py &mdash; the full remix</button>
+  <div class="answer">
+<pre># ==========================================================
+#  LOOPLINE PARK - COASTER SIMULATOR  (loop edition)
+#  THE REMIX: two loops. Same five zones, each with a twin.
+# ==========================================================
+
+import pygame
+import math
+
+# --- YOUR TRACK -------------------------------------------
+# Each number is a hill height in meters, left to right.
+# Rule 1: the FIRST number is the lift hill. It must be the tallest.
+# Rule 2: change these numbers and rerun. That IS the design job.
+
+track = [50, 48, 42, 33, 22, 11, 2, 0, 8, 18, 26, 30, 26, 18, 9, 3, 0]
+
+SEG_LEN = 20          # each hill tower sits 20 meters from the next
+
+# === LOOP ZONE 1 of 5: the dials ==========================
+LOOP_AT = 120.0       # meters along the track (tower 6 = 6 x 20, the valley)
+LOOP_R = 8.0          # loop radius in meters
+LOOP_LEN = 2 * 3.14159 * LOOP_R      # extra rail the loop adds (~50 m)
+
+LOOP2_AT = 280.0      # MAP meters, just like LOOP_AT (tower 14 = 14 x 20)
+LOOP2_R = 8.0
+LOOP2_LEN = 2 * 3.14159 * LOOP2_R
+LOOP2_START = LOOP2_AT + LOOP_LEN    # THE ADDRESS RULE: the ride reaches it
+                                     # late, because loop 1 added rail first
+
+GRAVITY = 9.8
+FPS = 60
+DT = 1.0 / FPS        # how much time passes in one frame
+
+# --- COLORS (Loopline Park) -------------------------------
+NAVY = (27, 41, 81)
+YELLOW = (252, 211, 77)
+RED = (220, 38, 38)
+CREAM = (248, 250, 252)
+GREEN = (16, 185, 129)
+
+# --- SETUP ------------------------------------------------
+pygame.init()
+screen = pygame.display.set_mode((900, 600))
+pygame.display.set_caption("Loopline Park - Coaster Simulator")
+clock = pygame.time.Clock()
+big = pygame.font.SysFont("couriernew", 30, bold=True)
+small = pygame.font.SysFont("couriernew", 18)
+
+# --- TURNING A HILL HEIGHT INTO A SCREEN SPOT -------------
+tallest = max(track)
+step_x = 800 / (len(track) - 1)
+scale_y = 400 / tallest
+
+rail_points = []
+for i in range(len(track)):
+    x = 50 + i * step_x
+    y = 550 - track[i] * scale_y
+    rail_points.append((x, y))
+
+# === LOOP ZONE 2 of 5: where the circle sits on screen ====
+loop_seg = int(LOOP_AT / SEG_LEN)
+if loop_seg &gt; len(track) - 2:
+    loop_seg = len(track) - 2        # same guard the engine uses
+loop_frac = (LOOP_AT - loop_seg * SEG_LEN) / SEG_LEN
+loop_base = track[loop_seg] + (track[loop_seg + 1] - track[loop_seg]) * loop_frac
+loop_cx = 50 + (LOOP_AT / SEG_LEN) * step_x
+loop_cy = 550 - (loop_base + LOOP_R) * scale_y
+loop_rpx = LOOP_R * scale_y
+
+loop2_seg = int(LOOP2_AT / SEG_LEN)
+if loop2_seg &gt; len(track) - 2:
+    loop2_seg = len(track) - 2       # same guard the engine uses
+loop2_frac = (LOOP2_AT - loop2_seg * SEG_LEN) / SEG_LEN
+loop2_base = track[loop2_seg] + (track[loop2_seg + 1] - track[loop2_seg]) * loop2_frac
+loop2_cx = 50 + (LOOP2_AT / SEG_LEN) * step_x
+loop2_cy = 550 - (loop2_base + LOOP2_R) * scale_y
+loop2_rpx = LOOP2_R * scale_y
+
+# --- RUN THE RIDE -----------------------------------------
+top = track[0]
+position = 0.0                       # how many meters along the track we are
+track_length = (len(track) - 1) * SEG_LEN + LOOP_LEN + LOOP2_LEN   # ZONE 3a: both loops add rail
+speed = 2.0
+stalled = 0
+fell = 0                             # ZONE 3b: the new failure flag
+
+for frame in range(3000):
+    pygame.event.pump()              # keeps the window alive
+
+    # === LOOP ZONE 4 of 5: are we on the loop? =============
+    # (must run BEFORE the physics - the physics eats height)
+    on_loop = (position &gt;= LOOP_AT) and (position &lt; LOOP_AT + LOOP_LEN)
+    on_loop2 = (position &gt;= LOOP2_START) and (position &lt; LOOP2_START + LOOP2_LEN)
+    angle = 0.0
+    angle2 = 0.0
+    flat = position
+    if position &gt;= LOOP_AT + LOOP_LEN:
+        flat = position - LOOP_LEN           # past loop 1: subtract its rail
+    if position &gt;= LOOP2_START + LOOP2_LEN:
+        flat = position - LOOP_LEN - LOOP2_LEN   # past both: subtract both
+    if on_loop:
+        flat = LOOP_AT
+        angle = (position - LOOP_AT) / LOOP_R
+    if on_loop2:
+        flat = LOOP2_AT
+        angle2 = (position - LOOP2_START) / LOOP2_R
+
+    # WHERE ARE WE? -- find the two towers we are between
+    seg = int(flat / SEG_LEN)
+    if seg &gt; len(track) - 2:
+        seg = len(track) - 2
+    frac = (flat - seg * SEG_LEN) / SEG_LEN
+
+    # our height is part way between those two towers
+    height = track[seg] + (track[seg + 1] - track[seg]) * frac
+    if on_loop:
+        height = height + LOOP_R * (1 - math.cos(angle))   # tell height the truth
+    if on_loop2:
+        height = height + LOOP2_R * (1 - math.cos(angle2))
+
+    # THE PHYSICS: height you have lost becomes speed you have gained
+    drop = top - height
+    if drop &lt; 0:
+        stalled = 1
+    else:
+        speed = math.sqrt(2 * GRAVITY * drop)
+        if speed &lt; 2:
+            speed = 2                # the chain lift lets go at 2 m/s
+
+    # === LOOP ZONE 5 of 5: the loop inspector ==============
+    # upside down, speed is the only thing holding the rail
+    if on_loop and angle &gt; 1.57 and angle &lt; 4.71:
+        if speed * speed &lt; GRAVITY * LOOP_R:
+            fell = 1
+    if on_loop2 and angle2 &gt; 1.57 and angle2 &lt; 4.71:
+        if speed * speed &lt; GRAVITY * LOOP2_R:
+            fell = 1
+
+    # move forward by however fast we are going
+    if stalled == 0 and fell == 0:
+        position = position + speed * DT
+
+    # --- DRAW -------------------------------------------------
+    screen.fill(NAVY)
+    pygame.draw.line(screen, GREEN, (50, 550), (850, 550), 3)
+    pygame.draw.lines(screen, YELLOW, False, rail_points, 4)
+
+    # support towers under each hill
+    for i in range(len(track)):
+        pygame.draw.line(screen, (60, 80, 130),
+                         (rail_points[i][0], rail_points[i][1]),
+                         (rail_points[i][0], 550), 2)
+
+    # the loop (drawn every frame, before the train)
+    pygame.draw.circle(screen, YELLOW, (int(loop_cx), int(loop_cy)), int(loop_rpx), 4)
+    pygame.draw.circle(screen, YELLOW, (int(loop2_cx), int(loop2_cy)), int(loop2_rpx), 4)
+
+    # the train (rides the circle while on the loop)
+    if on_loop:
+        tx = loop_cx + loop_rpx * math.sin(angle)
+        ty = loop_cy + loop_rpx * math.cos(angle)
+    elif on_loop2:
+        tx = loop2_cx + loop2_rpx * math.sin(angle2)
+        ty = loop2_cy + loop2_rpx * math.cos(angle2)
+    else:
+        tx = 50 + (flat / SEG_LEN) * step_x
+        ty = 550 - height * scale_y
+    pygame.draw.rect(screen, RED, (tx - 16, ty - 14, 32, 14), border_radius=4)
+
+    # the dashboard
+    screen.blit(big.render(f"SPEED  {speed * 2.24:.0f} mph", True, CREAM), (50, 30))
+    screen.blit(small.render(f"HEIGHT {height:.0f} m", True, CREAM), (50, 70))
+    screen.blit(small.render(f"TIME   {frame * DT:.1f} s", True, CREAM), (50, 92))
+
+    if stalled == 1:
+        screen.blit(big.render("STALLED - hill taller than the lift!", True, RED), (50, 500))
+    if fell == 1:
+        screen.blit(big.render("TOO SLOW AT THE TOP - the train let go!", True, RED), (50, 500))
+
+    pygame.display.flip()
+    clock.tick(FPS)
+
+    if position &gt;= track_length:
+        break
+
+pygame.time.wait(3000)
+pygame.quit()</pre>
+  <p style="margin-bottom:0">Feel how much of that was copy-paste-rename? Hold onto that itch &mdash; it's Thursday's Tidy Booth lesson knocking. At grade 5, twin-and-rename is the honest price of a second loop; the itch you're feeling is the exact reason grown-up engines wrap the loop in a function and press the stamp twice.</p></div>
+  <p style="margin-top:12px"><strong>Then design:</strong> loop(s) on <em>your own</em> track. Find your valley, write the budget arithmetic on your Ride Log (drop &divide; 2.5), pick a radius under it, and catch one Grid B row at a loop top. Stretch: the booth asks the guest for a loop size, and your gate refuses illegal ones &mdash; input, a decision, and data driving physics, the whole camp in one feature. <em>(Fine print: our circular loop pulls ~12 g at the bottom; real parks build teardrops so riders stay conscious. Pixels sign waivers.)</em></p>
+</section>
+
+<!-- CHECK FOR UNDERSTANDING -->
+<section class="card">
+  <div class="chunkhead"><span class="chunklabel">Check yourself &middot; five quick ones</span></div>
+  <h2>Prove you own it</h2>
+
+  <p style="margin-bottom:6px"><strong>1 &middot; Order.</strong> A friend pastes Zone 4 <em>after</em> the four physics lines instead of before. The code is identical &mdash; only the location changed. Why does the loop stop working?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to check</button>
+  <div class="answer">The physics <em>eats</em> <code>height</code>. If Zone 4 hasn't told <code>height</code> the truth about the circle yet, the drop line reads a flat-track height, the sqrt line hands back full valley speed, and the train blasts through the loop without ever slowing. In a program, <strong>where</strong> a line lives is part of what it means.</div>
+
+  <p style="margin-bottom:6px; margin-top:16px"><strong>2 &middot; Dials.</strong> You want the loop at tower 10 with radius 6. Which lines change, what are the new numbers &mdash; and is it legal?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to check</button>
+  <div class="answer">Exactly two lines: <code>LOOP_AT = 200.0</code> (10 &times; 20) and <code>LOOP_R = 6.0</code>. Legal check: tower 10 stands at 26 m, so the budget is (50 &minus; 26) &divide; 2.5 = <strong>9.6 m</strong> &mdash; and 6 &lt; 9.6. It rides.</div>
+
+  <p style="margin-bottom:6px; margin-top:16px"><strong>3 &middot; The rule.</strong> Tower 11 (30 m), radius 9. Banner or ride? Do the arithmetic before you answer.</p>
+  <button class="reveal" onclick="reveal(this)">Tap to check</button>
+  <div class="answer"><strong>Banner.</strong> Budget: (50 &minus; 30) &divide; 2.5 = 8 m, and you asked for 9. The train lets go partway up the back &mdash; <em>TOO SLOW AT THE TOP</em>. One meter over budget is all it takes.</div>
+
+  <p style="margin-bottom:6px; margin-top:16px"><strong>4 &middot; The address rule.</strong> In the remix, why isn't loop 2's trigger just <code>LOOP2_AT</code>? Why add <code>LOOP_LEN</code>?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to check</button>
+  <div class="answer">Because the <strong>ride is longer than the map</strong>. <code>position</code> counts rail travelled, and loop 1 added ~50 m of rail &mdash; so everything past it arrives ~50 m of <code>position</code> later than its map address says. Forget the <code>+ LOOP_LEN</code> and loop 2 fires 50 m early, in the wrong place. Add a third loop and its trigger owes <em>both</em> earlier loops' rail.</div>
+
+  <p style="margin-bottom:6px; margin-top:16px"><strong>5 &middot; The twins, extended.</strong> In the remix, loop 2 stands at tower 14 (9 m), radius 8 &mdash; so its top is at 9 + 16 = 25 m. Loop 1's top read 56 mph. What does loop 2's top read, and how do you know without running?</p>
+  <button class="reveal" onclick="reveal(this)">Tap to check</button>
+  <div class="answer"><strong>50 mph</strong> &mdash; because the speed line only ever asks <em>how far below the lift am I?</em> 50 &minus; 25 = 25 m of drop &rarr; about 50 mph, right-side up or upside down, loop or hill. If any tower on any track stands at 25 m, it reads 50 too. One rule, the whole park.</div>
+</section>
+
+<!-- TEACHER NOTE -->
+<details class="teacher">
+  <summary>Teacher note &mdash; scope &amp; claims</summary>
+  <p>Extension material for Days 3&ndash;4 stretch lanes &mdash; <strong>no new standards claims</strong>; work here feeds the same E5-PRO-PD/VD/RD evidence already claimed on the day pages (the upgrade note, the Grid B row, the narration). The page is deliberately lean: one annotated engine map, one remix, five check questions &mdash; built for campers who won't read prose. <code>math.cos</code> joins <code>sqrt</code>, <code>break</code>, and <code>max</code> as read-only engine vocabulary; campers place code and turn dials, they don't write trigonometry. <code>while</code> and <code>return</code> remain excluded; the two-loop remix is honest copy-paste-rename, named as such, and used to set up the function-based version campers meet in later courses. pygame edition only &mdash; pair turtle riders with a pygame machine. Physics is frictionless with circular loops; the 2&frac12;-radius rule and 12&nbsp;g figure are exact within that model.</p>
+  <p class="attr">Mapped to: Computer Science Teachers Association. (2026). <em>2026 CSTA PK&ndash;12 computer science standards.</em> https://csteachers.org/pk12standards/ &middot; Licensed CC BY-NC-SA 4.0. "Mapped to" is this page's claim; it is not a CSTA-reviewed or CSTA-approved designation.</p>
+</details>
+
+</main>
+
+<script>
+function reveal(btn){
+  if(!btn.dataset.label){ btn.dataset.label = btn.textContent; }
+  var a = btn.nextElementSibling;
+  var open = a.classList.toggle('open');
+  btn.textContent = open ? 'Hide' : btn.dataset.label;
+  var card = btn.closest('[data-chunk]');
+  if(card){ var d = document.getElementById('d'+card.getAttribute('data-chunk')); if(d) d.classList.add('done'); }
+}
+</script>
+</body>
+</html>
