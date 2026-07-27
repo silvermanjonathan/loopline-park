@@ -34,6 +34,7 @@ A **functional-thinking thread** runs Days 1–4: name a block so the program re
 
 - **[coaster_lab.html](coaster_lab.html)** — the engine room. Eight chunks taking the physics apart line by line, five broken coasters to diagnose, the Track Design Card, and the printable **Ride Log**. Used as reference on Days 2–5 and sent home Friday.
 - **[coaster_stretch_cards.html](coaster_stretch_cards.html)** — three printable class cards, all run on Day 2: the track list, the square root with the Fury 325 reality check, and the no-graphics text ramp that previews the motion line.
+- **[loop_garage.html](loop_garage.html)** — extension page for the stretch lanes: a vertical loop bolted onto the Day 3 engine with two dials (`LOOP_AT`, `LOOP_R`), the 2.5-radius clearance rule discovered by experiment, and a fall-off inspector. The four physics lines are untouched — the loop only tells `height` the truth. Includes a verified two-loop remix and five check-for-understanding questions.
 - **[day1_trace_table_handout.html](day1_trace_table_handout.html)** — printable trace table for Monday.
 
 Printables have their own print buttons and `@media print` rules that hide answer keys. Print them from the page opened directly in a browser, not from inside an embed.
